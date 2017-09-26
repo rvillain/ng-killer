@@ -17,7 +17,7 @@ export class AgentComponent implements OnInit, OnDestroy {
   public agent:Agent;
   private sub: any;
 
-  private status: string = "created";
+  public status: string = "created";
 
   constructor(private agentApiService: AgentApiService, private route: ActivatedRoute, private dialog: MdDialog) { }
 

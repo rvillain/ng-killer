@@ -5,11 +5,11 @@
     <h1>
       Rejoignez la partie
     </h1>
-    <ngx-qrcode 
+    <!-- <ngx-qrcode 
       qrc-element-type="url" 
       [qrc-value]="qrUrl"
       qrc-version = "5">
-    </ngx-qrcode>
+    </ngx-qrcode> -->
     <a md-raised-button color="primary" href="{{qrUrl}}" target="_blank">{{qrUrl}}</a>
 
     <div class="agents" *ngIf="game.agents && game.agents.length > 0">

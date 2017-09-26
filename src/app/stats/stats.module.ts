@@ -2,12 +2,12 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { JournalComponent } from './journal/journal.component';
 import { SharedModule } from '../shared/shared.module';
-import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
+//import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
 
 @NgModule({
   imports: [
     CommonModule,
-    NgxQRCodeModule,
+    //NgxQRCodeModule,
     SharedModule
   ],
   declarations: [JournalComponent]
