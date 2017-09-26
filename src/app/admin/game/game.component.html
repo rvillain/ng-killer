@@ -1,0 +1,29 @@
+<md-toolbar>ng-killer - Administration de la partie {{game.name}}</md-toolbar>
+
+<md-card>
+  <div>
+    <h2>Agents</h2>
+    <md-chip-list>
+      <md-chip *ngFor="let agent of game.agents" (click)="editAgent(agent)">
+        {{agent.name}}
+      </md-chip>
+    </md-chip-list>
+    <h2>Missions</h2>
+    <md-list>
+      <md-list-item *ngFor="let mission of game.missions"> {{mission.title}} </md-list-item>
+    </md-list>
+    <form class="" (ngSubmit)="onSubmitNewMission()">
+      <md-form-field class="full-width">
+        <input mdInput name="newMission"
+          placeholder="Nouvelle mission"
+          [(ngModel)]="newMission">
+      </md-form-field>
+    </form>
+  </div>
+  <button md-raised-button color="accent" (click)="start()" [disabled]="!isStartable()" *ngIf="game.status == 'created'">
+    Démarrer
+  </button>
+  <button md-raised-button color="accent" [disabled]="game.status == 'created'">
+    Réinitialiser
+  </button>
+</md-card>

@@ -1,0 +1,47 @@
+<app-header [game]="game?game.name:''">
+</app-header>
+<section *ngIf="game">
+  <ng-container *ngIf="game.status=='created'">
+    <h1>
+      Rejoignez la partie
+    </h1>
+    <ngx-qrcode 
+      qrc-element-type="url" 
+      [qrc-value]="qrUrl"
+      qrc-version = "5">
+    </ngx-qrcode>
+    <a md-raised-button color="primary" href="{{qrUrl}}" target="_blank">{{qrUrl}}</a>
+
+    <div class="agents" *ngIf="game.agents && game.agents.length > 0">
+        <h3>
+          Les joueurs inscrits
+        </h3>
+        <p>
+          <span class="agent-card" *ngFor="let agent of game.agents">{{agent.name}}</span>
+        </p>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="game.status!='created'">
+      <h3 class="blue">
+          Les vivants
+      </h3>
+      <p>
+        <span class="agent-card bg-blue" *ngFor="let agent of getAliveAgents()">{{agent.name}}</span>
+      </p>
+      <h3 class="red">
+          Les morts
+      </h3>
+      <p>
+        <span class="agent-card bg-red" *ngFor="let agent of getDeadAgents()">{{agent.name}}</span>
+      </p>
+      <h3>
+          La gazette
+      </h3>
+      <app-timeline [actions]="game.actions">
+
+      </app-timeline>
+  </ng-container>
+  
+</section>
+
+

@@ -1,0 +1,16 @@
+<app-header [game]="game?game.name:''">
+</app-header>
+
+<section *ngIf="game">
+  <p>
+    Vous êtes sur le point de rejoindre la partie. Entrez donc votre prénom ou un pseudo connu de tous les joueurs.
+  </p>
+  <form class="" (ngSubmit)="onSubmit()">
+    <input name="agentName"
+      #name="ngModel"
+      class="killer-input"
+      placeholder="Prénom"
+      [(ngModel)]="agentName">
+    <button md-button>Valider</button>
+  </form>
+</section>

@@ -1,0 +1,44 @@
+<md-toolbar>ng-killer - Administration</md-toolbar>
+<md-tab-group>
+  <md-tab label="Parties">
+    <md-card>
+      <md-form-field>
+          <input mdInput 
+            placeholder="Recherche"
+            [(ngModel)]="searchTxt">
+      </md-form-field>
+      
+      <md-expansion-panel *ngFor="let game of filteredGames()">
+        <md-expansion-panel-header>
+          <md-panel-title>
+            {{game.name}}
+          </md-panel-title>
+          <md-panel-description>
+            {{game.status}}
+          </md-panel-description>
+        </md-expansion-panel-header>
+        
+        
+        <a md-raised-button color="accent" target="_blank" routerLink="/journal/{{game._id}}">
+          Journal
+        </a>
+        <a md-raised-button color="accent" target="_blank" routerLink="/admin/{{game._id}}">
+          Administrer
+        </a>
+        <button md-raised-button color="accent" (click)="deleteGame(game)">
+          <md-icon>delete</md-icon>
+        </button>
+      </md-expansion-panel>
+      <form class="" (ngSubmit)="onSubmitNewGame()">
+        <md-form-field>
+            <input mdInput name="newName"
+              placeholder="Nouvelle partie"
+              [(ngModel)]="newName">
+        </md-form-field>
+      </form>
+    </md-card>
+  </md-tab>
+  <md-tab label="Missions">
+    Content 2
+  </md-tab>
+</md-tab-group>

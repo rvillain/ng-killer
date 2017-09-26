@@ -1,0 +1,56 @@
+<app-header [game]="agent?agent.game.name:''">
+</app-header>
+<main>
+  <section *ngIf="status=='created'">
+    La partie n'a pas encore commencée, soyez patient, préparez carnet de note, revolver et autre montre à gousset.
+  </section>
+  <section *ngIf="status=='started' && agent" class="life">
+      <md-icon [ngClass]="{'red': agent.life>=1}">favorite</md-icon>
+      <md-icon [ngClass]="{'red': agent.life>=2}">favorite</md-icon>
+      <md-icon [ngClass]="{'red': agent.life>=3}">favorite</md-icon>
+      <md-icon [ngClass]="{'red': agent.life>=4}">favorite</md-icon>
+      <md-icon [ngClass]="{'red': agent.life>=5}">favorite</md-icon>
+    </section>
+  <section *ngIf="status=='started' && agent.status == 'dead'" >
+    Vous êtes mort.
+  </section>
+  <section *ngIf="status=='started' && agent.status == 'alive'">
+      <div class="agent-line">
+        <h3>
+          <md-icon>account_circle</md-icon> Identité
+        </h3>
+        {{agent.name}}
+        <button md-raised-button (click)="showCode()" style="float: right">
+          Mon code
+        </button>
+      </div>
+      <div class="agent-line">
+        <h3>
+          <md-icon>gps_fixed</md-icon> Cible
+        </h3>
+        {{agent.target.name}}
+        
+      </div>
+      <div class="agent-line">
+        <h3>
+          <md-icon>work</md-icon> Mission
+        </h3>
+        <p>{{agent.mission.title}}</p>
+      </div>
+      <p class="text-center">
+        <button md-raised-button>
+          <md-icon>next_week</md-icon>
+          Changer de mission
+        </button>
+      </p>
+  </section>
+  <section *ngIf="status=='finished'">
+    La partie est terminée. Préparez vous pour une prochaine mission, plutôt que de vouleur ressasser le passé.
+  </section>
+</main>
+
+<footer *ngIf="status=='started' && agent.status == 'alive'">
+  <button md-raised-button color="primary" (click)="kill()">Tuer</button>
+  <button md-raised-button color="primary" (click)="unmask()">Démasquer</button>
+</footer>
+

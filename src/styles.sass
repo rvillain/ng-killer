@@ -1,0 +1,63 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "./variables.sass";
+
+body
+    margin: 0px;
+    font-family: 'Josefin Sans', sans-serif;
+    background: $back-color;
+    color: $text-color;
+section
+    margin: 15px;
+app-root, app-agent
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    min-height: 100vh;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+.mat-expansion-panel
+    font-family: 'Josefin Sans', sans-serif;
+    background: darken($back-color, 5%);
+    color: $text-color;
+.mat-expansion-panel-header-title, .mat-expansion-indicator::after, .mat-expansion-panel-header-description
+    color: $text-color;
+.text-center
+    text-align: center;
+.mat-dialog-title, .mat-button, .mat-fab, .mat-icon-button, .mat-mini-fab, .mat-raised-button, .mat-form-field, .mat-toolbar, .mat-toolbar h1, .mat-toolbar h2, .mat-toolbar h3, .mat-toolbar h4, .mat-toolbar h5, .mat-toolbar h6, input
+    font-family: 'Josefin Sans', sans-serif;
+
+.mat-fab, .mat-mini-fab, .mat-raised-button
+    color: $back-color!important;
+    background: $text-color;
+    .mat-icon
+        height: 30px;
+.mat-fab.mat-primary, .mat-mini-fab.mat-primary, .mat-raised-button.mat-primary
+    background: $back-color;
+    color: $text-color!important;;
+
+.red
+    color: $red;
+.blue
+    color: $blue;
+.bg-red
+    background-color: $red!important;
+    color: $text-color;
+.bg-blue
+    background-color: $blue!important;
+    color: $back-color;
+.killer-input
+    padding: 15px;
+    border: 0px;
+    border-bottom: 3px solid $text-color;
+    background: rgba(255,255,255, 0.1);
+    color: $text-color;
+    transition: all 0.3s;
+    font-size: 1rem;
+.killer-input:focus
+    background: rgba(255,255,255, 0.05);;
+    outline: none;
+    border-color: $blue;
+    box-shadow: 0px 4px 3px rgba(0,0,0,0.5);

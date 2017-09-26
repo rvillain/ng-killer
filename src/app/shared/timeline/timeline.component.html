@@ -1,0 +1,17 @@
+<div class="timeline-wrapper">
+  <div class="timeline">
+    <div class="entries">
+      <div class="entry" *ngFor="let action of actions">
+        <div class="title" [ngClass]="{'big': isImportant(action)}">
+          {{action.type | actionType}}
+        </div>
+        <div class="body">
+          {{action.Created_date | date:"dd/MM/yy hh:mm:ss"}}<br>
+          {{action.killer.name}}
+          
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
