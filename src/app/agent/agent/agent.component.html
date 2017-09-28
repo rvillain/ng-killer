@@ -4,7 +4,7 @@
   <section *ngIf="status=='created'">
     La partie n'a pas encore commencée, soyez patient, préparez carnet de note, revolver et autre montre à gousset.
   </section>
-  <section *ngIf="status=='started' && agent" class="life">
+  <section *ngIf="status=='started' && agent && agent.status == 'alive'" class="life">
       <md-icon [ngClass]="{'red': agent.life>=1}">favorite</md-icon>
       <md-icon [ngClass]="{'red': agent.life>=2}">favorite</md-icon>
       <md-icon [ngClass]="{'red': agent.life>=3}">favorite</md-icon>
@@ -53,4 +53,17 @@
   <button md-raised-button color="primary" (click)="kill()">Tuer</button>
   <button md-raised-button color="primary" (click)="unmask()">Démasquer</button>
 </footer>
+
+<div class="wait-overlay" *ngIf="waitResponse">
+  <h2>Attente de réponse</h2>
+  <div class="arc">
+    <div class="arc-cube"></div>
+  </div>
+</div>
+
+<div class="wait-overlay" *ngIf="showConfirmKill">
+    <h2>Avez vous été tué ?</h2>
+    <button md-raised-button (click)="confirmKill(true)">Oui</button>
+    <button md-raised-button (click)="confirmKill(false)">Non</button>
+  </div>
 

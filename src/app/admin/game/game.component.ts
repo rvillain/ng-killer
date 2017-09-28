@@ -81,4 +81,14 @@ export class GameComponent implements OnInit, OnDestroy {
         console.log("err", err);
       });
   }
+  reinit(){
+    this.gameApiService.reinit(this.game._id).subscribe(
+      res => {
+        this.game.status = res.status;
+        console.log(res);
+      },
+      err => {
+        console.log("err", err);
+      });
+  }
 }

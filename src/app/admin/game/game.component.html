@@ -23,7 +23,7 @@
   <button md-raised-button color="accent" (click)="start()" [disabled]="!isStartable()" *ngIf="game.status == 'created'">
     Démarrer
   </button>
-  <button md-raised-button color="accent" [disabled]="game.status == 'created'">
+  <button md-raised-button color="accent" (click)="reinit()" [disabled]="game.status == 'created'">
     Réinitialiser
   </button>
 </md-card>

@@ -20,4 +20,11 @@ export class GameApiService  extends GenericApiService<Game>{
         .map((res: Response) => this.manageSuccess(res, null, false))
         .catch((error: any) => this.manageError(error));
   }
+  reinit(id: any): Observable<Game> {
+    const endPoint = '/' + id + '/reinit';
+    return this.http
+        .post(this.apiUrl + this.controllerName + endPoint, {})
+        .map((res: Response) => this.manageSuccess(res, null, false))
+        .catch((error: any) => this.manageError(error));
+  }
 }

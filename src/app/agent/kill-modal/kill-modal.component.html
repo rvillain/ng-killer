@@ -1,12 +1,9 @@
 <h1 md-dialog-title>Tentative d'assasinat</h1>
 <div md-dialog-content>
-  <p>Vous êtes sur le point de porter l'estocade. <br>
-    Saisissez le code secret de votre cible</p>
-  <md-form-field>
-      <input mdInput name="code"
-        placeholder="Code de la victime"
-        [(ngModel)]="code">
-  </md-form-field>
+  <p>
+    Vous êtes sur le point de porter l'estocade. <br>
+    Attention votre cible doit valider votre meurtre.
+  </p>
 </div>
 <div md-dialog-actions>
   <button md-button (click)="onYesClick()" tabindex="2">Valider</button>

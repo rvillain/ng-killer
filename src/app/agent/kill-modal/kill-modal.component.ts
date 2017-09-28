@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { AgentApiService } from '../../api/agent-api.service';
+import { SocketsService } from '../../shared/sockets.service';
 
 import {MdDialog, MdDialogRef, MD_DIALOG_DATA} from '@angular/material';
 
@@ -13,14 +14,13 @@ export class KillModalComponent {
   constructor(
     public dialogRef: MdDialogRef<KillModalComponent>,
     private agentApiService: AgentApiService,
+    private socketsService: SocketsService,
     @Inject(MD_DIALOG_DATA) public data: any) { }
 
   onYesClick(): void {
     let killer = this.data.killer;
-    this.agentApiService.kill(killer._id, this.code).subscribe(res=>{
-      this.dialogRef.close(res);
-    });
-
+    this.socketsService.sendKillRequest(killer);
+    this.dialogRef.close(true);
   }
   onNoClick(): void {
     this.dialogRef.close();

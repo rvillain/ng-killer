@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { RouterModule } from '@angular/router';
@@ -19,11 +19,14 @@ import {
   MdTabsModule,
   MdDialogModule,
   MdChipsModule,
-  MdListModule
+  MdListModule,
+  MdProgressSpinnerModule
 } from '@angular/material';
+
 import { HeaderComponent } from './header/header.component';
 import { TimelineComponent } from './timeline/timeline.component';
 import { ActionTypePipe } from './action-type.pipe';
+import { SocketsService } from './sockets.service'
 
 @NgModule({
   imports: [
@@ -40,9 +43,10 @@ import { ActionTypePipe } from './action-type.pipe';
     MdDialogModule,
     MdChipsModule,
     MdListModule,
+    MdProgressSpinnerModule,
     RouterModule,
     FormsModule,  
-    ReactiveFormsModule  
+    ReactiveFormsModule
   ],
   exports: [
     RouterModule,
@@ -58,12 +62,13 @@ import { ActionTypePipe } from './action-type.pipe';
     MdDialogModule,
     MdChipsModule,
     MdListModule,
+    MdProgressSpinnerModule,
     FormsModule,  
     ReactiveFormsModule,
     HeaderComponent,
     TimelineComponent
   ],
-  
+  providers: [SocketsService],
   declarations: [ConfirmDialogComponent, HeaderComponent, TimelineComponent, ActionTypePipe],
   entryComponents: [ConfirmDialogComponent]
 })

@@ -7,6 +7,7 @@ import { Game, Agent, Action } from '../../model/model';
 import { KillModalComponent } from '../kill-modal/kill-modal.component';
 import { UnmaskModalComponent } from '../unmask-modal/unmask-modal.component';
 import { CodeModalComponent } from '../code-modal/code-modal.component';
+import { SocketsService } from '../../shared/sockets.service';
 
 @Component({
   selector: 'app-agent',
@@ -18,8 +19,13 @@ export class AgentComponent implements OnInit, OnDestroy {
   private sub: any;
 
   public status: string = "created";
+  public waitResponse: boolean = false;
+  public showConfirmKill: boolean = false;
 
-  constructor(private agentApiService: AgentApiService, private route: ActivatedRoute, private dialog: MdDialog) { }
+  constructor(private agentApiService: AgentApiService, 
+    private route: ActivatedRoute, 
+    private dialog: MdDialog,
+    private socketsService:SocketsService) { }
 
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
@@ -33,6 +39,30 @@ export class AgentComponent implements OnInit, OnDestroy {
           console.log("err", err);
         });
       // In a real app: dispatch action to load the details here.
+    });
+    this.socketsService.connect();
+
+    this.socketsService.getKillRequest().subscribe(killer => {
+      //Reception d'un kill request
+      if(killer.target._id == this.agent._id){
+        this.showConfirmKill = true;
+      }
+    });
+    this.socketsService.getConfirmKill().subscribe(target => {
+      if(target._id == this.agent.target._id){
+        this.waitResponse = false;
+      }
+    });
+    this.socketsService.getUnconfirmKill().subscribe(target => {
+      if(target._id == this.agent.target._id){
+        this.waitResponse = false;
+      }
+    });
+    this.socketsService.getAgentUpdate().subscribe(agent => {
+      console.log(agent);
+      if(agent._id == this.agent._id){
+        this.agent = agent;
+      }
     });
   }
 
@@ -54,14 +84,21 @@ export class AgentComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        let action: Action = result;
-        this.agent = action.killer;
-        if(this.agent.life == 0){
-          this.agent.status = 'dead';
-        }
+        this.waitResponse = true;
       }
     });
   }
+  confirmKill(confirm: boolean){
+    if(confirm){
+      this.socketsService.confirmKill(this.agent);
+      this.agent.status = "dead";
+    }
+    else{
+      this.socketsService.unconfirmKill(this.agent);
+    }
+    this.showConfirmKill = false;
+  }
+
   unmask() {
     let dialogRef = this.dialog.open(UnmaskModalComponent, {
       data: { killer: this.agent }
