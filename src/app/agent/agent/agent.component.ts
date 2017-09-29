@@ -21,6 +21,7 @@ export class AgentComponent implements OnInit, OnDestroy {
   public status: string = "created";
   public waitResponse: boolean = false;
   public showConfirmKill: boolean = false;
+  public showConfirmUnmask: boolean = false;
 
   constructor(private agentApiService: AgentApiService, 
     private route: ActivatedRoute, 
@@ -58,8 +59,25 @@ export class AgentComponent implements OnInit, OnDestroy {
         this.waitResponse = false;
       }
     });
+
+    this.socketsService.getUnmaskRequest().subscribe(killer => {
+      //Reception d'un kill request
+      if(killer._id == this.agent._id){
+        this.showConfirmUnmask = true;
+      }
+    });
+    this.socketsService.getConfirmUnmask().subscribe(killer => {
+      if(killer._id == this.agent._id){
+        this.waitResponse = false;
+      }
+    });
+    this.socketsService.getUnconfirmUnmask().subscribe(killer => {
+      if(killer._id == this.agent._id){
+        this.waitResponse = false;
+      }
+    });
+
     this.socketsService.getAgentUpdate().subscribe(agent => {
-      console.log(agent);
       if(agent._id == this.agent._id){
         this.agent = agent;
       }
@@ -99,6 +117,17 @@ export class AgentComponent implements OnInit, OnDestroy {
     this.showConfirmKill = false;
   }
 
+  confirmUnmask(confirm: boolean){
+    if(confirm){
+      this.socketsService.confirmKill(this.agent);
+      this.agent.status = "dead";
+    }
+    else{
+      this.socketsService.unconfirmKill(this.agent);
+    }
+    this.showConfirmKill = false;
+  }
+
   unmask() {
     let dialogRef = this.dialog.open(UnmaskModalComponent, {
       data: { killer: this.agent }
@@ -106,11 +135,7 @@ export class AgentComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        let action: Action = result;
-        this.agent = action.killer;
-        if(this.agent.life == 0){
-          this.agent.status = 'dead';
-        }
+        this.waitResponse = true;
       }
     });
   }

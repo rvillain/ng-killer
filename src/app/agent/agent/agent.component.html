@@ -67,3 +67,9 @@
     <button md-raised-button (click)="confirmKill(false)">Non</button>
   </div>
 
+  <div class="wait-overlay" *ngIf="showConfirmUnmask">
+    <h2>Avez vous été démasqué ?</h2>
+    <button md-raised-button (click)="confirmUnmask(true)">Oui</button>
+    <button md-raised-button (click)="confirmUnmask(false)">Non</button>
+  </div>
+
