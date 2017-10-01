@@ -3,12 +3,28 @@
     <div class="entries">
       <div class="entry" *ngFor="let action of actions">
         <div class="title" [ngClass]="{'big': isImportant(action)}">
-          {{action.type | actionType}}
+          <i class="material-icons">{{getIcon(action)}}</i>
+          <span class="action-name">{{action.type | actionType}}</span> 
         </div>
         <div class="body">
-          {{action.Created_date | date:"dd/MM/yy hh:mm:ss"}}<br>
-          {{action.killer?.name}}
-          
+          <div *ngIf="action.type=='kill'">
+              <span class="agent-card bg-blue">{{action.killer?.name}}</span>
+              a tué <span class="agent-card bg-red">{{action.target?.name}}</span> en acccomplissant sa mission
+              <div class="mission">{{action.mission?.title}}</div>
+          </div>
+          <p *ngIf="action.type=='unmask'">
+              <span class="agent-card bg-blue">{{action.killer?.name}}</span>
+              a identifié son killer <span class="agent-card bg-red">{{action.target?.name}}</span> 
+          </p>
+          <p *ngIf="action.type=='wrong_killer'">
+              <span class="agent-card bg-blue">{{action.killer?.name}}</span>
+              a perdu un point de vie en se trompant de killer
+          </p>
+          <p *ngIf="action.type=='error_death'">
+              <span class="agent-card bg-blue">{{action.killer?.name}}</span>
+              est mort en se trompant une fois de trop
+          </p>
+          {{action.Created_date | date:"dd/MM/yy hh:mm:ss"}}
         </div>
       </div>
       

@@ -26,4 +26,17 @@ export class TimelineComponent implements OnInit {
     }
   }
 
+  getIcon(action: Action): string{
+    switch(action.type){
+      case "kill":
+        return "done";
+      case "unmask":
+        return "person_pin";
+      case "wrong_killer":
+        return "favorite_border";
+      default:
+        return "announcement";
+    }
+  }
+
 }

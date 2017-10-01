@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { AgentApiService } from '../../api/agent-api.service';
 import { GameApiService } from '../../api/game-api.service';
+import { SocketsService } from '../../shared/sockets.service';
 
 import { Game, Agent } from '../../model/model';
 
@@ -13,7 +14,8 @@ import { Game, Agent } from '../../model/model';
 })
 export class JoinComponent implements OnInit, OnDestroy {
 
-  constructor(private route: ActivatedRoute, private router:Router, private agentApiService:AgentApiService, private gameApiService:GameApiService) { 
+  constructor(private route: ActivatedRoute, private router:Router, private agentApiService:AgentApiService, private gameApiService:GameApiService,
+    private socketsService:SocketsService) { 
     this.agent = new Agent();
     this.game = new Game();
   }
@@ -24,6 +26,7 @@ export class JoinComponent implements OnInit, OnDestroy {
   public agentName: string;
 
   ngOnInit() {
+    this.socketsService.connect();
     this.agent = new Agent();
     this.sub = this.route.params.subscribe(params => {
       this.gameId = params['id']; // (+) converts string 'id' to a number
@@ -48,6 +51,7 @@ export class JoinComponent implements OnInit, OnDestroy {
     this.agent.name = this.agentName;
     this.agentApiService.create(this.agent).subscribe(
       res => {
+        this.socketsService.newAgent(res);
         this.router.navigate(['/agent', res._id]);
       },
       err => {

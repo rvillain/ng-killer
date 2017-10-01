@@ -1,0 +1,153 @@
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue.
+
+@import './variables.sass';
+
+$mat-marroon: (
+50: lighten($back-color, 25%),
+100: lighten($back-color, 20%),
+200: lighten($back-color, 15%),
+300: lighten($back-color, 10%),
+400: lighten($back-color, 5%),
+500: $back-color,
+600: darken($back-color, 5%),
+700: darken($back-color, 10%),
+800: darken($back-color, 15%),
+900: darken($back-color, 25%),
+A100: $back-color,
+A200: $back-color,
+A400: $back-color,
+A700: $back-color,
+contrast: (
+  50: $black-87-opacity,
+  100: $black-87-opacity,
+  200: $black-87-opacity,
+  300: $black-87-opacity,
+  400: $black-87-opacity,
+  500: white,
+  600: white,
+  700: $white-87-opacity,
+  800: $white-87-opacity,
+  900: $white-87-opacity,
+  A100: $black-87-opacity,
+  A200: white,
+  A400: white,
+  A700: white,)
+);
+
+$mat-text: (
+  50: lighten($text-color, 25%),
+  100: lighten($text-color, 20%),
+  200: lighten($text-color, 15%),
+  300: lighten($text-color, 10%),
+  400: lighten($text-color, 5%),
+  500: $text-color,
+  600: darken($text-color, 5%),
+  700: darken($text-color, 10%),
+  800: darken($text-color, 15%),
+  900: darken($text-color, 25%),
+  A100: $text-color,
+  A200: $text-color,
+  A400: $text-color,
+  A700: $text-color,
+  contrast: (
+    50: white,
+    100: white,
+    200: white,
+    300: white,
+    400: white,
+    500: $white-87-opacity,
+    600: $white-87-opacity,
+    700: white,
+    800: white,
+    900: white,
+    A100: white,
+    A200: $white-87-opacity,
+    A400: $white-87-opacity,
+    A700: $white-87-opacity,)
+  );
+
+  $mat-red: (
+    50: lighten($red, 25%),
+    100: lighten($red, 20%),
+    200: lighten($red, 15%),
+    300: lighten($red, 10%),
+    400: lighten($red, 5%),
+    500: $red,
+    600: darken($red, 5%),
+    700: darken($red, 10%),
+    800: darken($red, 15%),
+    900: darken($red, 25%),
+    A100: $red,
+    A200: $red,
+    A400: $red,
+    A700: $red,
+    contrast: (
+      50: $black-87-opacity,
+      100: $black-87-opacity,
+      200: $black-87-opacity,
+      300: $black-87-opacity,
+      400: $black-87-opacity,
+      500: white,
+      600: white,
+      700: $white-87-opacity,
+      800: $white-87-opacity,
+      900: $white-87-opacity,
+      A100: $black-87-opacity,
+      A200: white,
+      A400: white,
+      A700: white,)
+    );
+
+
+    $mat-font-family: 'Josefin Sans', sans-serif !default;
+    // Represents a collection of typography levels.
+    // Defaults come from https://material.io/guidelines/style/typography.html
+    @function mat-typography-config(
+      $font-family:   '"Josefin Sans", sans-serif',
+      $display-4:     mat-typography-level(112px, 112px, 300),
+      $display-3:     mat-typography-level(56px, 56px, 400),
+      $display-2:     mat-typography-level(45px, 48px, 400),
+      $display-1:     mat-typography-level(34px, 40px, 400),
+      $headline:      mat-typography-level(24px, 32px, 400),
+      $title:         mat-typography-level(20px, 32px, 500),
+      $subheading-2:  mat-typography-level(16px, 28px, 400),
+      $subheading-1:  mat-typography-level(15px, 24px, 400),
+      $body-2:        mat-typography-level(14px, 24px, 500),
+      $body-1:        mat-typography-level(14px, 20px, 400),
+      $caption:       mat-typography-level(12px, 20px, 400),
+      $button:        mat-typography-level(14px, 14px, 500),
+      // Line-height must be unit-less fraction of the font-size.
+      $input:         mat-typography-level(16px, 1.125, 400)
+    ) {
+    
+      // Declare an initial map with all of the levels.
+      $config: (
+        display-4:      $display-4,
+        display-3:      $display-3,
+        display-2:      $display-2,
+        display-1:      $display-1,
+        headline:       $headline,
+        title:          $title,
+        subheading-2:   $subheading-2,
+        subheading-1:   $subheading-1,
+        body-2:         $body-2,
+        body-1:         $body-1,
+        caption:        $caption,
+        button:         $button,
+        input:          $input,
+      );
+    
+      // Loop through the levels and set the `font-family` of the ones that don't have one to the base.
+      // Note that SASS can't modify maps in place, which means that we need to merge and re-assign.
+      @each $key, $level in $config {
+        @if map-get($level, font-family) == null {
+          $new-level: map-merge($level, (font-family: $font-family));
+          $config: map-merge($config, ($key: $new-level));
+        }
+      }
+    
+      // Add the base font family to the config.
+      @return map-merge($config, (font-family: $font-family));
+    }

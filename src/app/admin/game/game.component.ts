@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AgentApiService } from '../../api/agent-api.service';
 import { GameApiService } from '../../api/game-api.service';
 import { MissionApiService } from '../../api/mission-api.service';
+import { SocketsService } from '../../shared/sockets.service';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 
 import { Game, Agent, Mission } from '../../model/model';
@@ -16,7 +17,8 @@ export class GameComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute, private router:Router, 
     private agentApiService:AgentApiService, 
     private gameApiService:GameApiService, 
-    private missionApiService:MissionApiService) { 
+    private missionApiService:MissionApiService,
+    private socketsService: SocketsService) { 
     this.game = new Game();
   }
 
@@ -25,6 +27,7 @@ export class GameComponent implements OnInit, OnDestroy {
   public newMission: string;
 
   ngOnInit() {
+    this.socketsService.connect();
     this.sub = this.route.params.subscribe(params => {
       let id = params['id']; // (+) converts string 'id' to a number
       this.gameApiService.getById(id).subscribe(
@@ -35,6 +38,12 @@ export class GameComponent implements OnInit, OnDestroy {
           console.log("err", err);
         });
       // In a real app: dispatch action to load the details here.
+    });
+    this.socketsService.getNewAgent().subscribe(agent=> {
+      let gameId: any = agent.game;
+      if(this.game._id == gameId){
+        this.game.agents.push(agent);
+      }
     });
   }
 
@@ -75,7 +84,7 @@ export class GameComponent implements OnInit, OnDestroy {
     this.gameApiService.start(this.game._id).subscribe(
       res => {
         this.game.status = res.status;
-        console.log(res);
+        this.socketsService.updateGameStatus(this.game);
       },
       err => {
         console.log("err", err);
@@ -84,8 +93,8 @@ export class GameComponent implements OnInit, OnDestroy {
   reinit(){
     this.gameApiService.reinit(this.game._id).subscribe(
       res => {
-        this.game.status = res.status;
-        console.log(res);
+        this.game.status = 'created';
+        this.socketsService.updateGameStatus(this.game);
       },
       err => {
         console.log("err", err);

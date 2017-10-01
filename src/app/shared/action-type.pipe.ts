@@ -15,13 +15,15 @@ export class ActionTypePipe implements PipeTransform {
         label = 'Mauvaise cible';
         break;
       case 'kill':
-        label = 'Meurtre';
+        label = 'Mission accomplie';
         break;
       case 'unmask':
         label = 'Légitime défense';
         break;
       case 'suicide':
         label = 'Suicide';
+      case 'error_death':
+        label = "Mort de s'être trompé";
         break;
     }
     return label;

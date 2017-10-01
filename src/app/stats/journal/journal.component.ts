@@ -31,9 +31,9 @@ export class JournalComponent implements OnInit, OnDestroy {
         res => {
           this.game = res;
           
-          // this.game.actions = this.game.actions.sort((a: Action, b: Action) => {
-          //   return a.Created_date.getTime() - b.Created_date.getTime();
-          // });
+          this.game.actions = this.game.actions.sort((a: Action, b: Action) => {
+            return (new Date(b.Created_date)).getTime() - (new Date(a.Created_date)).getTime();
+          });
         this.qrUrl = baseUrl + "/join/"+this.id;
         },
         err => {
@@ -42,8 +42,26 @@ export class JournalComponent implements OnInit, OnDestroy {
       // In a real app: dispatch action to load the details here.
     });
 
+    this.socketsService.getNewAgent().subscribe(agent => {
+      this.game.agents.push(agent);
+    })
+    this.socketsService.getGameStatus().subscribe(game => {
+      this.game.status = game.status;
+    })
     this.socketsService.getNewAction().subscribe(action => {
       this.game.actions.unshift(action);
+    })
+    this.socketsService.getConfirmKill().subscribe(agent => {
+      let agentToUpdate = this.game.agents.find(a=>a._id == agent._id);
+      if(agentToUpdate){
+        agentToUpdate.status = 'dead';
+      }
+    })
+    this.socketsService.getConfirmUnmask().subscribe(agent => {
+      let agentToUpdate = this.game.agents.find(a=>a._id == agent._id);
+      if(agentToUpdate){
+        agentToUpdate.status = 'dead';
+      }
     })
     
   }

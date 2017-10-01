@@ -2,7 +2,7 @@ import { Injectable, isDevMode } from '@angular/core';
 import { Observable } from 'rxjs'
 import * as io from 'socket.io-client';
 
-import { Agent, Action } from "../model/model";
+import { Agent, Action, Game } from "../model/model";
 
 @Injectable()
 export class SocketsService {
@@ -20,6 +20,7 @@ export class SocketsService {
     this.socket = io(this.url);
   }
   
+  //Kill
   sendKillRequest(agent){
     this.socket.emit('ask-kill', agent);    
   }
@@ -48,6 +49,7 @@ export class SocketsService {
     return this.genericGet<Agent>('ask-unmask');
   }
 
+  //Unmask
   confirmUnmask(agent){
     this.socket.emit('confirm-unmask', agent);    
   }
@@ -73,6 +75,20 @@ export class SocketsService {
   //Actions
   getNewAction(): Observable<Action>{
     return this.genericGet<Action>('new-action');
+  }
+  //Agent
+  newAgent(agent: Agent){
+    this.socket.emit('new-agent', agent);  
+  }
+  getNewAgent(): Observable<Agent>{
+    return this.genericGet<Agent>('new-agent');
+  }
+  //game
+  updateGameStatus(game: Game){
+    this.socket.emit('game-status', game);
+  }
+  getGameStatus(): Observable<Game>{
+    return this.genericGet<Game>('game-status');
   }
 
   genericGet<T>(method): Observable<T>{

@@ -17,7 +17,7 @@
           Les joueurs inscrits
         </h3>
         <p>
-          <span class="agent-card" *ngFor="let agent of game.agents">{{agent.name}}</span>
+          <span class="agent-card" [routerLink]="['/agent', agent._id]" *ngFor="let agent of game.agents">{{agent.name}}</span>
         </p>
     </div>
   </ng-container>
@@ -26,13 +26,13 @@
           Les vivants
       </h3>
       <p>
-        <span class="agent-card bg-blue" *ngFor="let agent of getAliveAgents()">{{agent.name}}</span>
+        <span class="agent-card bg-blue" [routerLink]="['/agent', agent._id]" *ngFor="let agent of getAliveAgents()">{{agent.name}}</span>
       </p>
       <h3 class="red">
           Les morts
       </h3>
       <p>
-        <span class="agent-card bg-red" *ngFor="let agent of getDeadAgents()">{{agent.name}}</span>
+        <span class="agent-card bg-red" [routerLink]="['/agent', agent._id]" *ngFor="let agent of getDeadAgents()">{{agent.name}}</span>
       </p>
       <h3>
           La gazette

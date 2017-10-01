@@ -1,6 +1,6 @@
-<md-toolbar>ng-killer - Administration de la partie {{game.name}}</md-toolbar>
+<md-toolbar *ngIf="game">ng-killer - Administration de la partie {{game.name}}</md-toolbar>
 
-<md-card>
+<md-card *ngIf="game">
   <div>
     <h2>Agents</h2>
     <md-chip-list>

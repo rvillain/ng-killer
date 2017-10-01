@@ -14,6 +14,7 @@ export class GameApiService  extends GenericApiService<Game>{
     this.controllerName = 'games';
   }
   start(id: any): Observable<Game> {
+    this.isLoading = true;
     const endPoint = '/' + id + '/start';
     return this.http
         .post(this.apiUrl + this.controllerName + endPoint, {})
@@ -21,6 +22,7 @@ export class GameApiService  extends GenericApiService<Game>{
         .catch((error: any) => this.manageError(error));
   }
   reinit(id: any): Observable<Game> {
+    this.isLoading = true;
     const endPoint = '/' + id + '/reinit';
     return this.http
         .post(this.apiUrl + this.controllerName + endPoint, {})

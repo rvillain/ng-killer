@@ -9,6 +9,8 @@ export class GenericApiService<T> {
   
   protected optionsApplicationJson = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json' }) });
 
+  public isLoading: boolean = false;
+
   // Class constructor with Jsonp injected
   constructor(protected http: Http) {
   }
@@ -86,6 +88,7 @@ export class GenericApiService<T> {
   }
 
   manageError(error: any) {
+    this.isLoading = false;
       // this.sharedService.endLoading();
       // if (error.json &&  error.json() && error.json().ExceptionMessage) {
       //     this.sharedService.successToast(error.json().ExceptionMessage);
@@ -96,6 +99,7 @@ export class GenericApiService<T> {
       return Observable.throw( (error.json ? error.json().error : error) || 'Server error');
   }
   manageSuccess(res: Response, toastMsg?: string, splash: boolean = true) {
+    this.isLoading = false;
       // if(splash)
       //     this.sharedService.endLoading();
       // if (toastMsg) {

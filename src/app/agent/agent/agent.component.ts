@@ -17,6 +17,7 @@ import { SocketsService } from '../../shared/sockets.service';
 export class AgentComponent implements OnInit, OnDestroy {
   public agent:Agent;
   private sub: any;
+  private id: string;
 
   public status: string = "created";
   public waitResponse: boolean = false;
@@ -28,18 +29,20 @@ export class AgentComponent implements OnInit, OnDestroy {
     private dialog: MdDialog,
     private socketsService:SocketsService) { }
 
+  getAgent(){
+    this.agentApiService.getById(this.id).subscribe(
+      res => {
+        this.agent = res;
+        this.status = this.agent.game.status;
+      },
+      err => {
+        console.log("err", err);
+      });
+  }
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
-      let id = params['id']; // (+) converts string 'id' to a number
-      this.agentApiService.getById(id).subscribe(
-        res => {
-          this.agent = res;
-          this.status = this.agent.game.status;
-        },
-        err => {
-          console.log("err", err);
-        });
-      // In a real app: dispatch action to load the details here.
+      this.id = params['id']; // (+) converts string 'id' to a number
+      this.getAgent();
     });
     this.socketsService.connect();
 
@@ -67,12 +70,13 @@ export class AgentComponent implements OnInit, OnDestroy {
       }
     });
     this.socketsService.getConfirmUnmask().subscribe(killer => {
-      if(killer._id == this.agent._id){
+      console.log(killer.target, this.agent);
+      if(killer.target._id == this.agent._id){
         this.waitResponse = false;
       }
     });
     this.socketsService.getUnconfirmUnmask().subscribe(killer => {
-      if(killer._id == this.agent._id){
+      if(killer.target._id == this.agent._id){
         this.waitResponse = false;
       }
     });
@@ -80,6 +84,13 @@ export class AgentComponent implements OnInit, OnDestroy {
     this.socketsService.getAgentUpdate().subscribe(agent => {
       if(agent._id == this.agent._id){
         this.agent = agent;
+      }
+    });
+
+    
+    this.socketsService.getGameStatus().subscribe(game => {
+      if(game._id == this.agent.game._id){
+        this.getAgent();
       }
     });
   }
@@ -119,13 +130,13 @@ export class AgentComponent implements OnInit, OnDestroy {
 
   confirmUnmask(confirm: boolean){
     if(confirm){
-      this.socketsService.confirmKill(this.agent);
+      this.socketsService.confirmUnmask(this.agent);
       this.agent.status = "dead";
     }
     else{
-      this.socketsService.unconfirmKill(this.agent);
+      this.socketsService.unconfirmUnmask(this.agent);
     }
-    this.showConfirmKill = false;
+    this.showConfirmUnmask = false;
   }
 
   unmask() {
