@@ -74,6 +74,17 @@ export class SocketsService {
     return this.genericGet<Agent>('agent-update');
   }
 
+  //Change mission
+  sendChangeMissionRequest(agent){
+    this.socket.emit('change-mission', agent);    
+  }
+  //Suicide
+  sendSuicideRequest(agent){
+    this.socket.emit('suicide', agent);    
+  }
+  getSuicide(): Observable<Agent> {
+    return this.genericGet<Agent>('suicide');
+  }
 
   //Actions
   getNewAction(): Observable<Action>{

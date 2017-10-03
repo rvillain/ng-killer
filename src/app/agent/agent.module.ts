@@ -10,13 +10,15 @@ import { KillModalComponent } from './kill-modal/kill-modal.component';
 import { UnmaskModalComponent } from './unmask-modal/unmask-modal.component';
 import { CodeModalComponent } from './code-modal/code-modal.component';
 import { JoinComponent } from './join/join.component';
+import { ChangeMissionComponent } from './change-mission/change-mission.component';
+import { SuicideComponent } from './suicide/suicide.component';
 
 @NgModule({
   imports: [
     CommonModule,
     SharedModule
   ],
-  declarations: [JoinComponent, AgentComponent, KillModalComponent, UnmaskModalComponent, CodeModalComponent],
-  entryComponents: [KillModalComponent, UnmaskModalComponent, CodeModalComponent]
+  declarations: [JoinComponent, AgentComponent, KillModalComponent, UnmaskModalComponent, CodeModalComponent, ChangeMissionComponent, SuicideComponent],
+  entryComponents: [KillModalComponent, UnmaskModalComponent, CodeModalComponent, ChangeMissionComponent, SuicideComponent]
 })
 export class AgentModule { }

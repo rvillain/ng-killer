@@ -9,6 +9,8 @@ import { Game, Agent, Action } from '../../model/model';
 import { KillModalComponent } from '../kill-modal/kill-modal.component';
 import { UnmaskModalComponent } from '../unmask-modal/unmask-modal.component';
 import { CodeModalComponent } from '../code-modal/code-modal.component';
+import { SuicideComponent } from '../suicide/suicide.component';
+import { ChangeMissionComponent } from '../change-mission/change-mission.component';
 import { SocketsService } from '../../shared/sockets.service';
 
 @Component({
@@ -111,7 +113,7 @@ export class AgentComponent implements OnInit, OnDestroy {
     this.sub.unsubscribe();
   }
 
-  showCode(){
+  showRole(){
     let dialogRef = this.dialog.open(CodeModalComponent, {
       data: { agent: this.agent }
     });
@@ -159,6 +161,30 @@ export class AgentComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
       if(result){
         this.waitResponse = true;
+      }
+    });
+  }
+
+  changeMission(){
+    let dialogRef = this.dialog.open(ChangeMissionComponent, {
+      data: { agent: this.agent }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        //this.waitResponse = true;
+      }
+    });
+  }
+
+  suicide(){
+    let dialogRef = this.dialog.open(SuicideComponent, {
+      data: { agent: this.agent }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        //this.waitResponse = true;
       }
     });
   }

@@ -24,6 +24,10 @@
               <span class="agent-card bg-blue">{{action.killer?.name}}</span>
               est mort en se trompant une fois de trop
           </p>
+          <p *ngIf="action.type=='suicide'">
+              <span class="agent-card bg-red">{{action.killer?.name}}</span>
+              s'est lâchement suicidé
+          </p>
           {{action.Created_date | date:"dd/MM/yy HH:mm:ss"}}
         </div>
       </div>

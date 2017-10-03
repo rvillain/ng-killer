@@ -22,6 +22,7 @@ export class ActionTypePipe implements PipeTransform {
         break;
       case 'suicide':
         label = 'Suicide';
+        break;
       case 'error_death':
         label = "Mort de s'être trompé";
         break;

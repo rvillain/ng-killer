@@ -61,6 +61,12 @@ export class JournalComponent implements OnInit, OnDestroy {
         agentToUpdate.status = 'dead';
       }
     })
+    this.socketsService.getSuicide().subscribe(agent => {
+      let agentToUpdate = this.game.agents.find(a=>a._id == agent._id);
+      if(agentToUpdate){
+        agentToUpdate.status = 'dead';
+      }
+    })
     this.socketsService.getConfirmUnmask().subscribe(agent => {
       let agentToUpdate = this.game.agents.find(a=>a._id == agent._id);
       if(agentToUpdate){

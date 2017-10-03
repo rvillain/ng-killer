@@ -20,8 +20,8 @@
           <md-icon>account_circle</md-icon> Identité
         </h3>
         {{agent.name}}
-        <button md-raised-button (click)="showCode()" style="float: right">
-          Mon code
+        <button md-raised-button (click)="showRole()" style="float: right">
+          Mon rôle
         </button>
       </div>
       <div class="agent-line">
@@ -38,9 +38,12 @@
         <p>{{agent.mission.title}}</p>
       </div>
       <p class="text-center">
-        <button md-raised-button>
+        <button md-raised-button *ngIf="agent.life>1" (click)="changeMission()">
           <md-icon>next_week</md-icon>
           Changer de mission
+        </button>
+        <button md-raised-button (click)="suicide()">
+          Se suicider
         </button>
       </p>
   </section>
@@ -62,14 +65,42 @@
 </div>
 
 <div class="wait-overlay" *ngIf="showConfirmKill">
-    <h2>Avez vous été tué ?</h2>
-    <button md-raised-button (click)="confirmKill(true)">Oui</button>
-    <button md-raised-button (click)="confirmKill(false)">Non</button>
-  </div>
+  <h2>Vous venez d'être tué</h2>
+  <md-card>
+      <md-card-content>
+          Pour valider ce meurtre cliquez sur le bouton ci dessous
+      </md-card-content>
+      <md-card-actions>
+        <button md-raised-button (click)="confirmKill(true)"><md-icon>check</md-icon> Mourir avec classe</button>
+      </md-card-actions>
+  </md-card>
+  <md-card>
+      <md-card-content>
+          Vous n'êtes pas d'accord avec cette action, il vous reste un recours
+      </md-card-content>
+      <md-card-actions>
+          <button md-raised-button (click)="confirmKill(false)"><md-icon>account_balance</md-icon> Convoquer le tribunal</button>
+      </md-card-actions>
+  </md-card>
+</div>
 
   <div class="wait-overlay" *ngIf="showConfirmUnmask">
-    <h2>Avez vous été démasqué ?</h2>
-    <button md-raised-button (click)="confirmUnmask(true)">Oui</button>
-    <button md-raised-button (click)="confirmUnmask(false)">Non</button>
+    <h2>Vous venez d'être démasqué</h2>
+    <md-card>
+        <md-card-content>
+            Pour valider votre décès cliquez sur le bouton ci dessous
+        </md-card-content>
+        <md-card-actions>
+          <button md-raised-button (click)="confirmUnmask(true)"><md-icon>check</md-icon> Mourir avec classe</button>
+        </md-card-actions>
+    </md-card>
+    <md-card>
+        <md-card-content>
+            Vous n'êtes pas d'accord avec cette action, il vous reste un recours
+        </md-card-content>
+        <md-card-actions>
+            <button md-raised-button (click)="confirmUnmask(false)"><md-icon>account_balance</md-icon> Convoquer le tribunal</button>
+        </md-card-actions>
+    </md-card>
   </div>
 
