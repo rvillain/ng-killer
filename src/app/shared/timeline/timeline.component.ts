@@ -33,7 +33,7 @@ export class TimelineComponent implements OnInit {
       case "unmask":
         return "person_pin";
       case "wrong_killer":
-        return "favorite_border";
+        return "exposure_neg_1";
       default:
         return "announcement";
     }

@@ -17,6 +17,19 @@ export class JournalComponent implements OnInit, OnDestroy {
   constructor(private gameApiService: GameApiService, private route: ActivatedRoute, private router: Router, private socketsService:SocketsService) { 
   }
 
+  getGame(){
+    this.gameApiService.getById(this.id).subscribe(
+      res => {
+        this.game = res;
+        
+        this.game.actions = this.game.actions.sort((a: Action, b: Action) => {
+          return (new Date(b.Created_date)).getTime() - (new Date(a.Created_date)).getTime();
+        });
+      },
+      err => {
+        console.log("err", err);
+    });
+  }
   ngOnInit() {
     this.socketsService.connect();
 
@@ -27,18 +40,8 @@ export class JournalComponent implements OnInit, OnDestroy {
   
     this.sub = this.route.params.subscribe(params => {
       this.id = params['id']; // (+) converts string 'id' to a number
-      this.gameApiService.getById(this.id).subscribe(
-        res => {
-          this.game = res;
-          
-          this.game.actions = this.game.actions.sort((a: Action, b: Action) => {
-            return (new Date(b.Created_date)).getTime() - (new Date(a.Created_date)).getTime();
-          });
-        this.qrUrl = baseUrl + "/join/"+this.id;
-        },
-        err => {
-          console.log("err", err);
-        });
+      this.qrUrl = baseUrl + "/join/"+this.id;
+      this.getGame();
       // In a real app: dispatch action to load the details here.
     });
 
@@ -46,7 +49,8 @@ export class JournalComponent implements OnInit, OnDestroy {
       this.game.agents.push(agent);
     })
     this.socketsService.getGameStatus().subscribe(game => {
-      this.game.status = game.status;
+      //this.game.status = game.status;
+      this.getGame();
     })
     this.socketsService.getNewAction().subscribe(action => {
       this.game.actions.unshift(action);

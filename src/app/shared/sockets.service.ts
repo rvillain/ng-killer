@@ -56,6 +56,9 @@ export class SocketsService {
   getConfirmUnmask(): Observable<Agent> {
     return this.genericGet<Agent>('confirm-unmask');
   }
+  getWrongKiller(): Observable<Agent> {
+    return this.genericGet<Agent>('wrong-killer');
+  }
 
   unconfirmUnmask(agent){
     this.socket.emit('unconfirm-unmask', agent);    

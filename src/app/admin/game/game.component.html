@@ -4,8 +4,9 @@
   <div>
     <h2>Agents</h2>
     <md-chip-list>
-      <md-chip *ngFor="let agent of game.agents" (click)="editAgent(agent)">
+      <md-chip *ngFor="let agent of game.agents">
         {{agent.name}}
+        <md-icon class="mat-chip-remove" *ngIf="game.status == 'created'" (click)="deleteAgent(agent)">cancel</md-icon>
       </md-chip>
     </md-chip-list>
     <h2>Missions</h2>

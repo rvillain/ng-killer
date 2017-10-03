@@ -25,6 +25,9 @@ export class ActionTypePipe implements PipeTransform {
       case 'error_death':
         label = "Mort de s'être trompé";
         break;
+      case 'game_started':
+        label = "C'est parti !";
+        break;
     }
     return label;
   }

@@ -59,9 +59,11 @@ export class GameComponent implements OnInit, OnDestroy {
     }
     return startable;
   }
-  editAgent(agent: Agent){
+  deleteAgent(agent: Agent){
     if(this.game.status == "created"){
-
+      this.agentApiService.delete(agent._id).subscribe(a=>{
+        this.game.agents.splice(this.game.agents.indexOf(agent), 1);
+      });
     }
   }
   onSubmitNewMission(){

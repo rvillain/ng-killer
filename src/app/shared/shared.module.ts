@@ -20,7 +20,8 @@ import {
   MdDialogModule,
   MdChipsModule,
   MdListModule,
-  MdProgressSpinnerModule
+  MdProgressSpinnerModule,
+  MdSnackBarModule
 } from '@angular/material';
 
 import { HeaderComponent } from './header/header.component';
@@ -46,7 +47,8 @@ import { SocketsService } from './sockets.service'
     MdProgressSpinnerModule,
     RouterModule,
     FormsModule,  
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MdSnackBarModule
   ],
   exports: [
     RouterModule,
@@ -66,7 +68,8 @@ import { SocketsService } from './sockets.service'
     FormsModule,  
     ReactiveFormsModule,
     HeaderComponent,
-    TimelineComponent
+    TimelineComponent,
+    MdSnackBarModule
   ],
   providers: [SocketsService],
   declarations: [ConfirmDialogComponent, HeaderComponent, TimelineComponent, ActionTypePipe],

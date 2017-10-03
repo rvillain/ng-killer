@@ -23,15 +23,16 @@
   </ng-container>
   <ng-container *ngIf="game.status!='created'">
       <h3 class="blue">
-          Les vivants
+          Les vivants ({{getAliveAgents().length}})
       </h3>
       <p>
         <span class="agent-card bg-blue" [routerLink]="['/agent', agent._id]" *ngFor="let agent of getAliveAgents()">{{agent.name}}</span>
       </p>
       <h3 class="red">
-          Les morts
+          Les morts ({{getDeadAgents().length}})
       </h3>
       <p>
+        <span *ngIf="getDeadAgents().length == 0">On se bouge! Tous les agents sont encore en vie</span>
         <span class="agent-card bg-red" [routerLink]="['/agent', agent._id]" *ngFor="let agent of getDeadAgents()">{{agent.name}}</span>
       </p>
       <h3>

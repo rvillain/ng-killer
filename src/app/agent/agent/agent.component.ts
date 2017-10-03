@@ -1,7 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AgentApiService } from '../../api/agent-api.service';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { MdDialog } from '@angular/material';
+import { MdSnackBar } from '@angular/material';
+
+import { AgentApiService } from '../../api/agent-api.service';
 
 import { Game, Agent, Action } from '../../model/model';
 import { KillModalComponent } from '../kill-modal/kill-modal.component';
@@ -27,7 +29,8 @@ export class AgentComponent implements OnInit, OnDestroy {
   constructor(private agentApiService: AgentApiService, 
     private route: ActivatedRoute, 
     private dialog: MdDialog,
-    private socketsService:SocketsService) { }
+    private socketsService:SocketsService,
+    public snackBar:MdSnackBar) { }
 
   getAgent(){
     this.agentApiService.getById(this.id).subscribe(
@@ -55,11 +58,13 @@ export class AgentComponent implements OnInit, OnDestroy {
     this.socketsService.getConfirmKill().subscribe(target => {
       if(target._id == this.agent.target._id){
         this.waitResponse = false;
+        this.snackBar.open("Habile ! Mission accomplie", null,{duration: 3000});
       }
     });
     this.socketsService.getUnconfirmKill().subscribe(target => {
       if(target._id == this.agent.target._id){
         this.waitResponse = false;
+        this.snackBar.open("Visiblement, votre cible n'est pas d'accord", null,{duration: 3000});
       }
     });
 
@@ -70,14 +75,21 @@ export class AgentComponent implements OnInit, OnDestroy {
       }
     });
     this.socketsService.getConfirmUnmask().subscribe(killer => {
-      console.log(killer.target, this.agent);
       if(killer.target._id == this.agent._id){
         this.waitResponse = false;
+        this.snackBar.open("Bravo agent, vous avez visé juste", null,{duration: 3000});
       }
     });
     this.socketsService.getUnconfirmUnmask().subscribe(killer => {
       if(killer.target._id == this.agent._id){
         this.waitResponse = false;
+        this.snackBar.open("Aïe, bien visé mais la cible n'est pas d'accord", null,{duration: 3000});
+      }
+    });
+    this.socketsService.getWrongKiller().subscribe(agent => {
+      if(agent._id == this.agent._id){
+        this.waitResponse = false;
+        this.snackBar.open("Oups, ce n'est pas votre killer", null,{duration: 3000});
       }
     });
 
