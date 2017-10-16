@@ -14,9 +14,9 @@
       <mat-card>
         <form class="" (ngSubmit)="onSubmitNewGame()">
             <mat-form-field>
-                <input matInput name="newGame"
+                <input matInput name="newName"
                   placeholder="Nouvelle partie"
-                  [(ngModel)]="newGame">
+                  [(ngModel)]="newName">
             </mat-form-field>
           </form>
         <mat-expansion-panel *ngFor="let game of filteredGames()">
