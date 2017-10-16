@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
-import { MdDialog } from '@angular/material';
-import { MdSnackBar } from '@angular/material';
+import { MatDialog } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 
 import { AgentApiService } from '../../api/agent-api.service';
 
@@ -30,15 +30,16 @@ export class AgentComponent implements OnInit, OnDestroy {
 
   constructor(private agentApiService: AgentApiService, 
     private route: ActivatedRoute, 
-    private dialog: MdDialog,
+    private dialog: MatDialog,
     private socketsService:SocketsService,
-    public snackBar:MdSnackBar) { }
+    public snackBar:MatSnackBar) { }
 
   getAgent(){
     this.agentApiService.getById(this.id).subscribe(
       res => {
         this.agent = res;
         this.status = this.agent.game.status;
+        this.socketsService.joinRoom(this.agent.game);
       },
       err => {
         console.log("err", err);

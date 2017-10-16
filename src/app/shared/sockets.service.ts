@@ -16,8 +16,13 @@ export class SocketsService {
   private url = (isDevMode() ? "http://localhost:3000/" : "http://ng-killer-api.azurewebsites.net/");
   private socket;
 
+  //Connect
   connect(){
     this.socket = io(this.url);
+  }
+   //Kill
+   joinRoom(game){
+    this.socket.emit('join-room', game);    
   }
   
   //Kill

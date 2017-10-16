@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { AgentApiService } from '../../api/agent-api.service';
 
-import {MdDialog, MdDialogRef, MD_DIALOG_DATA} from '@angular/material';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 
 @Component({
   selector: 'app-code-modal',
@@ -10,8 +10,8 @@ import {MdDialog, MdDialogRef, MD_DIALOG_DATA} from '@angular/material';
 })
 export class CodeModalComponent implements OnInit{
   constructor(
-    public dialogRef: MdDialogRef<CodeModalComponent>,
-    @Inject(MD_DIALOG_DATA) public data: any) { }
+    public dialogRef: MatDialogRef<CodeModalComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   public code: string;
 

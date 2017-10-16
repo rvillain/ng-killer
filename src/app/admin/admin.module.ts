@@ -10,31 +10,11 @@ import { SharedModule } from '../shared/shared.module';
 import { RouterModule } from '@angular/router';
 
 import {
-  MdButtonModule, 
-  MdTableModule,
-  MdToolbarModule,
-  MdCardModule,
-  MdExpansionModule,
-  MdFormFieldModule,
-  MdInputModule,
-  MdIconModule,
-  MdTabsModule,
-  MdDialogModule
 } from '@angular/material';
 
 @NgModule({
   imports: [
     CommonModule,
-    MdButtonModule,
-    MdTableModule,
-    MdToolbarModule,
-    MdCardModule,
-    MdExpansionModule,
-    MdFormFieldModule,
-    MdInputModule,
-    MdIconModule,
-    MdTabsModule,
-    MdDialogModule,
     SharedModule
   ],
   declarations: [GameComponent, MissionsComponent, AdminHomeComponent]

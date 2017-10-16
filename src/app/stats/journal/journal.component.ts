@@ -17,7 +17,7 @@ export class JournalComponent implements OnInit, OnDestroy {
   constructor(private gameApiService: GameApiService, private route: ActivatedRoute, private router: Router, private socketsService:SocketsService) { 
   }
 
-  getGame(){
+  getGame(callback = null){
     this.gameApiService.getById(this.id).subscribe(
       res => {
         this.game = res;
@@ -25,6 +25,9 @@ export class JournalComponent implements OnInit, OnDestroy {
         this.game.actions = this.game.actions.sort((a: Action, b: Action) => {
           return (new Date(b.Created_date)).getTime() - (new Date(a.Created_date)).getTime();
         });
+        if(callback){
+          callback();
+        }
       },
       err => {
         console.log("err", err);
@@ -41,7 +44,10 @@ export class JournalComponent implements OnInit, OnDestroy {
     this.sub = this.route.params.subscribe(params => {
       this.id = params['id']; // (+) converts string 'id' to a number
       this.qrUrl = baseUrl + "/join/"+this.id;
-      this.getGame();
+      this.getGame(() =>{
+        console.log(this.game);
+        this.socketsService.joinRoom(this.game)
+      });
       // In a real app: dispatch action to load the details here.
     });
 

@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { AgentApiService } from '../../api/agent-api.service';
 import { SocketsService } from '../../shared/sockets.service';
 
-import {MdDialog, MdDialogRef, MD_DIALOG_DATA} from '@angular/material';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 
 @Component({
   selector: 'app-change-mission',
@@ -12,9 +12,9 @@ import {MdDialog, MdDialogRef, MD_DIALOG_DATA} from '@angular/material';
 export class ChangeMissionComponent implements OnInit {
 
   constructor(
-    public dialogRef: MdDialogRef<ChangeMissionComponent>,
+    public dialogRef: MatDialogRef<ChangeMissionComponent>,
     public socketsService: SocketsService,
-    @Inject(MD_DIALOG_DATA) public data: any) { }
+    @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   public code: string;
 

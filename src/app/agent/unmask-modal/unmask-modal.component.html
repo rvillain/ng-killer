@@ -1,15 +1,15 @@
-<h1 md-dialog-title>Légitime défense</h1>
-<div md-dialog-content>
+<h1 mat-dialog-title>Légitime défense</h1>
+<div mat-dialog-content>
   <p>Vous trouvez qu'un louche individu tourne un peu trop autour de l'agent que vous êtes ?
   </p>
   Entrez donc son nom dans ce champ
-  <md-form-field>
-      <input mdInput name="name"
+  <mat-form-field>
+      <input matInput name="name"
         placeholder="Nom de l'agent"
         [(ngModel)]="name">
-  </md-form-field>
+  </mat-form-field>
 </div>
-<div md-dialog-actions>
-  <button md-button (click)="onYesClick()" tabindex="2">Valider</button>
-  <button md-button (click)="onNoClick()" tabindex="-1">Annuler</button>
+<div mat-dialog-actions>
+  <button mat-button (click)="onYesClick()" tabindex="2">Valider</button>
+  <button mat-button (click)="onNoClick()" tabindex="-1">Annuler</button>
 </div>

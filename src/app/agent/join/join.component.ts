@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { AgentApiService } from '../../api/agent-api.service';
 import { GameApiService } from '../../api/game-api.service';
 import { SocketsService } from '../../shared/sockets.service';
@@ -17,7 +17,7 @@ export class JoinComponent implements OnInit, OnDestroy {
 
   constructor(private route: ActivatedRoute, private router:Router, private agentApiService:AgentApiService, private gameApiService:GameApiService,
     private socketsService:SocketsService,
-    public snackBar: MdSnackBar) { 
+    public snackBar: MatSnackBar) { 
     this.agent = new Agent();
     this.game = new Game();
   }

@@ -14,4 +14,13 @@ export class MissionApiService  extends GenericApiService<Mission>{
     this.controllerName = 'missions';
   }
 
+  getGenerics(): Observable<Mission[]> {
+    this.isLoading = true;
+    const endPoint = '/generics';
+    return this.http
+        .get(this.apiUrl + this.controllerName + endPoint, {})
+        .map((res: Response) => this.manageSuccess(res, null, false))
+        .catch((error: any) => this.manageError(error));
+  }
+
 }

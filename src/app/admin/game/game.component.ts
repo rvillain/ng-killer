@@ -82,6 +82,21 @@ export class GameComponent implements OnInit, OnDestroy {
     }
 
   }
+  importMissions(){
+    this.missionApiService.getGenerics().subscribe(res=>{
+      this.gameApiService.addMissions(this.game._id, res).subscribe(updatedGame=>{
+        this.game = updatedGame;
+      })
+    })
+  }
+
+  deleteMission(mission: Mission){
+    if(this.game.status == "created"){
+      this.missionApiService.delete(mission._id).subscribe(m=>{
+        this.game.missions.splice(this.game.missions.indexOf(mission), 1);
+      });
+    }
+  }
   start(){
     this.gameApiService.start(this.game._id).subscribe(
       res => {

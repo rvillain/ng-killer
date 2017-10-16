@@ -5,11 +5,11 @@
     La partie n'a pas encore commencée, soyez patient, préparez carnet de note, revolver et autre montre à gousset.
   </section>
   <section *ngIf="status=='started' && agent && agent.status == 'alive'" class="life">
-      <md-icon [ngClass]="{'red': agent.life>=1}">favorite</md-icon>
-      <md-icon [ngClass]="{'red': agent.life>=2}">favorite</md-icon>
-      <md-icon [ngClass]="{'red': agent.life>=3}">favorite</md-icon>
-      <md-icon [ngClass]="{'red': agent.life>=4}">favorite</md-icon>
-      <md-icon [ngClass]="{'red': agent.life>=5}">favorite</md-icon>
+      <mat-icon [ngClass]="{'red': agent.life>=1}">favorite</mat-icon>
+      <mat-icon [ngClass]="{'red': agent.life>=2}">favorite</mat-icon>
+      <mat-icon [ngClass]="{'red': agent.life>=3}">favorite</mat-icon>
+      <mat-icon [ngClass]="{'red': agent.life>=4}">favorite</mat-icon>
+      <mat-icon [ngClass]="{'red': agent.life>=5}">favorite</mat-icon>
     </section>
   <section *ngIf="status=='started' && agent.status == 'dead'" >
     Vous êtes mort.
@@ -17,32 +17,32 @@
   <section *ngIf="status=='started' && agent.status == 'alive'">
       <div class="agent-line">
         <h3>
-          <md-icon>account_circle</md-icon> Identité
+          <mat-icon>account_circle</mat-icon> Identité
         </h3>
         {{agent.name}}
-        <button md-raised-button (click)="showRole()" style="float: right">
+        <button mat-raised-button (click)="showRole()" style="float: right">
           Mon rôle
         </button>
       </div>
       <div class="agent-line">
         <h3>
-          <md-icon>gps_fixed</md-icon> Cible
+          <mat-icon>gps_fixed</mat-icon> Cible
         </h3>
         {{agent.target.name}}
         
       </div>
       <div class="agent-line">
         <h3>
-          <md-icon>work</md-icon> Mission
+          <mat-icon>work</mat-icon> Mission
         </h3>
         <p>{{agent.mission.title}}</p>
       </div>
       <p class="text-center">
-        <button md-raised-button *ngIf="agent.life>1" (click)="changeMission()">
-          <md-icon>next_week</md-icon>
+        <button mat-raised-button *ngIf="agent.life>1" (click)="changeMission()">
+          <mat-icon>next_week</mat-icon>
           Changer de mission
         </button>
-        <button md-raised-button (click)="suicide()">
+        <button mat-raised-button (click)="suicide()">
           Se suicider
         </button>
       </p>
@@ -53,8 +53,8 @@
 </main>
 
 <footer *ngIf="status=='started' && agent.status == 'alive'">
-  <button md-raised-button color="primary" (click)="kill()">Tuer</button>
-  <button md-raised-button color="primary" (click)="unmask()">Démasquer</button>
+  <button mat-raised-button color="primary" (click)="kill()">Tuer</button>
+  <button mat-raised-button color="primary" (click)="unmask()">Démasquer</button>
 </footer>
 
 <div class="wait-overlay" *ngIf="waitResponse">
@@ -66,41 +66,41 @@
 
 <div class="wait-overlay" *ngIf="showConfirmKill">
   <h2>Vous venez d'être tué</h2>
-  <md-card>
-      <md-card-content>
+  <mat-card>
+      <mat-card-content>
           Pour valider ce meurtre cliquez sur le bouton ci dessous
-      </md-card-content>
-      <md-card-actions>
-        <button md-raised-button (click)="confirmKill(true)"><md-icon>check</md-icon> Mourir avec classe</button>
-      </md-card-actions>
-  </md-card>
-  <md-card>
-      <md-card-content>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button (click)="confirmKill(true)"><mat-icon>check</mat-icon> Mourir avec classe</button>
+      </mat-card-actions>
+  </mat-card>
+  <mat-card>
+      <mat-card-content>
           Vous n'êtes pas d'accord avec cette action, il vous reste un recours
-      </md-card-content>
-      <md-card-actions>
-          <button md-raised-button (click)="confirmKill(false)"><md-icon>account_balance</md-icon> Convoquer le tribunal</button>
-      </md-card-actions>
-  </md-card>
+      </mat-card-content>
+      <mat-card-actions>
+          <button mat-raised-button (click)="confirmKill(false)"><mat-icon>account_balance</mat-icon> Convoquer le tribunal</button>
+      </mat-card-actions>
+  </mat-card>
 </div>
 
   <div class="wait-overlay" *ngIf="showConfirmUnmask">
     <h2>Vous venez d'être démasqué</h2>
-    <md-card>
-        <md-card-content>
+    <mat-card>
+        <mat-card-content>
             Pour valider votre décès cliquez sur le bouton ci dessous
-        </md-card-content>
-        <md-card-actions>
-          <button md-raised-button (click)="confirmUnmask(true)"><md-icon>check</md-icon> Mourir avec classe</button>
-        </md-card-actions>
-    </md-card>
-    <md-card>
-        <md-card-content>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button (click)="confirmUnmask(true)"><mat-icon>check</mat-icon> Mourir avec classe</button>
+        </mat-card-actions>
+    </mat-card>
+    <mat-card>
+        <mat-card-content>
             Vous n'êtes pas d'accord avec cette action, il vous reste un recours
-        </md-card-content>
-        <md-card-actions>
-            <button md-raised-button (click)="confirmUnmask(false)"><md-icon>account_balance</md-icon> Convoquer le tribunal</button>
-        </md-card-actions>
-    </md-card>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button (click)="confirmUnmask(false)"><mat-icon>account_balance</mat-icon> Convoquer le tribunal</button>
+        </mat-card-actions>
+    </mat-card>
   </div>
 

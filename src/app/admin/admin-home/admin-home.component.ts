@@ -1,13 +1,14 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { GameApiService } from '../../api/game-api.service';
+import { MissionApiService } from '../../api/mission-api.service';
 
-import { Game } from '../../model/model'
+import { Game, Mission } from '../../model/model'
 
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import {DataSource} from '@angular/cdk/collections';
 
-import { MdDialog } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 
 @Component({
@@ -18,10 +19,12 @@ import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dial
 export class AdminHomeComponent implements OnInit {
 
   public games: Game[];
+  public missions: Mission[];
   public searchTxt: string;
   public newName: string;
+  public newMission: string;
 
-  constructor(private gameApiService: GameApiService, public dialog: MdDialog) { 
+  constructor(private gameApiService: GameApiService, private missionApiService: MissionApiService, public dialog: MatDialog) { 
   }
 
   ngOnInit() {
@@ -32,6 +35,11 @@ export class AdminHomeComponent implements OnInit {
       err => {
         console.log("err", err);
       });
+    this.missionApiService.getGenerics().subscribe(
+      res => {
+        this.missions = res;
+      }
+    );
   }
 
   public filteredGames(): Game[]{
@@ -42,6 +50,18 @@ export class AdminHomeComponent implements OnInit {
     }
     else{
       return this.games;
+    }
+    
+    return [];
+  }
+  public filteredMissions(): Mission[]{
+    if(this.searchTxt){
+      if(this.missions){
+        return this.missions.filter(m=>m.title.toLowerCase().includes(this.searchTxt.toLowerCase()));
+      }
+    }
+    else{
+      return this.missions;
     }
     
     return [];
@@ -58,6 +78,23 @@ export class AdminHomeComponent implements OnInit {
       err => {
         console.log("err", err);
       });
+  }
+
+  public onSubmitNewMission(): void{
+    let newMission = new Mission();
+    newMission.title = this.newMission;
+    this.missionApiService.create(newMission).subscribe(
+      res => {
+        this.missions.push(res);
+        this.newMission = "";
+      },
+      err => {
+        console.log("err", err);
+      });
+  }
+
+  public saveMission(mission: Mission): void {
+    this.missionApiService.update(mission._id, mission).subscribe(res=>{});
   }
 
   deleteGame(game: Game): void {
