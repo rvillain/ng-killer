@@ -2,7 +2,7 @@ import { Injectable, isDevMode } from '@angular/core';
 import { Observable } from 'rxjs'
 import * as io from 'socket.io-client';
 
-import { Agent, Action, Game } from "../model/model";
+import { Agent, Action, Game, Tribunal, Vote } from "../model/model";
 
 @Injectable()
 export class SocketsService {
@@ -20,7 +20,7 @@ export class SocketsService {
   connect(){
     this.socket = io(this.url);
   }
-   //Kill
+   //join room
    joinRoom(game){
     this.socket.emit('join-room', game);    
   }
@@ -110,6 +110,9 @@ export class SocketsService {
     return this.genericGet<Game>('game-status');
   }
 
+  getTribunalStatus(): Observable<Tribunal>{
+    return this.genericGet<Tribunal>('tribunal-status');
+  }
   genericGet<T>(method): Observable<T>{
     let observable = new Observable<T>(observer => {
       this.socket.on(method, (data: T) => {

@@ -46,7 +46,7 @@ export class JournalComponent implements OnInit, OnDestroy {
       this.qrUrl = baseUrl + "/join/"+this.id;
       this.getGame(() =>{
         console.log(this.game);
-        this.socketsService.joinRoom(this.game)
+        this.socketsService.joinRoom(this.game._id)
       });
       // In a real app: dispatch action to load the details here.
     });

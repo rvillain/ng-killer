@@ -5,7 +5,7 @@ import { MatSnackBar } from '@angular/material';
 
 import { AgentApiService } from '../../api/agent-api.service';
 
-import { Game, Agent, Action } from '../../model/model';
+import { Game, Agent, Action, Tribunal, Vote } from '../../model/model';
 import { KillModalComponent } from '../kill-modal/kill-modal.component';
 import { UnmaskModalComponent } from '../unmask-modal/unmask-modal.component';
 import { CodeModalComponent } from '../code-modal/code-modal.component';
@@ -19,7 +19,8 @@ import { SocketsService } from '../../shared/sockets.service';
   styleUrls: ['./agent.component.sass']
 })
 export class AgentComponent implements OnInit, OnDestroy {
-  public agent:Agent;
+  public agent: Agent;
+  public tribunal: Tribunal;
   private sub: any;
   private id: string;
 
@@ -39,7 +40,7 @@ export class AgentComponent implements OnInit, OnDestroy {
       res => {
         this.agent = res;
         this.status = this.agent.game.status;
-        this.socketsService.joinRoom(this.agent.game);
+        this.socketsService.joinRoom(this.agent.game._id);
       },
       err => {
         console.log("err", err);
@@ -108,6 +109,18 @@ export class AgentComponent implements OnInit, OnDestroy {
         this.getAgent();
       }
     });
+
+    this.socketsService.getTribunalStatus().subscribe(tribunal => {
+      if(tribunal.status == "created"){
+        this.tribunal = tribunal;
+      }
+      else if (tribunal.status == "started" && this.tribunal._id == tribunal._id){
+        this.tribunal = tribunal;
+      }
+      else if(tribunal.status == "finished" && this.tribunal && this.tribunal._id == tribunal._id){
+        this.tribunal = null;
+      }
+    })
   }
 
   ngOnDestroy(){
@@ -188,5 +201,10 @@ export class AgentComponent implements OnInit, OnDestroy {
         //this.waitResponse = true;
       }
     });
+  }
+
+  voteFor(agent: Agent){
+    //todo
+    this.tribunal = null;
   }
 }

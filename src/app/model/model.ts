@@ -32,3 +32,19 @@ export class Action {constructor(){}
     type: string;
     Created_date: Date;
 }
+
+export class Tribunal { constructor(){}
+    _id: string;
+    killer: Agent;
+    target: Agent;
+    status: string;
+    Created_date: Date;
+    votes: Vote[];
+}
+
+export class Vote { constructor(){}
+    _id: string;
+    agent: Agent;
+    choice: Agent;
+    tribunal: Tribunal;
+}

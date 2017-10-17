@@ -84,22 +84,41 @@
   </mat-card>
 </div>
 
-  <div class="wait-overlay" *ngIf="showConfirmUnmask">
-    <h2>Vous venez d'être démasqué</h2>
-    <mat-card>
+<div class="wait-overlay" *ngIf="showConfirmUnmask">
+  <h2>Vous venez d'être démasqué</h2>
+  <mat-card>
+      <mat-card-content>
+          Pour valider votre décès cliquez sur le bouton ci dessous
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button (click)="confirmUnmask(true)"><mat-icon>check</mat-icon> Mourir avec classe</button>
+      </mat-card-actions>
+  </mat-card>
+  <mat-card>
+      <mat-card-content>
+          Vous n'êtes pas d'accord avec cette action, il vous reste un recours
+      </mat-card-content>
+      <mat-card-actions>
+          <button mat-raised-button (click)="confirmUnmask(false)"><mat-icon>account_balance</mat-icon> Convoquer le tribunal</button>
+      </mat-card-actions>
+  </mat-card>
+</div>
+
+<div class="wait-overlay" *ngIf="tribunal">
+    <h2>Tribunal</h2>
+    <mat-card *ngIf="tribunal.status=='created'">
         <mat-card-content>
-            Pour valider votre décès cliquez sur le bouton ci dessous
+            Un tribunal vient d'être convoqué, tenez vous au courant de l'affaire les votes vont commencer.
+            Il s'agit d'un conflit entre {{tribunal.killer.name}} et {{tribunal.target.name}}
         </mat-card-content>
-        <mat-card-actions>
-          <button mat-raised-button (click)="confirmUnmask(true)"><mat-icon>check</mat-icon> Mourir avec classe</button>
-        </mat-card-actions>
     </mat-card>
-    <mat-card>
+    <mat-card *ngIf="tribunal.status=='started'">
         <mat-card-content>
-            Vous n'êtes pas d'accord avec cette action, il vous reste un recours
+            Faites votre choix
         </mat-card-content>
         <mat-card-actions>
-            <button mat-raised-button (click)="confirmUnmask(false)"><mat-icon>account_balance</mat-icon> Convoquer le tribunal</button>
+            <button mat-raised-button (click)="voteFor(tribunal.killer)"> {{tribunal.killer.name}} </button>
+            <button mat-raised-button (click)="voteFor(tribunal.target)"> {{tribunal.target.name}} </button>
         </mat-card-actions>
     </mat-card>
   </div>
