@@ -72,6 +72,7 @@ export class SocketsService {
     return this.genericGet<Agent>('unconfirm-unmask');
   }
 
+  //agent
   askAgentUpdate(agent){
     this.socket.emit('agent-update', agent);    
   }
@@ -110,6 +111,12 @@ export class SocketsService {
     return this.genericGet<Game>('game-status');
   }
 
+  //global
+  getActionError(): Observable<string>{
+    return this.genericGet<string>('action-error');
+  }
+
+  //Tribunal
   getTribunalStatus(): Observable<Tribunal>{
     return this.genericGet<Tribunal>('tribunal-status');
   }

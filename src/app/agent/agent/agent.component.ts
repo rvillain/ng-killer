@@ -28,6 +28,7 @@ export class AgentComponent implements OnInit, OnDestroy {
   public waitResponse: boolean = false;
   public showConfirmKill: boolean = false;
   public showConfirmUnmask: boolean = false;
+  public firstLoad: boolean = true;
 
   constructor(private agentApiService: AgentApiService, 
     private route: ActivatedRoute, 
@@ -40,7 +41,9 @@ export class AgentComponent implements OnInit, OnDestroy {
       res => {
         this.agent = res;
         this.status = this.agent.game.status;
-        this.socketsService.joinRoom(this.agent.game._id);
+        if(this.firstLoad)
+          this.socketsService.joinRoom(this.agent.game._id);
+        this.firstLoad = false;
       },
       err => {
         console.log("err", err);
@@ -105,9 +108,7 @@ export class AgentComponent implements OnInit, OnDestroy {
 
     
     this.socketsService.getGameStatus().subscribe(game => {
-      if(game._id == this.agent.game._id){
         this.getAgent();
-      }
     });
 
     this.socketsService.getTribunalStatus().subscribe(tribunal => {
@@ -120,7 +121,13 @@ export class AgentComponent implements OnInit, OnDestroy {
       else if(tribunal.status == "finished" && this.tribunal && this.tribunal._id == tribunal._id){
         this.tribunal = null;
       }
-    })
+    });
+    this.socketsService.getActionError().subscribe(error => {
+      setTimeout(()=>{
+        this.waitResponse = false;
+        this.snackBar.open(error, null,{duration: 3000});
+      },1000);
+    });
   }
 
   ngOnDestroy(){

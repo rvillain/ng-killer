@@ -1,7 +1,7 @@
 <app-header [game]="game?game.name:''">
 </app-header>
 
-<section *ngIf="game">
+<section *ngIf="game && game.status=='created'">
   <p>
     Vous êtes sur le point de rejoindre la partie. Entrez donc votre prénom ou un pseudo connu de tous les joueurs.
   </p>
@@ -14,3 +14,9 @@
     <button mat-button>Valider</button>
   </form>
 </section>
+
+<section *ngIf="game && game.status!='created'">
+  <p>
+    Vous ne pouvez pas vous inscrire, la partie a déjà commencée
+  </p>
+</section>  

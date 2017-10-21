@@ -14,7 +14,10 @@
   <section *ngIf="status=='started' && agent.status == 'dead'" >
     Vous êtes mort.
   </section>
-  <section *ngIf="status=='started' && agent.status == 'alive'">
+  <section *ngIf="status=='started' && agent.status == 'alive' && agent._id == agent.target._id">
+    Bravo agent. Vous êtes le dernier survivant.
+  </section>
+  <section *ngIf="status=='started' && agent.status == 'alive' && agent._id != agent.target._id">
       <div class="agent-line">
         <h3>
           <mat-icon>account_circle</mat-icon> Identité
@@ -52,7 +55,7 @@
   </section>
 </main>
 
-<footer *ngIf="status=='started' && agent.status == 'alive'">
+<footer *ngIf="status=='started' && agent.status == 'alive' && agent._id != agent.target._id">
   <button mat-raised-button color="primary" (click)="kill()">Tuer</button>
   <button mat-raised-button color="primary" (click)="unmask()">Démasquer</button>
 </footer>

@@ -33,6 +33,7 @@ export class GameComponent implements OnInit, OnDestroy {
       this.gameApiService.getById(id).subscribe(
         res => {
           this.game = res;
+          this.socketsService.joinRoom(this.game._id);
         },
         err => {
           console.log("err", err);
@@ -100,7 +101,7 @@ export class GameComponent implements OnInit, OnDestroy {
   start(){
     this.gameApiService.start(this.game._id).subscribe(
       res => {
-        this.game.status = res.status;
+        this.game.status = 'started';
         this.socketsService.updateGameStatus(this.game);
       },
       err => {

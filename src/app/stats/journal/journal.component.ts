@@ -4,6 +4,8 @@ import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { Game, Action } from '../../model/model';
 import { SocketsService } from '../../shared/sockets.service';
 
+declare var qrcode: any;
+
 @Component({
   selector: 'app-journal',
   templateUrl: './journal.component.html',
@@ -11,6 +13,7 @@ import { SocketsService } from '../../shared/sockets.service';
 })
 export class JournalComponent implements OnInit, OnDestroy {
   public qrUrl: string;
+  public qrTag: any;
   private sub: any;
   private id: string;
   public game: Game;
@@ -25,6 +28,9 @@ export class JournalComponent implements OnInit, OnDestroy {
         this.game.actions = this.game.actions.sort((a: Action, b: Action) => {
           return (new Date(b.Created_date)).getTime() - (new Date(a.Created_date)).getTime();
         });
+        
+        this.createQr();
+        
         if(callback){
           callback();
         }
@@ -45,8 +51,7 @@ export class JournalComponent implements OnInit, OnDestroy {
       this.id = params['id']; // (+) converts string 'id' to a number
       this.qrUrl = baseUrl + "/join/"+this.id;
       this.getGame(() =>{
-        console.log(this.game);
-        this.socketsService.joinRoom(this.game._id)
+        this.socketsService.joinRoom(this.game._id);
       });
       // In a real app: dispatch action to load the details here.
     });
@@ -80,6 +85,16 @@ export class JournalComponent implements OnInit, OnDestroy {
       }
     })
     
+  }
+
+  createQr() {
+    var typeNumber = 0;
+    var errorCorrectionLevel = 'L';
+    var qr = qrcode(typeNumber, errorCorrectionLevel);
+    qr.addData(this.qrUrl);
+    qr.make();
+    var size = this.game.status == 'created' ? 5: 2;
+    this.qrTag = qr.createImgTag(size,1);
   }
 
   ngOnDestroy() {

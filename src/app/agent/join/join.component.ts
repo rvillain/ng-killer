@@ -35,6 +35,12 @@ export class JoinComponent implements OnInit, OnDestroy {
       this.gameApiService.getById(this.gameId).subscribe(
         res => {
           this.game = res;
+
+          //agents already created 
+          let agentId = localStorage.getItem('game-'+this.game._id);
+          if(agentId && this.game.status != 'created'){
+            this.router.navigate(['/agent', agentId]);
+          }
         },
         err => {
           console.log("err", err);
@@ -54,6 +60,7 @@ export class JoinComponent implements OnInit, OnDestroy {
     this.agentApiService.create(this.agent).subscribe(
       res => {
         this.socketsService.newAgent(res);
+        localStorage.setItem('game-'+this.game._id, res._id);
         this.router.navigate(['/agent', res._id]);
       },
       err => {

@@ -5,35 +5,31 @@
     <h1>
       Rejoignez la partie
     </h1>
-    <!-- <ngx-qrcode 
-      qrc-element-type="url" 
-      [qrc-value]="qrUrl"
-      qrc-version = "5">
-    </ngx-qrcode> -->
-    <a mat-raised-button color="primary" href="{{qrUrl}}" target="_blank">{{qrUrl}}</a>
+    <a href="{{qrUrl}}" target="_blank" [innerHTML]="qrTag"></a>
 
     <div class="agents" *ngIf="game.agents && game.agents.length > 0">
         <h3>
           Les joueurs inscrits
         </h3>
         <p>
-          <span class="agent-card" [routerLink]="['/agent', agent._id]" *ngFor="let agent of game.agents">{{agent.name}}</span>
+          <span class="agent-card" *ngFor="let agent of game.agents">{{agent.name}}</span>
         </p>
     </div>
   </ng-container>
   <ng-container *ngIf="game.status!='created'">
+      <a href="{{qrUrl}}" target="_blank" [innerHTML]="qrTag" id="qrStarted"></a>
       <h3 class="blue">
           Les vivants ({{getAliveAgents().length}})
       </h3>
       <p>
-        <span class="agent-card bg-blue" [routerLink]="['/agent', agent._id]" *ngFor="let agent of getAliveAgents()">{{agent.name}}</span>
+        <span class="agent-card bg-blue" *ngFor="let agent of getAliveAgents()">{{agent.name}}</span>
       </p>
       <h3 class="red">
           Les morts ({{getDeadAgents().length}})
       </h3>
       <p>
         <span *ngIf="getDeadAgents().length == 0">On se bouge! Tous les agents sont encore en vie</span>
-        <span class="agent-card bg-red" [routerLink]="['/agent', agent._id]" *ngFor="let agent of getDeadAgents()">{{agent.name}}</span>
+        <span class="agent-card bg-red" *ngFor="let agent of getDeadAgents()">{{agent.name}}</span>
       </p>
       <h3>
           La gazette

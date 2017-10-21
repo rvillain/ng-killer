@@ -10,7 +10,7 @@
   <div>
     <h2>Agents</h2>
     <mat-chip-list>
-      <mat-chip *ngFor="let agent of game.agents">
+      <mat-chip *ngFor="let agent of game.agents" [routerLink]="['/agent', agent._id]">
         {{agent.name}}
         <mat-icon class="mat-chip-remove" *ngIf="game.status == 'created'" (click)="deleteAgent(agent)">cancel</mat-icon>
       </mat-chip>
