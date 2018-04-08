@@ -1,5 +1,7 @@
 <mat-toolbar class="mat-elevation-z6">
   <img src="/assets/images/logoOSS.svg">
-  <span>Nid d'espions</span>
+  <span>Killer -</span>
   <span *ngIf="game"> &nbsp; {{game}}</span>
+
+  <span *ngIf="!game"> &nbsp; Nid d'espions</span>
 </mat-toolbar>

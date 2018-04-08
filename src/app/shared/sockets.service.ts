@@ -18,7 +18,11 @@ export class SocketsService {
 
   //Connect
   connect(){
-    this.socket = io(this.url);
+    this.socket = io(this.url,{
+      'reconnection delay': 1000,
+      'reconnection limit': 1000,
+      'max reconnection attempts': 'Infinity'
+    });
   }
    //join room
    joinRoom(game){

@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { ActionsService } from './actions.service';
 
 @Pipe({
   name: 'actionType'
@@ -8,25 +9,22 @@ export class ActionTypePipe implements PipeTransform {
   transform(value: any, args?: any): any {
     let label: string;
     switch(value){
-      case 'wrong_killer':
+      case ActionsService.ACTTION_TYPE_WRONG_KILLER:
         label = 'Mauvais tueur';
         break;
-      case 'wrong_target':
-        label = 'Mauvaise cible';
-        break;
-      case 'kill':
+      case ActionsService.ACTTION_TYPE_KILL:
         label = 'Mission accomplie';
         break;
-      case 'unmask':
+      case ActionsService.ACTTION_TYPE_UNMASK:
         label = 'Légitime défense';
         break;
-      case 'suicide':
+      case ActionsService.ACTTION_TYPE_SUICIDE:
         label = 'Suicide';
         break;
-      case 'error_death':
+      case ActionsService.ACTTION_TYPE_ERROR_DEATH:
         label = "Mort de s'être trompé";
         break;
-      case 'game_started':
+      case ActionsService.ACTTION_TYPE_GAME_STARTED:
         label = "C'est parti !";
         break;
     }

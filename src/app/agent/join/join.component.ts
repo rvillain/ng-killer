@@ -1,9 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { AgentApiService } from '../../api/agent-api.service';
 import { GameApiService } from '../../api/game-api.service';
 import { SocketsService } from '../../shared/sockets.service';
+import { GameService } from '../../shared/game.service';
 
 import { Game, Agent } from '../../model/model';
 
@@ -15,9 +17,10 @@ import { Game, Agent } from '../../model/model';
 })
 export class JoinComponent implements OnInit, OnDestroy {
 
-  constructor(private route: ActivatedRoute, private router:Router, private agentApiService:AgentApiService, private gameApiService:GameApiService,
-    private socketsService:SocketsService,
-    public snackBar: MatSnackBar) { 
+  constructor(private route: ActivatedRoute, private router: Router, private agentApiService: AgentApiService, private gameApiService: GameApiService,
+    private socketsService: SocketsService,
+    public gameService: GameService,
+    public snackBar: MatSnackBar) {
     this.agent = new Agent();
     this.game = new Game();
   }
@@ -26,6 +29,8 @@ export class JoinComponent implements OnInit, OnDestroy {
   public game: Game;
   public agent: Agent;
   public agentName: string;
+
+  public photoUrl: string;
 
   ngOnInit() {
     this.socketsService.connect();
@@ -37,8 +42,8 @@ export class JoinComponent implements OnInit, OnDestroy {
           this.game = res;
 
           //agents already created 
-          let agentId = localStorage.getItem('game-'+this.game._id);
-          if(agentId && this.game.status != 'created'){
+          let agentId = localStorage.getItem('game-' + this.game._id);
+          if (agentId && !this.gameService.isCreated(this.game)) {
             this.router.navigate(['/agent', agentId]);
           }
         },
@@ -53,22 +58,69 @@ export class JoinComponent implements OnInit, OnDestroy {
     this.sub.unsubscribe();
   }
 
-  onSubmit(){
-    this.agent.game = new Game();
-    this.agent.game._id = this.game._id;
-    this.agent.name = this.agentName;
-    this.agentApiService.create(this.agent).subscribe(
-      res => {
-        this.socketsService.newAgent(res);
-        localStorage.setItem('game-'+this.game._id, res._id);
-        this.router.navigate(['/agent', res._id]);
-      },
-      err => {
-        this.snackBar.open(err, null,{
-          duration: 3000,
+  resizePhoto() {
+    let img: HTMLImageElement = document.getElementById("photo") as HTMLImageElement;
+    let canvas = document.createElement("canvas");
+    let cctx = canvas.getContext("2d");
+    cctx.drawImage(img, 0, 0);
+
+    let MAX_WIDTH = 150;
+    let MAX_HEIGHT = 300;
+    let width = img.width;
+    let height = img.height;
+
+    if (width > height) {
+      if (width > MAX_WIDTH) {
+        height *= MAX_WIDTH / width;
+        width = MAX_WIDTH;
+      }
+    } else {
+      if (height > MAX_HEIGHT) {
+        width *= MAX_HEIGHT / height;
+        height = MAX_HEIGHT;
+      }
+    }
+    canvas.width = width;
+    canvas.height = height;
+    let ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0, width, height);
+
+    return canvas.toDataURL("image/jpeg");
+  }
+
+  onSubmit(f: NgForm) {
+    if (f.valid) {
+      this.agent.game = new Game();
+      this.agent.game._id = this.game._id;
+      this.agent.name = this.agentName;
+      if (this.photoUrl) {
+        this.agent.photo = this.resizePhoto();
+      }
+      this.agentApiService.create(this.agent).subscribe(
+        res => {
+          this.socketsService.newAgent(res);
+          localStorage.setItem('game-' + this.game._id, res._id);
+          this.router.navigate(['/agent', res._id]);
+        },
+        err => {
+          this.snackBar.open(err, null, {
+            duration: 3000,
+          });
+          console.log("err", err);
         });
-        console.log("err", err);
-      });
+    }
+
+  }
+  onSelectFile(event) { // called each time file input changes
+    if (event.target.files && event.target.files[0]) {
+      let reader = new FileReader();
+
+      reader.readAsDataURL(event.target.files[0]); // read file as data url
+
+      reader.onload = (event: any) => { // called once readAsDataURL is completed
+        this.photoUrl = event.target.result;
+      }
+    }
   }
 
 }

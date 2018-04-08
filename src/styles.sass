@@ -1,73 +1,150 @@
 /* You can add global styles to this file, and also import other style files */
-@import "./variables.sass";
-@import "./material.sass";
+@import "./variables.sass"
+@import "./material.sass"
 
 html
-    height: 100vh;
+    height: 100vh
 body
-    margin: 0px;
-    font-family: 'Josefin Sans', sans-serif;
-    background: $back-color;
-    color: $text-color;
+    margin: 0px
+    font-family: 'Josefin Sans', sans-serif
+    background: $back-color
+    color: $text-color
 section
-    margin: 15px;
+    margin: 15px
+.hidden
+    display: none
+.row
+    display: flex
+    >.col
+        flex: 1 1 0
+        width: 0
 app-root, app-agent
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    min-height: 100vh;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: column;
-    flex-direction: column;
+    display: -webkit-box
+    display: -ms-flexbox
+    display: flex
+    min-height: 100vh
+    -webkit-box-orient: vertical
+    -webkit-box-direction: normal
+    -ms-flex-direction: column
+    flex-direction: column
 .mat-expansion-panel
-    font-family: 'Josefin Sans', sans-serif;
-    background: darken($back-color, 5%);
-    color: $text-color;
+    font-family: 'Josefin Sans', sans-serif
+    background: darken($back-color, 5%)
+    color: $text-color
 .mat-expansion-panel-header-title, .mat-expansion-indicator::after, .mat-expansion-panel-header-description
-    color: $text-color;
+    color: $text-color
 .text-center
-    text-align: center;
+    text-align: center
 .mat-dialog-title, .mat-button, .mat-fab, .mat-icon-button, .mat-mini-fab, .mat-raised-button, .mat-form-field, .mat-toolbar, .mat-toolbar h1, .mat-toolbar h2, .mat-toolbar h3, .mat-toolbar h4, .mat-toolbar h5, .mat-toolbar h6, input
-    font-family: 'Josefin Sans', sans-serif;
+    font-family: 'Josefin Sans', sans-serif
 
 .mat-fab, .mat-mini-fab, .mat-raised-button
-    color: $back-color!important;
-    background: $text-color;
+    color: $back-color!important
+    background: $text-color
     .mat-icon
-        height: 30px;
+        height: 30px
 .mat-fab.mat-primary, .mat-mini-fab.mat-primary, .mat-raised-button.mat-primary
-    background: $back-color;
-    color: $text-color!important;;
+    background: $back-color
+    color: $text-color!important
 
 .red
-    color: $red;
+    color: $red
 .blue
-    color: $blue;
+    color: $blue
 .bg-red
-    background-color: $red!important;
-    color: $text-color!important;
+    background-color: $red!important
+    color: $text-color!important
 .bg-blue
-    background-color: $blue!important;
-    color: $back-color;
+    background-color: $blue!important
+    color: $back-color
 .killer-input
-    padding: 15px;
-    border: 0px;
-    border-bottom: 3px solid $text-color;
-    background: rgba(255,255,255, 0.1);
-    color: $text-color;
-    transition: all 0.3s;
-    font-size: 1rem;
+    padding: 15px
+    border: 0px
+    border-bottom: 3px solid $text-color
+    background: rgba(255,255,255, 0.1)
+    color: $text-color
+    transition: all 0.3s
+    font-size: 1rem
 .killer-input:focus
-    background: rgba(255,255,255, 0.05);;
-    outline: none;
-    border-color: $blue;
-    box-shadow: 0px 4px 3px rgba(0,0,0,0.5);
+    background: rgba(255,255,255, 0.05)
+    outline: none
+    border-color: $blue
+    box-shadow: 0px 4px 3px rgba(0,0,0,0.5)
 
 .agent-card
-    padding: 7px 12px;
-    margin: 5px;
-    box-shadow: 0px 2px 3px #000;
-    border-radius: 20px;
-    background: $text-color;
-    color: $back-color;
+    padding: 7px 11px
+    margin: 5px
+    line-height: 20px
+    -webkit-box-shadow: 0px 2px 3px #000
+    box-shadow: 0px 2px 3px #000
+    border-radius: 20px
+    background: #E5DFC5
+    color: #252120
+    white-space: nowrap
+    display: inline-block
+.arc 
+  position: absolute
+  bottom: 50%
+  left: 50%
+  margin-left: -70px
+  width: 140px
+  height: 70px
+  overflow: hidden
+
+
+.arc-cube 
+  position: absolute
+  bottom: -70px
+  left: 50%
+  margin-left: -70px
+  width: 140px
+  height: 140px
+  border-style: solid
+  border-top-color: transparent
+  border-right-color: #eef8fc
+  border-left-color: transparent
+  border-bottom-color: transparent
+  border-radius: 50%
+  box-sizing: border-box
+  -webkit-animation: arc 2s ease-in-out infinite
+  animation: arc 2s ease-in-out infinite
+  -webkit-transform: rotate(-200deg)
+  -ms-transform: rotate(-200deg)
+  transform: rotate(-200deg)
+
+@-webkit-keyframes arc
+  0%
+    border-width: 30px
+  
+  25%
+    border-width: 15px
+  
+  50% 
+    -webkit-transform: rotate(27deg)
+    transform: rotate(27deg)
+    border-width: 30px
+  
+  75% 
+    border-width: 15px
+  
+  100% 
+    border-width: 30px
+  
+
+@keyframes arc 
+  0% 
+    border-width: 30px
+  
+  25% 
+    border-width: 15px
+  
+  50% 
+    -webkit-transform: rotate(27deg)
+    transform: rotate(27deg)
+    border-width: 30px
+  
+  75% 
+    border-width: 15px
+  
+  100% 
+    border-width: 30px

@@ -6,8 +6,10 @@ import {
 } from '@angular/forms';
 
 import { AppComponent } from './app.component';
+import { CommonModule } from '@angular/common';
+import { SharedModule } from './shared/shared.module';
 import { routes } from './app.router';
-import { HomeComponent } from './home/home.component';
+import { HomeComponent, NewGameDialog } from './home/home.component';
 
 import { ApiModule } from './api/api.module';
 import { AdminModule } from './admin/admin.module';
@@ -18,7 +20,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    HomeComponent,
+    NewGameDialog
   ],
   imports: [
     BrowserModule,
@@ -30,6 +33,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AgentModule,
     FormsModule,
     ReactiveFormsModule,
+    CommonModule,
+    SharedModule
+  ],
+  entryComponents: [
+    NewGameDialog
   ],
   providers: [],
   bootstrap: [AppComponent]

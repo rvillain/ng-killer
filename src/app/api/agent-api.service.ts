@@ -19,10 +19,10 @@ export class AgentApiService extends GenericApiService<Agent> {
         .map((res: Response) => this.manageSuccess(res, null, false))
         .catch((error: any) => this.manageError(error));
   }
-  unmask(id: string, name: string): Observable<Action> {
-    const endPoint = '/' + id + '/unmask';
+  getForUnmask(id: String): Observable<Agent[]> {
+    const endPoint = '/' + id + '/getForUnmask';
     return this.http
-        .post(this.apiUrl + this.controllerName + endPoint, {name: name})
+        .get(this.apiUrl + this.controllerName + endPoint)
         .map((res: Response) => this.manageSuccess(res, null, false))
         .catch((error: any) => this.manageError(error));
   }

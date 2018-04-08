@@ -1,38 +1,63 @@
-<mat-toolbar *ngIf="game">ng-killer - Administration de la partie {{game.name}}</mat-toolbar>
+<app-header [game]="game.name"></app-header>
 
-<mat-card *ngIf="game">
-  <button mat-raised-button color="accent" (click)="start()" [disabled]="!isStartable()" *ngIf="game.status == 'created'">
-    Démarrer
-  </button>
-  <button mat-raised-button color="accent" (click)="reinit()" [disabled]="game.status == 'created'">
-    Réinitialiser
-  </button>
-  <div>
-    <h2>Agents</h2>
-    <mat-chip-list>
-      <mat-chip *ngFor="let agent of game.agents" [routerLink]="['/agent', agent._id]">
-        {{agent.name}}
-        <mat-icon class="mat-chip-remove" *ngIf="game.status == 'created'" (click)="deleteAgent(agent)">cancel</mat-icon>
-      </mat-chip>
-    </mat-chip-list>
-  </div>
-  <div *ngIf="game.status == 'created'">
-    <h2>Missions</h2>
-    <button mat-raised-button color="accent" (click)="importMissions()">
-      Importer des missions
-    </button>
-    <form class="" (ngSubmit)="onSubmitNewMission()">
-      <mat-form-field class="full-width">
-        <input matInput name="newMission"
-          placeholder="Nouvelle mission"
-          [(ngModel)]="newMission">
-      </mat-form-field>
-    </form>
-    <mat-list dense>
-      <mat-list-item *ngFor="let mission of game.missions"> 
-        {{mission.title}} 
-        <mat-icon (click)="deleteMission(mission)">cancel</mat-icon>
-      </mat-list-item>
-    </mat-list>
-  </div>
-</mat-card>
+<section class="row">
+  <mat-card class="col" *ngIf="game">
+    <mat-tab-group>
+      <mat-tab label="Agents ({{game.agents?game.agents.length:0}})">
+        <section>
+          <div *ngIf="!(game.agents && game.agents.length>0)">
+            Aucun joueur n'a encore rejoint la partie.
+          </div>
+          <span *ngFor="let agent of game.agents" class="agent">
+            {{agent.name}}
+            <a target="_blank" mat-icon-button [routerLink]="['/agent', agent._id]">
+              <mat-icon>account_circle</mat-icon>
+            </a>
+            <a mat-icon-button (click)="deleteAgent(agent)" *ngIf="gameService.isCreated(game)">
+              <mat-icon>cancel</mat-icon>
+            </a>
+          </span>
+        </section>
+      </mat-tab>
+      <mat-tab label="Missions ({{game.missions?game.missions.length:0}})">
+        <section *ngIf="gameService.isCreated(game)">
+          <form class="" (ngSubmit)="onSubmitNewMission()">
+            <mat-form-field class="full-width">
+              <input matInput name="newMission" placeholder="Saisissez une nouvelle mission" [(ngModel)]="newMission">
+            </mat-form-field>
+          </form>
+        </section>
+        <section>
+          <mat-list dense>
+            <mat-list-item *ngFor="let mission of game.missions">
+              <a mat-icon-button (click)="deleteMission(mission)" *ngIf="gameService.isCreated(game)">
+                <mat-icon>cancel</mat-icon>
+              </a>
+              &nbsp; {{mission.title}}
+            </mat-list-item>
+          </mat-list>
+        </section>
+      </mat-tab>
+    </mat-tab-group>
+    <mat-card-actions>
+      <button mat-raised-button color="accent" (click)="start()" [disabled]="!isStartable()" *ngIf="gameService.isCreated(game)">
+        <mat-icon>done_all</mat-icon> Démarrer
+      </button>
+      <button mat-raised-button color="accent" (click)="reinit()" [disabled]="gameService.isCreated(game)">
+        <mat-icon>undo</mat-icon> Réinitialiser
+      </button>
+      <button mat-raised-button [matMenuTriggerFor]="menu">
+        <mat-icon>playlist_add</mat-icon> Importer des missions</button>
+      <mat-menu #menu="matMenu">
+        <button *ngFor="let l of missionsService.getLevels()" mat-menu-item (click)="importMissions(l)">{{l}}</button>
+      </mat-menu>
+      <a mat-raised-button target="_blank" [routerLink]="['/journal', game._id]">Journal</a>
+    </mat-card-actions>
+  </mat-card>
+  <mat-card class="col" *ngIf="gameService.isCreated(game)">
+    <p>Vous êtes sur la page d'administration de la partie.</p>
+    <p>Afficher
+      <a mat-raised-button target="_blank" [routerLink]="['/journal', game._id]">le journal</a> sur un écran visible par tous les joueurs.</p>
+    <p> Une fois les missions saisies et les joueurs inscrits, lancez la partie</p>
+  </mat-card>
+</section>

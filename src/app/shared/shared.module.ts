@@ -22,13 +22,18 @@ import {
   MatListModule,
   MatProgressSpinnerModule,
   MatSnackBarModule,
-  MatSelectModule
+  MatSelectModule,
+  MatMenuModule
 } from '@angular/material';
 
 import { HeaderComponent } from './header/header.component';
 import { TimelineComponent } from './timeline/timeline.component';
 import { ActionTypePipe } from './action-type.pipe';
 import { SocketsService } from './sockets.service'
+import { MissionsService } from './missions.service';
+import { ActionsService } from './actions.service';
+import { GameService } from './game.service';
+import { RulesComponent } from './rules/rules.component'
 
 @NgModule({
   imports: [
@@ -50,7 +55,8 @@ import { SocketsService } from './sockets.service'
     FormsModule,  
     ReactiveFormsModule,
     MatSnackBarModule,
-    MatSelectModule
+    MatSelectModule,
+    MatMenuModule
   ],
   exports: [
     RouterModule,
@@ -70,12 +76,14 @@ import { SocketsService } from './sockets.service'
     FormsModule,  
     ReactiveFormsModule,
     HeaderComponent,
+    RulesComponent,
     TimelineComponent,
     MatSnackBarModule,
-    MatSelectModule
+    MatSelectModule,
+    MatMenuModule
   ],
-  providers: [SocketsService],
-  declarations: [ConfirmDialogComponent, HeaderComponent, TimelineComponent, ActionTypePipe],
+  providers: [SocketsService, MissionsService, ActionsService, GameService],
+  declarations: [ConfirmDialogComponent, HeaderComponent, TimelineComponent, ActionTypePipe, RulesComponent],
   entryComponents: [ConfirmDialogComponent]
 })
 export class SharedModule { }

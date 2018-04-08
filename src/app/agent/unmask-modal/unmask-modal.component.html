@@ -1,15 +1,25 @@
 <h1 mat-dialog-title>Légitime défense</h1>
-<div mat-dialog-content>
-  <p>Vous trouvez qu'un louche individu tourne un peu trop autour de l'agent que vous êtes ?
-  </p>
-  Entrez donc son nom dans ce champ
+<div mat-dialog-content *ngIf="!isWaiting">
+  <p>Vous trouvez qu'un louche individu tourne un peu trop autour de l'agent que vous êtes ?</p>
+  <p>Démasquez le</p>
+
   <mat-form-field>
-      <input matInput name="name"
-        placeholder="Nom de l'agent"
-        [(ngModel)]="name">
+    <mat-select placeholder="Agent louche" [(value)]="selectedAgent">
+      <mat-option *ngFor="let a of agents" [value]="a">
+        {{ a.name }}
+      </mat-option>
+    </mat-select>
   </mat-form-field>
 </div>
+<div mat-dialog-content *ngIf="isWaiting">
+  <h2>Attente de réponse</h2>
+  <!-- <section>
+    <div class="arc">
+      <div class="arc-cube"></div>
+    </div>
+  </section> -->
+</div>
 <div mat-dialog-actions>
-  <button mat-button (click)="onYesClick()" tabindex="2">Valider</button>
+  <button mat-button *ngIf="!isWaiting" [disabled]="!selectedAgent" (click)="onYesClick()" tabindex="2">Valider</button>
   <button mat-button (click)="onNoClick()" tabindex="-1">Annuler</button>
 </div>

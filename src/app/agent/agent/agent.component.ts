@@ -12,6 +12,7 @@ import { CodeModalComponent } from '../code-modal/code-modal.component';
 import { SuicideComponent } from '../suicide/suicide.component';
 import { ChangeMissionComponent } from '../change-mission/change-mission.component';
 import { SocketsService } from '../../shared/sockets.service';
+import { GameService } from '../../shared/game.service';
 
 @Component({
   selector: 'app-agent',
@@ -29,6 +30,8 @@ export class AgentComponent implements OnInit, OnDestroy {
   public showConfirmKill: boolean = false;
   public showConfirmUnmask: boolean = false;
   public firstLoad: boolean = true;
+
+  public GameService = GameService;
 
   constructor(private agentApiService: AgentApiService, 
     private route: ActivatedRoute, 
@@ -62,41 +65,11 @@ export class AgentComponent implements OnInit, OnDestroy {
         this.showConfirmKill = true;
       }
     });
-    this.socketsService.getConfirmKill().subscribe(target => {
-      if(target._id == this.agent.target._id){
-        this.waitResponse = false;
-        this.snackBar.open("Habile ! Mission accomplie", null,{duration: 3000});
-      }
-    });
-    this.socketsService.getUnconfirmKill().subscribe(target => {
-      if(target._id == this.agent.target._id){
-        this.waitResponse = false;
-        this.snackBar.open("Visiblement, votre cible n'est pas d'accord", null,{duration: 3000});
-      }
-    });
 
     this.socketsService.getUnmaskRequest().subscribe(killer => {
-      //Reception d'un kill request
+      //Reception d'un unmask request
       if(killer._id == this.agent._id){
         this.showConfirmUnmask = true;
-      }
-    });
-    this.socketsService.getConfirmUnmask().subscribe(killer => {
-      if(killer.target._id == this.agent._id){
-        this.waitResponse = false;
-        this.snackBar.open("Bravo agent, vous avez visé juste", null,{duration: 3000});
-      }
-    });
-    this.socketsService.getUnconfirmUnmask().subscribe(killer => {
-      if(killer.target._id == this.agent._id){
-        this.waitResponse = false;
-        this.snackBar.open("Aïe, bien visé mais la cible n'est pas d'accord", null,{duration: 3000});
-      }
-    });
-    this.socketsService.getWrongKiller().subscribe(agent => {
-      if(agent._id == this.agent._id){
-        this.waitResponse = false;
-        this.snackBar.open("Oups, ce n'est pas votre killer", null,{duration: 3000});
       }
     });
 
@@ -112,15 +85,16 @@ export class AgentComponent implements OnInit, OnDestroy {
     });
 
     this.socketsService.getTribunalStatus().subscribe(tribunal => {
-      if(tribunal.status == "created"){
-        this.tribunal = tribunal;
-      }
-      else if (tribunal.status == "started" && this.tribunal._id == tribunal._id){
-        this.tribunal = tribunal;
-      }
-      else if(tribunal.status == "finished" && this.tribunal && this.tribunal._id == tribunal._id){
-        this.tribunal = null;
-      }
+      //todo: tribunal
+      // if(tribunal.status == "created"){
+      //   this.tribunal = tribunal;
+      // }
+      // else if (tribunal.status == "started" && this.tribunal._id == tribunal._id){
+      //   this.tribunal = tribunal;
+      // }
+      // else if(tribunal.status == "finished" && this.tribunal && this.tribunal._id == tribunal._id){
+      //   this.tribunal = null;
+      // }
     });
     this.socketsService.getActionError().subscribe(error => {
       setTimeout(()=>{
@@ -128,6 +102,13 @@ export class AgentComponent implements OnInit, OnDestroy {
         this.snackBar.open(error, null,{duration: 3000});
       },1000);
     });
+  }
+
+  getMyActions(): Action[]{
+    if(this.agent.game.actions){
+      return this.agent.game.actions.filter(a=>a.killer && a.killer._id == this.agent._id || a.target && a.target._id == this.agent._id);
+    }
+    return [];
   }
 
   ngOnDestroy(){
@@ -148,7 +129,7 @@ export class AgentComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this.waitResponse = true;
+        this.getAgent();
       }
     });
   }
@@ -180,9 +161,7 @@ export class AgentComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result){
-        this.waitResponse = true;
-      }
+      this.getAgent();
     });
   }
 
@@ -193,7 +172,7 @@ export class AgentComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        //this.waitResponse = true;
+        this.getAgent();
       }
     });
   }
@@ -205,7 +184,7 @@ export class AgentComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        //this.waitResponse = true;
+        this.getAgent();
       }
     });
   }

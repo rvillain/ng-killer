@@ -1,22 +1,41 @@
 <app-header [game]="game?game.name:''">
 </app-header>
 
-<section *ngIf="game && game.status=='created'">
+<section *ngIf="game && gameService.isCreated(game)">
   <p>
-    Vous êtes sur le point de rejoindre la partie. Entrez donc votre prénom ou un pseudo connu de tous les joueurs.
+    Vous êtes sur le point de rejoindre la partie.
+    <br>
+    <br>Entrez donc votre prénom ou un pseudo connu de tous les joueurs.
   </p>
-  <form class="" (ngSubmit)="onSubmit()">
-    <input name="agentName"
-      #name="ngModel"
-      class="killer-input"
-      placeholder="Prénom"
-      [(ngModel)]="agentName">
-    <button mat-button>Valider</button>
+  <form #f="ngForm" class="" (ngSubmit)="onSubmit(f)">
+    <section>
+      <input name="agentName" #name="ngModel" class="killer-input" placeholder="Prénom" required [(ngModel)]="agentName">
+    </section>
+    <section *ngIf="photoUrl">
+      <img [src]="photoUrl" id="photo" (click)="photoInput.click()">
+    </section>
+    <p *ngIf="!photoUrl">
+      Et prenez une petite photo pour qu'on vous reconnaisse
+    </p>
+    <section>
+      <button *ngIf="!photoUrl" type="button" mat-raised-button (click)="photoInput.click()">
+        <mat-icon>add_a_photo</mat-icon>
+        Prendre une photo
+      </button>
+      <input class="hidden" #photoInput (change)="onSelectFile($event)" type="file" accept="image/*;capture=camera" />
+    </section>
+    <p>
+      Et validez
+    </p>
+    <button mat-raised-button [disabled]="!f.valid">
+      <mat-icon>check</mat-icon>
+      Valider
+    </button>
   </form>
 </section>
 
-<section *ngIf="game && game.status!='created'">
+<section *ngIf="game && !gameService.isCreated(game)">
   <p>
     Vous ne pouvez pas vous inscrire, la partie a déjà commencée
   </p>
-</section>  
+</section>

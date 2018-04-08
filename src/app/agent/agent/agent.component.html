@@ -1,38 +1,57 @@
 <app-header [game]="agent?agent.game.name:''">
 </app-header>
 <main>
-  <section *ngIf="status=='created'">
+  <section *ngIf="status==GameService.GAME_STATUS_CREATED">
+    Bonjour agent {{agent?agent.name:''}},<br>
     La partie n'a pas encore commencée, soyez patient, préparez carnet de note, revolver et autre montre à gousset.
+
+    <img class="animated" src="/assets/images/logoOSS.svg">
   </section>
-  <section *ngIf="status=='started' && agent && agent.status == 'alive'" class="life">
+  <section *ngIf="status==GameService.GAME_STATUS_STARTED && agent.status == 'dead'">
+    L'agent {{agent.name}} est mort, non sans panache.
+    <app-timeline [actions]="getMyActions()"></app-timeline>
+    <section><button mat-raised-button *ngIf="getMyActions().length == 0" (click)="getAgent()">Voir mon résumé</button></section>
+  </section>
+  <section *ngIf="status==GameService.GAME_STATUS_STARTED && agent.status == 'alive' && agent._id == agent.target._id">
+    <img src="/assets/images/trophy.svg"> Bravo agent {{agent.name}}. Vous êtes le dernier survivant.
+    <app-timeline [actions]="getMyActions()"></app-timeline>
+    <section><button mat-raised-button *ngIf="getMyActions().length == 0" (click)="getAgent()">Voir mon résumé</button></section>
+  </section>
+  <ng-container *ngIf="status==GameService.GAME_STATUS_STARTED && agent && agent.status == 'alive' && agent._id != agent.target._id">
+    <section class="life">
       <mat-icon [ngClass]="{'red': agent.life>=1}">favorite</mat-icon>
       <mat-icon [ngClass]="{'red': agent.life>=2}">favorite</mat-icon>
       <mat-icon [ngClass]="{'red': agent.life>=3}">favorite</mat-icon>
       <mat-icon [ngClass]="{'red': agent.life>=4}">favorite</mat-icon>
       <mat-icon [ngClass]="{'red': agent.life>=5}">favorite</mat-icon>
     </section>
-  <section *ngIf="status=='started' && agent.status == 'dead'" >
-    Vous êtes mort.
-  </section>
-  <section *ngIf="status=='started' && agent.status == 'alive' && agent._id == agent.target._id">
-    Bravo agent. Vous êtes le dernier survivant.
-  </section>
-  <section *ngIf="status=='started' && agent.status == 'alive' && agent._id != agent.target._id">
+    <section>
       <div class="agent-line">
         <h3>
           <mat-icon>account_circle</mat-icon> Identité
         </h3>
         {{agent.name}}
-        <button mat-raised-button (click)="showRole()" style="float: right">
+        <!-- <button mat-raised-button (click)="showRole()" style="float: right">
           Mon rôle
-        </button>
+        </button> -->
       </div>
       <div class="agent-line">
         <h3>
           <mat-icon>gps_fixed</mat-icon> Cible
         </h3>
         {{agent.target.name}}
-        
+        <button type="button" mat-icon-button *ngIf="agent.target.photo" (click)="showPhoto=true">
+          <mat-icon>photo</mat-icon>
+        </button>
+        <div class="wait-overlay" *ngIf="showPhoto">
+          <h2>Votre cible</h2>
+          <section>
+            <img class="target-photo" [src]="agent.target.photo">
+          </section>
+          <button type="button" mat-icon-button (click)="showPhoto=false">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </div>
       </div>
       <div class="agent-line">
         <h3>
@@ -49,13 +68,15 @@
           Se suicider
         </button>
       </p>
-  </section>
+    </section>
+  </ng-container>
+
   <section *ngIf="status=='finished'">
-    La partie est terminée. Préparez vous pour une prochaine mission, plutôt que de vouleur ressasser le passé.
+    La partie est terminée. Préparez vous pour une prochaine mission, plutôt que de vouloir ressasser le passé.
   </section>
 </main>
 
-<footer *ngIf="status=='started' && agent.status == 'alive' && agent._id != agent.target._id">
+<footer *ngIf="status==GameService.GAME_STATUS_STARTED && agent.status == 'alive' && agent._id != agent.target._id">
   <button mat-raised-button color="primary" (click)="kill()">Tuer</button>
   <button mat-raised-button color="primary" (click)="unmask()">Démasquer</button>
 </footer>
@@ -70,59 +91,62 @@
 <div class="wait-overlay" *ngIf="showConfirmKill">
   <h2>Vous venez d'être tué</h2>
   <mat-card>
-      <mat-card-content>
-          Pour valider ce meurtre cliquez sur le bouton ci dessous
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-raised-button (click)="confirmKill(true)"><mat-icon>check</mat-icon> Mourir avec classe</button>
-      </mat-card-actions>
+    <mat-card-content>
+      Pour valider ce meurtre cliquez sur le bouton ci dessous
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button (click)="confirmKill(true)">
+        <mat-icon>check</mat-icon> Mourir avec classe</button>
+    </mat-card-actions>
   </mat-card>
   <mat-card>
-      <mat-card-content>
-          Vous n'êtes pas d'accord avec cette action, il vous reste un recours
-      </mat-card-content>
-      <mat-card-actions>
-          <button mat-raised-button (click)="confirmKill(false)"><mat-icon>account_balance</mat-icon> Convoquer le tribunal</button>
-      </mat-card-actions>
+    <mat-card-content>
+      Vous n'êtes pas d'accord avec cette action, il vous reste un recours
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button (click)="confirmKill(false)">
+        <mat-icon>account_balance</mat-icon> Convoquer le tribunal</button>
+    </mat-card-actions>
   </mat-card>
 </div>
 
 <div class="wait-overlay" *ngIf="showConfirmUnmask">
   <h2>Vous venez d'être démasqué</h2>
   <mat-card>
-      <mat-card-content>
-          Pour valider votre décès cliquez sur le bouton ci dessous
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-raised-button (click)="confirmUnmask(true)"><mat-icon>check</mat-icon> Mourir avec classe</button>
-      </mat-card-actions>
+    <mat-card-content>
+      Pour valider votre décès cliquez sur le bouton ci dessous
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button (click)="confirmUnmask(true)">
+        <mat-icon>check</mat-icon> Mourir avec classe</button>
+    </mat-card-actions>
   </mat-card>
   <mat-card>
-      <mat-card-content>
-          Vous n'êtes pas d'accord avec cette action, il vous reste un recours
-      </mat-card-content>
-      <mat-card-actions>
-          <button mat-raised-button (click)="confirmUnmask(false)"><mat-icon>account_balance</mat-icon> Convoquer le tribunal</button>
-      </mat-card-actions>
+    <mat-card-content>
+      Vous n'êtes pas d'accord avec cette action, il vous reste un recours
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button (click)="confirmUnmask(false)">
+        <mat-icon>account_balance</mat-icon> Convoquer le tribunal</button>
+    </mat-card-actions>
   </mat-card>
 </div>
 
 <div class="wait-overlay" *ngIf="tribunal">
-    <h2>Tribunal</h2>
-    <mat-card *ngIf="tribunal.status=='created'">
-        <mat-card-content>
-            Un tribunal vient d'être convoqué, tenez vous au courant de l'affaire les votes vont commencer.
-            Il s'agit d'un conflit entre {{tribunal.killer.name}} et {{tribunal.target.name}}
-        </mat-card-content>
-    </mat-card>
-    <mat-card *ngIf="tribunal.status=='started'">
-        <mat-card-content>
-            Faites votre choix
-        </mat-card-content>
-        <mat-card-actions>
-            <button mat-raised-button (click)="voteFor(tribunal.killer)"> {{tribunal.killer.name}} </button>
-            <button mat-raised-button (click)="voteFor(tribunal.target)"> {{tribunal.target.name}} </button>
-        </mat-card-actions>
-    </mat-card>
-  </div>
-
+  <h2>Tribunal</h2>
+  <mat-card *ngIf="tribunal.status==GameService.GAME_STATUS_CREATED">
+    <mat-card-content>
+      Un tribunal vient d'être convoqué, tenez vous au courant de l'affaire les votes vont commencer. Il s'agit d'un conflit entre
+      {{tribunal.killer.name}} et {{tribunal.target.name}}
+    </mat-card-content>
+  </mat-card>
+  <mat-card *ngIf="tribunal.status==GameService.GAME_STATUS_STARTED">
+    <mat-card-content>
+      Faites votre choix
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button (click)="voteFor(tribunal.killer)"> {{tribunal.killer.name}} </button>
+      <button mat-raised-button (click)="voteFor(tribunal.target)"> {{tribunal.target.name}} </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

@@ -2,7 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AgentApiService } from '../../api/agent-api.service';
 import { GameApiService } from '../../api/game-api.service';
 import { MissionApiService } from '../../api/mission-api.service';
+import { MissionsService } from '../../shared/missions.service';
 import { SocketsService } from '../../shared/sockets.service';
+import { GameService } from '../../shared/game.service';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 
 import { Game, Agent, Mission } from '../../model/model';
@@ -18,7 +20,9 @@ export class GameComponent implements OnInit, OnDestroy {
     private agentApiService:AgentApiService, 
     private gameApiService:GameApiService, 
     private missionApiService:MissionApiService,
-    private socketsService: SocketsService) { 
+    private socketsService: SocketsService,
+    public missionsService: MissionsService,
+    public gameService: GameService) { 
     this.game = new Game();
   }
 
@@ -54,14 +58,14 @@ export class GameComponent implements OnInit, OnDestroy {
 
   isStartable(){
     let startable = false;
-    if(this.game.agents && this.game.agents.length >=0 
+    if(this.game.agents && this.game.agents.length >0 
       && this.game.missions && this.game.missions.length >= this.game.agents.length){
       startable = true;
     }
     return startable;
   }
   deleteAgent(agent: Agent){
-    if(this.game.status == "created"){
+    if(this.gameService.isCreated(this.game)){
       this.agentApiService.delete(agent._id).subscribe(a=>{
         this.game.agents.splice(this.game.agents.indexOf(agent), 1);
       });
@@ -83,16 +87,16 @@ export class GameComponent implements OnInit, OnDestroy {
     }
 
   }
-  importMissions(){
+  importMissions(level:string){
     this.missionApiService.getGenerics().subscribe(res=>{
-      this.gameApiService.addMissions(this.game._id, res).subscribe(updatedGame=>{
+      this.gameApiService.addMissions(this.game._id, res.filter(m=>m.difficulty == level)).subscribe(updatedGame=>{
         this.game = updatedGame;
       })
     })
   }
 
   deleteMission(mission: Mission){
-    if(this.game.status == "created"){
+    if(this.gameService.isCreated(this.game)){
       this.missionApiService.delete(mission._id).subscribe(m=>{
         this.game.missions.splice(this.game.missions.indexOf(mission), 1);
       });
@@ -101,7 +105,7 @@ export class GameComponent implements OnInit, OnDestroy {
   start(){
     this.gameApiService.start(this.game._id).subscribe(
       res => {
-        this.game.status = 'started';
+        this.game.status = GameService.GAME_STATUS_STARTED;
         this.socketsService.updateGameStatus(this.game);
       },
       err => {
@@ -111,7 +115,7 @@ export class GameComponent implements OnInit, OnDestroy {
   reinit(){
     this.gameApiService.reinit(this.game._id).subscribe(
       res => {
-        this.game.status = 'created';
+        this.game.status = GameService.GAME_STATUS_CREATED;
         this.socketsService.updateGameStatus(this.game);
       },
       err => {

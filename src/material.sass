@@ -1,26 +1,32 @@
-@import '~@angular/material/theming';
-@import './material-palette';
+@import '~@angular/material/theming'
+@import './material-palette'
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
 // Be sure that you only ever include this mixin once!
-@include mat-core();
+@include mat-core()
 
 
-$killer-app-primary: mat-palette($mat-marroon);
-$killer-app-accent:  mat-palette($mat-text, A200, A100, A400);
+$killer-app-primary: mat-palette($mat-marroon)
+$killer-app-accent:  mat-palette($mat-text, A200, A100, A400)
 
 // The warn palette is optional (defaults to red).
-$killer-app-warn:    mat-palette($mat-red);
+$killer-app-warn:    mat-palette($mat-red)
 
 // Create the theme object (a Sass map containing all of the palettes).
-$killer-app-theme: mat-dark-theme($killer-app-primary, $killer-app-accent, $killer-app-warn);
+$killer-app-theme: mat-dark-theme($killer-app-primary, $killer-app-accent, $killer-app-warn)
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
-@include angular-material-theme($killer-app-theme);
+@include angular-material-theme($killer-app-theme)
 
 .mat-tab-label-container
-    background: #333;
+    background: #333
+
+.mat-snack-bar-container 
+    background: #333
+    color: #FFF
+    .mat-simple-snackbar 
+        font-size: 21px

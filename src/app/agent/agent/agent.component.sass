@@ -1,143 +1,81 @@
-@import "../../../variables.sass";
+@import "../../../variables.sass"
 footer
-    color: $back-color;
-    background: $text-color;
-    padding: 10px;
-    text-align: center;
+    color: $back-color
+    background: $text-color
+    padding: 10px
+    text-align: center
 main
-    -webkit-box-flex: 1;
-    -ms-flex: 1 0 auto;
-    flex: 1 0 auto;
+    -webkit-box-flex: 1
+    -ms-flex: 1 0 auto
+    flex: 1 0 auto
+    section
+      img
+        width: 30px
 .life
-    color: lighten($back-color, 5%);
-    text-align: center;
+    color: lighten($back-color, 5%)
+    text-align: center
 .red
-    color: $red;
+    color: $red
 .agent-line
-    max-width: 800px;
-    margin: 2rem auto;
-    .mat-icon
-        vertical-align: bottom;
+    max-width: 800px
+    margin: 2rem auto
     h3
-        opacity: 0.5;
-        display: inline-block;
-        width: 150px;
-        zoom: 1;
-        margin: 2px 0px;
+        opacity: 0.5
+        display: inline-block
+        width: 150px
+        zoom: 1
+        margin: 2px 0px
+        .mat-icon
+            vertical-align: bottom
 .wait-overlay
-    position: fixed;
-    z-index: 999;
-    top: 0px;
-    padding-top: 50px;
-    bottom: 0px;
-    left: 0px;
-    right: 0px;
-    background: rgba(0,0,0,0.8);
-    color: #FFF;
-    text-align: center;
+    position: fixed
+    z-index: 999
+    top: 0px
+    padding-top: 50px
+    bottom: 0px
+    left: 0px
+    right: 0px
+    background: rgba(0,0,0,0.8)
+    color: #FFF
+    text-align: center
 
-@-webkit-keyframes arc
-  0%
-    border-width: 30px;
-  
-  25%
-    border-width: 15px;
-  
-  50% 
-    -webkit-transform: rotate(27deg);
-    transform: rotate(27deg);
-    border-width: 30px;
-  
-  75% 
-    border-width: 15px;
-  
-  100% 
-    border-width: 30px;
-  
+.animated
+    animation: zoom 4s ease-in-out infinite
+    width: 100%!important
+    margin-top: 10px
 
-@keyframes arc 
-  0% 
-    border-width: 30px;
-  
-  25% 
-    border-width: 15px;
-  
-  50% 
-    -webkit-transform: rotate(27deg);
-    transform: rotate(27deg);
-    border-width: 30px;
-  
-  75% 
-    border-width: 15px;
-  
-  100% 
-    border-width: 30px;
+@keyframes zoom
+    0%
+        transform: scale(0.8)
+    50%
+        transform: scale(1.0)
+    100%
+        transform: scale(0.8)
   
 
 .green-100 
-  background-color: #88b257;
+  background-color: #88b257
 
 
 .green-200 
-  background-color: #7da84d;
+  background-color: #7da84d
 
 
 body 
-  padding: 0;
-  margin: 0;
-  font-family: Tahoma, sans-serif;
+  padding: 0
+  margin: 0
+  font-family: Tahoma, sans-serif
 
 
 .container 
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    -webkit-perspective: 1000px;
-    perspective: 1000px;
-    -webkit-perspective: 1000px;
-    perspective: 1000px;
-    overflow: hidden;
+    position: relative
+    width: 100vw
+    height: 100vh
+    -webkit-perspective: 1000px
+    perspective: 1000px
+    -webkit-perspective: 1000px
+    perspective: 1000px
+    overflow: hidden
 
-
-.cube 
-  position: absolute;
-  bottom: 50%;
-  left: 50%;
-  width: 30px;
-  height: 30px;
-  margin-left: -15px;
-  margin-top: 0;
-
-
-.cube-2d 
-  background-color: #eef8fc;
-
-.arc 
-  position: absolute;
-  bottom: 50%;
-  left: 50%;
-  margin-left: -70px;
-  width: 140px;
-  height: 70px;
-  overflow: hidden;
-
-
-.arc-cube 
-  position: absolute;
-  bottom: -70px;
-  left: 50%;
-  margin-left: -70px;
-  width: 140px;
-  height: 140px;
-  border-style: solid;
-  border-top-color: transparent;
-  border-right-color: #eef8fc;
-  border-left-color: transparent;
-  border-bottom-color: transparent;
-  border-radius: 50%;
-  box-sizing: border-box;
-  -webkit-animation: arc 2s ease-in-out infinite;
-  animation: arc 2s ease-in-out infinite;
-  -webkit-transform: rotate(-200deg);
-  -ms-transform: rotate(-200deg);
-  transform: rotate(-200deg);
+.target-photo
+  width: auto!important
