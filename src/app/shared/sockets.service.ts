@@ -13,7 +13,7 @@ export class SocketsService {
     //socket.ioSocket.
   }
   
-  private url = (isDevMode() ? "http://localhost:3000/" : "http://ng-killer-api.azurewebsites.net/");
+  private url = (isDevMode() ? "http://localhost:5000/ws" : "http://ng-killer-api.azurewebsites.net/");
   private socket;
 
   //Connect

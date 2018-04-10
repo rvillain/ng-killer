@@ -42,7 +42,7 @@ export class JoinComponent implements OnInit, OnDestroy {
           this.game = res;
 
           //agents already created 
-          let agentId = localStorage.getItem('game-' + this.game._id);
+          let agentId = localStorage.getItem('game-' + this.game.id);
           if (agentId && !this.gameService.isCreated(this.game)) {
             this.router.navigate(['/agent', agentId]);
           }
@@ -91,7 +91,7 @@ export class JoinComponent implements OnInit, OnDestroy {
   onSubmit(f: NgForm) {
     if (f.valid) {
       this.agent.game = new Game();
-      this.agent.game._id = this.game._id;
+      this.agent.game.id = this.game.id;
       this.agent.name = this.agentName;
       if (this.photoUrl) {
         this.agent.photo = this.resizePhoto();
@@ -99,8 +99,8 @@ export class JoinComponent implements OnInit, OnDestroy {
       this.agentApiService.create(this.agent).subscribe(
         res => {
           this.socketsService.newAgent(res);
-          localStorage.setItem('game-' + this.game._id, res._id);
-          this.router.navigate(['/agent', res._id]);
+          localStorage.setItem('game-' + this.game.id, res.id);
+          this.router.navigate(['/agent', res.id]);
         },
         err => {
           this.snackBar.open(err, null, {

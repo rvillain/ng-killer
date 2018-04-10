@@ -30,10 +30,10 @@
           </mat-expansion-panel-header>
           
           
-          <a mat-raised-button color="accent" target="_blank" routerLink="/journal/{{game._id}}">
+          <a mat-raised-button color="accent" target="_blank" routerLink="/journal/{{game.id}}">
             Journal
           </a>
-          <a mat-raised-button color="accent" target="_blank" routerLink="/admin/{{game._id}}">
+          <a mat-raised-button color="accent" target="_blank" routerLink="/admin/{{game.id}}">
             Administrer
           </a>
           <button mat-raised-button color="accent" (click)="deleteGame(game)">

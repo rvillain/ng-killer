@@ -21,7 +21,7 @@ export class UnmaskModalComponent {
     private socketsService: SocketsService,
     public snackBar:MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public data: any) {
-    agentApiService.getForUnmask(data.killer._id).subscribe(res => {
+    agentApiService.getForUnmask(data.killer.id).subscribe(res => {
       this.agents = res;
     });
   }
@@ -31,19 +31,19 @@ export class UnmaskModalComponent {
     this.socketsService.sendUnmaskRequest(killer, this.selectedAgent.name);
     this.isWaiting = true;
     this.socketsService.getConfirmUnmask().subscribe(killer => {
-      if (killer.target._id == this.data.killer._id) {
+      if (killer.target.id == this.data.killer.id) {
         this.snackBar.open("Bravo agent, vous avez visé juste", null, { duration: 3000 });
         this.dialogRef.close(true);
       }
     });
     this.socketsService.getUnconfirmUnmask().subscribe(killer => {
-      if (killer.target._id == this.data.killer._id) {
+      if (killer.target.id == this.data.killer.id) {
         this.snackBar.open("Aïe, bien visé mais la cible n'est pas d'accord", null, { duration: 3000 });
         this.dialogRef.close(true);
       }
     });
     this.socketsService.getWrongKiller().subscribe(agent => {
-      if(agent._id == this.data.killer._id){
+      if(agent.id == this.data.killer.id){
         this.snackBar.open("Oups, ce n'est pas votre killer", null,{duration: 300000});
         this.dialogRef.close(true);
       }

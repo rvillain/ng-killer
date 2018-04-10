@@ -37,7 +37,7 @@ export class GameComponent implements OnInit, OnDestroy {
       this.gameApiService.getById(id).subscribe(
         res => {
           this.game = res;
-          this.socketsService.joinRoom(this.game._id);
+          this.socketsService.joinRoom(this.game.id);
         },
         err => {
           console.log("err", err);
@@ -46,7 +46,7 @@ export class GameComponent implements OnInit, OnDestroy {
     });
     this.socketsService.getNewAgent().subscribe(agent=> {
       let gameId: any = agent.game;
-      if(this.game._id == gameId){
+      if(this.game.id == gameId){
         this.game.agents.push(agent);
       }
     });
@@ -66,7 +66,7 @@ export class GameComponent implements OnInit, OnDestroy {
   }
   deleteAgent(agent: Agent){
     if(this.gameService.isCreated(this.game)){
-      this.agentApiService.delete(agent._id).subscribe(a=>{
+      this.agentApiService.delete(agent.id).subscribe(a=>{
         this.game.agents.splice(this.game.agents.indexOf(agent), 1);
       });
     }
@@ -89,7 +89,7 @@ export class GameComponent implements OnInit, OnDestroy {
   }
   importMissions(level:string){
     this.missionApiService.getGenerics().subscribe(res=>{
-      this.gameApiService.addMissions(this.game._id, res.filter(m=>m.difficulty == level)).subscribe(updatedGame=>{
+      this.gameApiService.addMissions(this.game.id, res.filter(m=>m.difficulty == level)).subscribe(updatedGame=>{
         this.game = updatedGame;
       })
     })
@@ -97,13 +97,13 @@ export class GameComponent implements OnInit, OnDestroy {
 
   deleteMission(mission: Mission){
     if(this.gameService.isCreated(this.game)){
-      this.missionApiService.delete(mission._id).subscribe(m=>{
+      this.missionApiService.delete(mission.id).subscribe(m=>{
         this.game.missions.splice(this.game.missions.indexOf(mission), 1);
       });
     }
   }
   start(){
-    this.gameApiService.start(this.game._id).subscribe(
+    this.gameApiService.start(this.game.id).subscribe(
       res => {
         this.game.status = GameService.GAME_STATUS_STARTED;
         this.socketsService.updateGameStatus(this.game);
@@ -113,7 +113,7 @@ export class GameComponent implements OnInit, OnDestroy {
       });
   }
   reinit(){
-    this.gameApiService.reinit(this.game._id).subscribe(
+    this.gameApiService.reinit(this.game.id).subscribe(
       res => {
         this.game.status = GameService.GAME_STATUS_CREATED;
         this.socketsService.updateGameStatus(this.game);

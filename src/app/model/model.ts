@@ -1,15 +1,14 @@
 export class Game { constructor(){}
-    _id: string;
+    id: string;
     name: string;
     agents: Agent[];
     missions: Mission[];
     actions: Action[];
     status: string;
-    Created_date: Date;
 }
 
 export class Agent { constructor(){}
-    _id: string;
+    id: string;
     name: string;
     mission: Mission;
     target: Agent;
@@ -21,14 +20,14 @@ export class Agent { constructor(){}
 }
 
 export class Mission { constructor(){}
-    _id: string;
+    id: string;
     title: string;
     difficulty: string;
     game: Game;
 }
 
 export class Action {constructor(){}
-    _id: string;
+    id: string;
     killer: Agent;
     target: Agent;
     type: string;
@@ -36,7 +35,7 @@ export class Action {constructor(){}
 }
 
 export class Tribunal { constructor(){}
-    _id: string;
+    id: string;
     killer: Agent;
     target: Agent;
     status: string;
@@ -45,7 +44,7 @@ export class Tribunal { constructor(){}
 }
 
 export class Vote { constructor(){}
-    _id: string;
+    id: string;
     agent: Agent;
     choice: Agent;
     tribunal: Tribunal;

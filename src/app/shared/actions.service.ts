@@ -37,16 +37,16 @@ export class ActionsService {
   }
 
   countKillsByAgent(actions: Action[], agent: Agent): number{
-    let score:number = actions.filter(a=>a.killer && a.killer._id==agent._id && a.type == ActionsService.ACTTION_TYPE_KILL).length;
+    let score:number = actions.filter(a=>a.killer && a.killer.id==agent.id && a.type == ActionsService.ACTTION_TYPE_KILL).length;
     return score;
   }
 
   countUnmasksByAgent(actions: Action[], agent: Agent): number{
-    return actions.filter(a=>a.killer && a.killer._id==agent._id && a.type == ActionsService.ACTTION_TYPE_UNMASK).length;
+    return actions.filter(a=>a.killer && a.killer.id==agent.id && a.type == ActionsService.ACTTION_TYPE_UNMASK).length;
   }
 
   countBluffsByAgent(actions: Action[], agent: Agent): number{
-    return actions.filter(a=>a.target && a.target._id==agent._id && a.type == ActionsService.ACTTION_TYPE_WRONG_KILLER).length;
+    return actions.filter(a=>a.target && a.target.id==agent.id && a.type == ActionsService.ACTTION_TYPE_WRONG_KILLER).length;
   }
 
   countPointsByAgent(actions: Action[], agent: Agent): number{

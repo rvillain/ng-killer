@@ -45,7 +45,7 @@ export class AgentComponent implements OnInit, OnDestroy {
         this.agent = res;
         this.status = this.agent.game.status;
         if(this.firstLoad)
-          this.socketsService.joinRoom(this.agent.game._id);
+          this.socketsService.joinRoom(this.agent.game.id);
         this.firstLoad = false;
       },
       err => {
@@ -61,20 +61,20 @@ export class AgentComponent implements OnInit, OnDestroy {
 
     this.socketsService.getKillRequest().subscribe(killer => {
       //Reception d'un kill request
-      if(killer.target._id == this.agent._id){
+      if(killer.target.id == this.agent.id){
         this.showConfirmKill = true;
       }
     });
 
     this.socketsService.getUnmaskRequest().subscribe(killer => {
       //Reception d'un unmask request
-      if(killer._id == this.agent._id){
+      if(killer.id == this.agent.id){
         this.showConfirmUnmask = true;
       }
     });
 
     this.socketsService.getAgentUpdate().subscribe(agent => {
-      if(agent._id == this.agent._id){
+      if(agent.id == this.agent.id){
         this.agent = agent;
       }
     });
@@ -106,7 +106,7 @@ export class AgentComponent implements OnInit, OnDestroy {
 
   getMyActions(): Action[]{
     if(this.agent.game.actions){
-      return this.agent.game.actions.filter(a=>a.killer && a.killer._id == this.agent._id || a.target && a.target._id == this.agent._id);
+      return this.agent.game.actions.filter(a=>a.killer && a.killer.id == this.agent.id || a.target && a.target.id == this.agent.id);
     }
     return [];
   }

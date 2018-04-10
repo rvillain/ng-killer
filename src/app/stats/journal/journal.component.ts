@@ -58,7 +58,7 @@ export class JournalComponent implements OnInit, OnDestroy {
       this.id = params['id']; // (+) converts string 'id' to a number
       this.qrUrl = baseUrl + "/join/" + this.id;
       this.getGame(() => {
-        this.socketsService.joinRoom(this.game._id);
+        this.socketsService.joinRoom(this.game.id);
       });
       // In a real app: dispatch action to load the details here.
     });
@@ -74,25 +74,25 @@ export class JournalComponent implements OnInit, OnDestroy {
       this.game.actions.unshift(action);
     })
     this.socketsService.getConfirmKill().subscribe(agent => {
-      let agentToUpdate = this.game.agents.find(a => a._id == agent._id);
+      let agentToUpdate = this.game.agents.find(a => a.id == agent.id);
       if (agentToUpdate) {
         agentToUpdate.status = 'dead';
       }
     })
     this.socketsService.getSuicide().subscribe(agent => {
-      let agentToUpdate = this.game.agents.find(a => a._id == agent._id);
+      let agentToUpdate = this.game.agents.find(a => a.id == agent.id);
       if (agentToUpdate) {
         agentToUpdate.status = 'dead';
       }
     })
     this.socketsService.getConfirmUnmask().subscribe(agent => {
-      let agentToUpdate = this.game.agents.find(a => a._id == agent._id);
+      let agentToUpdate = this.game.agents.find(a => a.id == agent.id);
       if (agentToUpdate) {
         agentToUpdate.status = 'dead';
       }
     })
     this.socketsService.getWrongKiller().subscribe(agent => {
-      let agentToUpdate = this.game.agents.find(a => a._id == agent._id);
+      let agentToUpdate = this.game.agents.find(a => a.id == agent.id);
       if (agentToUpdate) {
         agentToUpdate.status = 'dead';
       }

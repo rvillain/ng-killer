@@ -60,7 +60,7 @@ export class NewGameDialog {
       this.gameApiService.create(newGame).subscribe(
         res => {
           //redirection vers l'administration de la partie
-          this.router.navigate(['/admin', res._id]);
+          this.router.navigate(['/admin', res.id]);
           this.dialogRef.close();
         },
         err => {

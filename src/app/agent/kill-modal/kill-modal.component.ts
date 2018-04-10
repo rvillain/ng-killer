@@ -27,13 +27,13 @@ export class KillModalComponent {
     this.isWaiting=true;
     
     this.socketsService.getConfirmKill().subscribe(target => {
-      if(target._id == killer.target._id){
+      if(target.id == killer.target.id){
         this.snackBar.open("Habile ! Mission accomplie", null,{duration: 3000});
         this.dialogRef.close(true);
       }
     });
     this.socketsService.getUnconfirmKill().subscribe(target => {
-      if(target._id == killer.target._id){
+      if(target.id == killer.target.id){
         this.snackBar.open("Visiblement, votre cible n'est pas d'accord", null,{duration: 3000});
         this.dialogRef.close(true);
       }
