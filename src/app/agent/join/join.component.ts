@@ -90,8 +90,8 @@ export class JoinComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(f: NgForm) {
-    this.submitting = true;
     if (f.valid && !this.submitting) {
+      this.submitting = true;
       this.agent.game = new Game();
       this.agent.game._id = this.game._id;
       this.agent.name = this.agentName;
