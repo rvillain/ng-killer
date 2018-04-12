@@ -2,13 +2,13 @@
 </app-header>
 <main>
   <section *ngIf="status==GameService.GAME_STATUS_CREATED">
-    Bonjour agent {{agent?agent.name:''}},<br>
-    La partie n'a pas encore commencée, soyez patient, préparez carnet de note, revolver et autre montre à gousset.
+    Bonjour agent {{agent?agent.name:''}},<br><br>
+    La partie n'a pas encore commencée, soyez patient, préparez carnet de note, revolver et autre équipement désuet.
 
     <img class="animated" src="/assets/images/logoOSS.svg">
   </section>
   <section *ngIf="status==GameService.GAME_STATUS_STARTED && agent.status == 'dead'">
-    L'agent {{agent.name}} est mort, non sans panache.
+    Chèr agent {{agent.name}}, vous êtes mort, non sans panache.
     <app-timeline [actions]="getMyActions()"></app-timeline>
     <section><button mat-raised-button *ngIf="getMyActions().length == 0" (click)="getAgent()">Voir mon résumé</button></section>
   </section>
@@ -59,15 +59,22 @@
         </h3>
         <p>{{agent.mission.title}}</p>
       </div>
-      <p class="text-center">
-        <button mat-raised-button *ngIf="agent.life>1" (click)="changeMission()">
-          <mat-icon>next_week</mat-icon>
-          Changer de mission
-        </button>
-        <button mat-raised-button (click)="suicide()">
-          Se suicider
-        </button>
-      </p>
+      <div class="text-center">
+          <button mat-raised-button (click)="kill()">Tuer</button>
+          <button mat-raised-button (click)="unmask()">Démasquer</button>
+          <mat-menu #actionsMenu="matMenu">
+              <button mat-menu-item *ngIf="agent.life>1" (click)="changeMission()">
+                <mat-icon>next_week</mat-icon>
+                Changer de mission
+              </button>
+              <button mat-menu-item (click)="suicide()">
+                Se suicider
+              </button>
+          </mat-menu>
+          <button mat-icon-button [matMenuTriggerFor]="actionsMenu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+      </div>
     </section>
   </ng-container>
 
@@ -76,10 +83,7 @@
   </section>
 </main>
 
-<footer *ngIf="status==GameService.GAME_STATUS_STARTED && agent.status == 'alive' && agent._id != agent.target._id">
-  <button mat-raised-button color="primary" (click)="kill()">Tuer</button>
-  <button mat-raised-button color="primary" (click)="unmask()">Démasquer</button>
-</footer>
+
 
 <div class="wait-overlay" *ngIf="waitResponse">
   <h2>Attente de réponse</h2>
@@ -107,6 +111,7 @@
       <button mat-raised-button (click)="confirmKill(false)">
         <mat-icon>account_balance</mat-icon> Convoquer le tribunal</button>
     </mat-card-actions>
+    <p>Bon ok, le tribunal n'est pas implémenté, demandez les avis des autres joueurs pour pouvoir trancher</p>
   </mat-card>
 </div>
 
