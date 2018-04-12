@@ -1,5 +1,5 @@
 export class Game { constructor(){}
-    id: string;
+    id: number;
     name: string;
     agents: Agent[];
     missions: Mission[];
@@ -7,11 +7,13 @@ export class Game { constructor(){}
     status: string;
 }
 
-export class Agent { constructor(){}
+export class Agent { 
+constructor(){}
     id: string;
     name: string;
     mission: Mission;
     target: Agent;
+    gameId: number;
     game: Game;
     life: Number;
     code: string;
@@ -20,7 +22,8 @@ export class Agent { constructor(){}
 }
 
 export class Mission { constructor(){}
-    id: string;
+    id: number;
+    gameId: number;
     title: string;
     difficulty: string;
     game: Game;
@@ -54,4 +57,13 @@ export class Rank {constructor(){}
     agent: Agent;
     score: number;
     place: number;
+}
+
+export class Request {constructor(){}
+    emitter: Agent;
+    receiver: Agent;
+    emitterId: String;
+    receiverId: Agent;
+    type: string;
+    data: string;
 }

@@ -25,7 +25,7 @@ export class JoinComponent implements OnInit, OnDestroy {
     this.game = new Game();
   }
   private sub: any;
-  private gameId: string;
+  private gameId: number;
   public game: Game;
   public agent: Agent;
   public agentName: string;
@@ -90,8 +90,7 @@ export class JoinComponent implements OnInit, OnDestroy {
 
   onSubmit(f: NgForm) {
     if (f.valid) {
-      this.agent.game = new Game();
-      this.agent.game.id = this.game.id;
+      this.agent.gameId = this.gameId;
       this.agent.name = this.agentName;
       if (this.photoUrl) {
         this.agent.photo = this.resizePhoto();

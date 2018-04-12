@@ -28,7 +28,7 @@ export class UnmaskModalComponent {
 
   onYesClick(): void {
     let killer = this.data.killer;
-    this.socketsService.sendUnmaskRequest(killer, this.selectedAgent.name);
+    this.socketsService.sendUnmaskRequest(killer, this.selectedAgent);
     this.isWaiting = true;
     this.socketsService.getConfirmUnmask().subscribe(killer => {
       if (killer.target.id == this.data.killer.id) {

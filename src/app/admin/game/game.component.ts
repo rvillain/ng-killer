@@ -75,7 +75,7 @@ export class GameComponent implements OnInit, OnDestroy {
     if(this.newMission && this.newMission.length > 5){
       let newMission = new Mission();
       newMission.title = this.newMission;
-      newMission.game = this.game;
+      newMission.gameId = this.game.id;
       this.missionApiService.create(newMission).subscribe(
         res => {
           this.game.missions.push(res);

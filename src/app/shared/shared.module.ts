@@ -2,6 +2,7 @@ import { NgModule, isDevMode } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 import {  
   FormsModule,  
   ReactiveFormsModule  
@@ -38,6 +39,7 @@ import { RulesComponent } from './rules/rules.component'
 @NgModule({
   imports: [
     CommonModule,
+    HttpClientModule,
     MatButtonModule, 
     MatTableModule,
     MatToolbarModule,
@@ -60,6 +62,7 @@ import { RulesComponent } from './rules/rules.component'
   ],
   exports: [
     RouterModule,
+    HttpClientModule,
     MatButtonModule, 
     MatTableModule,
     MatToolbarModule,

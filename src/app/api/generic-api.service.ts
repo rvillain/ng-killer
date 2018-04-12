@@ -1,5 +1,5 @@
 import { Injectable, isDevMode } from '@angular/core';
-import { Http, Response, Headers, RequestOptions, URLSearchParams } from '@angular/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 export class GenericApiService<T> {
 
@@ -7,12 +7,17 @@ export class GenericApiService<T> {
   protected MSG_UPDATE_SUCCESS = "Enregistrement effectué";
   protected MSG_DELETE_SUCCESS = "Suppression effectuée";
   
-  protected optionsApplicationJson = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json' }) });
+  //protected optionsApplicationJson = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json' }) });
+  protected httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type':  'application/json'
+    })
+  };
 
   public isLoading: boolean = false;
 
   // Class constructor with Jsonp injected
-  constructor(protected http: Http) {
+  constructor(protected http: HttpClient) {
   }
 
   // Base URL for Petfinder API
@@ -30,7 +35,7 @@ export class GenericApiService<T> {
   }
 
   // get a pet based on their id
-  getById(id: string): Observable<T> {
+  getById(id: any): Observable<T> {
       //this.sharedService.startLoading();
 
       // End point for list of pets:
@@ -105,7 +110,7 @@ export class GenericApiService<T> {
       // if (toastMsg) {
       //     this.sharedService.successToast(toastMsg);
       // }
-      return res.json();
+      return res;
   }
 
 }
