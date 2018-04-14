@@ -19,6 +19,7 @@ constructor(){}
     code: string;
     status: string;
     photo: string;
+    requests: Request[];
 }
 
 export class Mission { constructor(){}
@@ -63,7 +64,7 @@ export class Request {constructor(){}
     emitter: Agent;
     receiver: Agent;
     emitterId: String;
-    receiverId: Agent;
+    receiverId: String;
     type: string;
     data: string;
 }

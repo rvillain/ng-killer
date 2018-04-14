@@ -1,6 +1,6 @@
 <app-header [game]="agent?agent.game.name:''">
 </app-header>
-<main>
+<main *ngIf="agent">
   <section *ngIf="status==GameService.GAME_STATUS_CREATED">
     Bonjour agent {{agent?agent.name:''}},<br>
     La partie n'a pas encore commencée, soyez patient, préparez carnet de note, revolver et autre montre à gousset.

@@ -5,6 +5,7 @@ import { Agent } from '../../model/model';
 
 import { MatSnackBar } from '@angular/material';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { ActionsService } from '../../shared/actions.service';
 
 @Component({
   selector: 'app-unmask-modal',
@@ -19,7 +20,7 @@ export class UnmaskModalComponent {
     public dialogRef: MatDialogRef<UnmaskModalComponent>,
     private agentApiService: AgentApiService,
     private socketsService: SocketsService,
-    public snackBar:MatSnackBar,
+    public snackBar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public data: any) {
     agentApiService.getForUnmask(data.killer.id).subscribe(res => {
       this.agents = res;
@@ -30,22 +31,20 @@ export class UnmaskModalComponent {
     let killer = this.data.killer;
     this.socketsService.sendUnmaskRequest(killer, this.selectedAgent);
     this.isWaiting = true;
-    this.socketsService.getConfirmUnmask().subscribe(killer => {
-      if (killer.target.id == this.data.killer.id) {
-        this.snackBar.open("Bravo agent, vous avez visé juste", null, { duration: 3000 });
-        this.dialogRef.close(true);
-      }
-    });
-    this.socketsService.getUnconfirmUnmask().subscribe(killer => {
-      if (killer.target.id == this.data.killer.id) {
-        this.snackBar.open("Aïe, bien visé mais la cible n'est pas d'accord", null, { duration: 3000 });
-        this.dialogRef.close(true);
-      }
-    });
-    this.socketsService.getWrongKiller().subscribe(agent => {
-      if(agent.id == this.data.killer.id){
-        this.snackBar.open("Oups, ce n'est pas votre killer", null,{duration: 300000});
-        this.dialogRef.close(true);
+    this.socketsService.requests.subscribe(request => {
+      switch (request.type) {
+        case ActionsService.REQUEST_TYPE_CONFIRM_UNMASK:
+          this.snackBar.open("Bravo agent, vous avez visé juste", null, { duration: 3000 });
+          this.dialogRef.close(true);
+          break;
+        case ActionsService.REQUEST_TYPE_UNCONFIRM_UNMASK:
+          this.snackBar.open("Aïe, bien visé mais la cible n'est pas d'accord", null, { duration: 3000 });
+          this.dialogRef.close(true);
+          break;
+        case ActionsService.REQUEST_TYPE_WRONG_KILLER:
+          this.snackBar.open("Oups, ce n'est pas votre killer", null, { duration: 300000 });
+          this.dialogRef.close(true);
+          break;
       }
     });
   }

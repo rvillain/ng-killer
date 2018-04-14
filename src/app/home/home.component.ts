@@ -1,11 +1,10 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, HostListener } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Game } from '../model/model';
 import { GameApiService } from '../api/game-api.service';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 
 import {Router} from "@angular/router";
-import { SocketsService } from '../shared/sockets.service';
 import { GameService } from '../shared/game.service';
 
 @Component({
@@ -15,12 +14,9 @@ import { GameService } from '../shared/game.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(public dialog: MatDialog, public socketsService:  SocketsService) { }
+  constructor(public dialog: MatDialog) { }
 
   ngOnInit() {
-    this.socketsService.connect();
-    this.socketsService.getAgentUpdate().subscribe(a=>{});
-    this.socketsService.joinRoom({name: "toto"});
   }
   openGameDialog(){
     let dialogRef = this.dialog.open(NewGameDialog, {
@@ -28,10 +24,7 @@ export class HomeComponent implements OnInit {
       data: { }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
-    this.socketsService.joinRoom({name: "toto"});
+    dialogRef.afterClosed().subscribe(result => {});
   }
 
 }

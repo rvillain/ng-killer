@@ -4,7 +4,6 @@ import { NgForm } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { AgentApiService } from '../../api/agent-api.service';
 import { GameApiService } from '../../api/game-api.service';
-import { SocketsService } from '../../shared/sockets.service';
 import { GameService } from '../../shared/game.service';
 
 import { Game, Agent } from '../../model/model';
@@ -18,7 +17,6 @@ import { Game, Agent } from '../../model/model';
 export class JoinComponent implements OnInit, OnDestroy {
 
   constructor(private route: ActivatedRoute, private router: Router, private agentApiService: AgentApiService, private gameApiService: GameApiService,
-    private socketsService: SocketsService,
     public gameService: GameService,
     public snackBar: MatSnackBar) {
     this.agent = new Agent();
@@ -33,7 +31,6 @@ export class JoinComponent implements OnInit, OnDestroy {
   public photoUrl: string;
 
   ngOnInit() {
-    this.socketsService.connect();
     this.agent = new Agent();
     this.sub = this.route.params.subscribe(params => {
       this.gameId = params['id']; // (+) converts string 'id' to a number
@@ -97,7 +94,6 @@ export class JoinComponent implements OnInit, OnDestroy {
       }
       this.agentApiService.create(this.agent).subscribe(
         res => {
-          this.socketsService.newAgent(res);
           localStorage.setItem('game-' + this.game.id, res.id);
           this.router.navigate(['/agent', res.id]);
         },

@@ -26,29 +26,28 @@ export class GameComponent implements OnInit, OnDestroy {
     this.game = new Game();
   }
 
+  private gameId: number;
   public game:Game;
   private sub: any;
   public newMission: string;
 
+  getGame(){
+    this.gameApiService.getById(this.gameId).subscribe(
+      res => {
+        this.game = res;
+      },
+      err => {
+        console.log("err", err);
+      });
+  }
+
   ngOnInit() {
-    this.socketsService.connect();
     this.sub = this.route.params.subscribe(params => {
-      let id = params['id']; // (+) converts string 'id' to a number
-      this.gameApiService.getById(id).subscribe(
-        res => {
-          this.game = res;
-          this.socketsService.joinRoom(this.game.id);
-        },
-        err => {
-          console.log("err", err);
-        });
+      this.gameId = params['id']; // (+) converts string 'id' to a number
+      this.socketsService.connect(this.gameId);
+      this.socketsService.requests.subscribe(request=>{this.getGame()})
+      this.getGame();
       // In a real app: dispatch action to load the details here.
-    });
-    this.socketsService.getNewAgent().subscribe(agent=> {
-      let gameId: any = agent.game;
-      if(this.game.id == gameId){
-        this.game.agents.push(agent);
-      }
     });
   }
 
@@ -106,7 +105,6 @@ export class GameComponent implements OnInit, OnDestroy {
     this.gameApiService.start(this.game.id).subscribe(
       res => {
         this.game.status = GameService.GAME_STATUS_STARTED;
-        this.socketsService.updateGameStatus(this.game);
       },
       err => {
         console.log("err", err);
@@ -116,7 +114,6 @@ export class GameComponent implements OnInit, OnDestroy {
     this.gameApiService.reinit(this.game.id).subscribe(
       res => {
         this.game.status = GameService.GAME_STATUS_CREATED;
-        this.socketsService.updateGameStatus(this.game);
       },
       err => {
         console.log("err", err);
