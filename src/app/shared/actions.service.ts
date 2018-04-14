@@ -10,6 +10,27 @@ export class ActionsService {
   public static ACTTION_TYPE_ERROR_DEATH='error_death';
   public static ACTTION_TYPE_SUICIDE='suicide';
   public static ACTTION_TYPE_GAME_STARTED='game_started';
+
+  
+  public static REQUEST_TYPE_JOIN_ROOM='join-room';
+
+  public static REQUEST_TYPE_ASK_KILL='ask-kill';
+  public static REQUEST_TYPE_CONFIRM_KILL='confirm-kill';
+  public static REQUEST_TYPE_UNCONFIRM_KILL='unconfirm-kill';
+
+  public static REQUEST_TYPE_ASK_UNMASK='ask-unmask';
+  public static REQUEST_TYPE_WRONG_KILLER='wrong-killer';
+  public static REQUEST_TYPE_CONFIRM_UNMASK='confirm-unmask';
+  public static REQUEST_TYPE_UNCONFIRM_UNMASK='unconfirm-unmask';
+
+  public static REQUEST_TYPE_AGENT_UPDATE='agent-update';
+  public static REQUEST_TYPE_CHANGE_MISSION='change-mission';
+  public static REQUEST_TYPE_SUICIDE='suicide';
+  public static REQUEST_TYPE_NEW_ACTION='new-action';
+  public static REQUEST_TYPE_NEW_AGENT='new-agent';
+  public static REQUEST_TYPE_GAME_STATUS='game-status';
+  public static REQUEST_TYPE_ACTION_ERROR='action-error';
+  public static REQUEST_TYPE_TRIBUNAL_STATUS='tribunal-status';
   constructor() { }
 
   isImportant(action: Action): boolean{
@@ -37,16 +58,16 @@ export class ActionsService {
   }
 
   countKillsByAgent(actions: Action[], agent: Agent): number{
-    let score:number = actions.filter(a=>a.killer && a.killer._id==agent._id && a.type == ActionsService.ACTTION_TYPE_KILL).length;
+    let score:number = actions.filter(a=>a.killer && a.killer.id==agent.id && a.type == ActionsService.ACTTION_TYPE_KILL).length;
     return score;
   }
 
   countUnmasksByAgent(actions: Action[], agent: Agent): number{
-    return actions.filter(a=>a.killer && a.killer._id==agent._id && a.type == ActionsService.ACTTION_TYPE_UNMASK).length;
+    return actions.filter(a=>a.killer && a.killer.id==agent.id && a.type == ActionsService.ACTTION_TYPE_UNMASK).length;
   }
 
   countBluffsByAgent(actions: Action[], agent: Agent): number{
-    return actions.filter(a=>a.target && a.target._id==agent._id && a.type == ActionsService.ACTTION_TYPE_WRONG_KILLER).length;
+    return actions.filter(a=>a.target && a.target.id==agent.id && a.type == ActionsService.ACTTION_TYPE_WRONG_KILLER).length;
   }
 
   countPointsByAgent(actions: Action[], agent: Agent): number{

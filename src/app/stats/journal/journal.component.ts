@@ -17,7 +17,7 @@ export class JournalComponent implements OnInit, OnDestroy {
   public qrUrl: string;
   public qrTag: any;
   private sub: any;
-  private id: string;
+  private id: number;
   public game: Game;
   constructor(private gameApiService: GameApiService,
     private route: ActivatedRoute,
@@ -27,27 +27,20 @@ export class JournalComponent implements OnInit, OnDestroy {
     public gameService: GameService) {
   }
 
-  getGame(callback = null) {
+  getGame() {
     this.gameApiService.getById(this.id).subscribe(
       res => {
         this.game = res;
-
+        this.createQr();
         this.game.actions = this.game.actions.sort((a: Action, b: Action) => {
           return (new Date(b.Created_date)).getTime() - (new Date(a.Created_date)).getTime();
         });
-
-        this.createQr();
-
-        if (callback) {
-          callback();
-        }
       },
       err => {
         console.log("err", err);
       });
   }
   ngOnInit() {
-    this.socketsService.connect();
 
     var currentAbsoluteUrl = window.location.href;
     var currentRelativeUrl = this.router.url;
@@ -57,46 +50,11 @@ export class JournalComponent implements OnInit, OnDestroy {
     this.sub = this.route.params.subscribe(params => {
       this.id = params['id']; // (+) converts string 'id' to a number
       this.qrUrl = baseUrl + "/join/" + this.id;
-      this.getGame(() => {
-        this.socketsService.joinRoom(this.game._id);
-      });
+      this.socketsService.connect(this.id);
+      this.socketsService.requests.subscribe(request=>{ this.getGame()});
+      this.getGame();
       // In a real app: dispatch action to load the details here.
     });
-
-    this.socketsService.getNewAgent().subscribe(agent => {
-      this.game.agents.push(agent);
-    })
-    this.socketsService.getGameStatus().subscribe(game => {
-      //this.game.status = game.status;
-      this.getGame();
-    })
-    this.socketsService.getNewAction().subscribe(action => {
-      this.game.actions.unshift(action);
-    })
-    this.socketsService.getConfirmKill().subscribe(agent => {
-      let agentToUpdate = this.game.agents.find(a => a._id == agent._id);
-      if (agentToUpdate) {
-        agentToUpdate.status = 'dead';
-      }
-    })
-    this.socketsService.getSuicide().subscribe(agent => {
-      let agentToUpdate = this.game.agents.find(a => a._id == agent._id);
-      if (agentToUpdate) {
-        agentToUpdate.status = 'dead';
-      }
-    })
-    this.socketsService.getConfirmUnmask().subscribe(agent => {
-      let agentToUpdate = this.game.agents.find(a => a._id == agent._id);
-      if (agentToUpdate) {
-        agentToUpdate.status = 'dead';
-      }
-    })
-    this.socketsService.getWrongKiller().subscribe(agent => {
-      let agentToUpdate = this.game.agents.find(a => a._id == agent._id);
-      if (agentToUpdate) {
-        agentToUpdate.status = 'dead';
-      }
-    })
 
   }
 

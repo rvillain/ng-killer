@@ -1,6 +1,6 @@
 // Imports
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers, RequestOptions, URLSearchParams } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 import { GenericApiService } from './generic-api.service';
 
@@ -9,7 +9,7 @@ import {Game, Mission} from '../model/model';
 @Injectable()
 export class GameApiService  extends GenericApiService<Game>{
 
-  constructor(http: Http) {
+  constructor(http: HttpClient) {
     super(http);
     this.controllerName = 'games';
   }

@@ -94,7 +94,7 @@ export class AdminHomeComponent implements OnInit {
   }
 
   public saveMission(mission: Mission): void {
-    this.missionApiService.update(mission._id, mission).subscribe(res=>{});
+    this.missionApiService.update(mission.id, mission).subscribe(res=>{});
   }
 
   deleteGame(game: Game): void {
@@ -105,7 +105,7 @@ export class AdminHomeComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this.gameApiService.delete(game._id).subscribe(
+        this.gameApiService.delete(game.id).subscribe(
           res => {
             var index = this.games.indexOf(game, 0);
             if (index > -1) {

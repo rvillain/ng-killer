@@ -1,6 +1,6 @@
 <app-header [game]="agent?agent.game.name:''">
 </app-header>
-<main>
+<main *ngIf="agent">
   <section *ngIf="status==GameService.GAME_STATUS_CREATED">
     Bonjour agent {{agent?agent.name:''}},<br><br>
     La partie n'a pas encore commencée, soyez patient, préparez carnet de note, revolver et autre équipement désuet.
@@ -12,12 +12,12 @@
     <app-timeline [actions]="getMyActions()"></app-timeline>
     <section><button mat-raised-button *ngIf="getMyActions().length == 0" (click)="getAgent()">Voir mon résumé</button></section>
   </section>
-  <section *ngIf="status==GameService.GAME_STATUS_STARTED && agent.status == 'alive' && agent._id == agent.target._id">
+  <section *ngIf="status==GameService.GAME_STATUS_STARTED && agent.status == 'alive' && agent.id == agent.target.id">
     <img src="/assets/images/trophy.svg"> Bravo agent {{agent.name}}. Vous êtes le dernier survivant.
     <app-timeline [actions]="getMyActions()"></app-timeline>
     <section><button mat-raised-button *ngIf="getMyActions().length == 0" (click)="getAgent()">Voir mon résumé</button></section>
   </section>
-  <ng-container *ngIf="status==GameService.GAME_STATUS_STARTED && agent && agent.status == 'alive' && agent._id != agent.target._id">
+  <ng-container *ngIf="status==GameService.GAME_STATUS_STARTED && agent && agent.status == 'alive' && agent.id != agent.target.id">
     <section class="life">
       <mat-icon [ngClass]="{'red': agent.life>=1}">favorite</mat-icon>
       <mat-icon [ngClass]="{'red': agent.life>=2}">favorite</mat-icon>
@@ -82,8 +82,6 @@
     La partie est terminée. Préparez vous pour une prochaine mission, plutôt que de vouloir ressasser le passé.
   </section>
 </main>
-
-
 
 <div class="wait-overlay" *ngIf="waitResponse">
   <h2>Attente de réponse</h2>

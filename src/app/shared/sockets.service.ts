@@ -1,140 +1,113 @@
-import { Injectable, isDevMode } from '@angular/core';
-import { Observable } from 'rxjs'
-import * as io from 'socket.io-client';
+import { Injectable, isDevMode, OnInit } from '@angular/core';
+import { Observable, Subscriber } from 'rxjs';
+import { RequestApiService } from '../api/request-api.service';
+import { Request } from '../model/model';
+import { HubConnection } from '@aspnet/signalr';
 
 import { Agent, Action, Game, Tribunal, Vote } from "../model/model";
+import { ActionsService } from './actions.service';
 
 @Injectable()
 export class SocketsService {
 
- // const config: SocketIoConfig = { url: (isDevMode() ? "http://localhost:3000/" : "http://ng-killer-api.azurewebsites.net/"), options: {} };
-  
-  constructor() { 
-    //socket.ioSocket.
+  private _hubConnection: HubConnection;
+
+  private observer: Subscriber<Request>;
+  public requests: Observable<Request>;
+
+  private url = (isDevMode() ? "http://localhost:5000/requesthub" : "https://ng-killer-api.azurewebsites.net/");
+
+  constructor(public actionsService: ActionsService, public requestApiService: RequestApiService) {
+    this._hubConnection = new HubConnection(this.url);
+    this.requests= new Observable<Request>(observer=> this.observer = observer);
   }
   
-  //private url = (isDevMode() ? "http://localhost:3000/" : "http://ng-killer-api.azurewebsites.net/");
-  private url = "http://ng-killer-api.azurewebsites.net/";
-  private socket;
+  private start(callback: any) {
+    this._hubConnection.start()
+      .then(() => {
+        console.log('Hub connection started')
+        if (callback) {
+          callback();
+        }
+      })
+      .catch(() => {
+        console.log('Error while establishing connection')
+        setTimeout(this.start, 10000);
+      });
+  }
 
-  //Connect
-  connect(){
-    this.socket = io(this.url,{
-      'reconnection delay': 1000,
-      'reconnection limit': 1000,
-      'max reconnection attempts': 'Infinity'
+  public connect(gameId: number, agentId: string = null) {
+    this.start(() => {
+      this._hubConnection.send("JoinRoom", gameId.toString())
+      this._hubConnection.on('Request', (request: Request) => {
+        if (!agentId || agentId == request.receiverId) {
+          this.observer.next(request);
+        }
+      });
     });
   }
-   //join room
-   joinRoom(game){
-    this.socket.emit('join-room', game);    
-  }
-  
+
   //Kill
-  sendKillRequest(agent){
-    this.socket.emit('ask-kill', agent);    
-  }
-  getKillRequest(): Observable<Agent> {
-    return this.genericGet<Agent>('ask-kill');
+  sendKillRequest(agent) {
+    this.wsEmit('ask-kill', agent);
   }
 
-  confirmKill(agent){
-    this.socket.emit('confirm-kill', agent);    
-  }
-  getConfirmKill(): Observable<Agent> {
-    return this.genericGet<Agent>('confirm-kill');
+  confirmKill(agent) {
+    this.wsEmit('confirm-kill', agent);
   }
 
-  unconfirmKill(agent){
-    this.socket.emit('unconfirm-kill', agent);    
-  }
-  getUnconfirmKill(): Observable<Agent> {
-    return this.genericGet<Agent>('unconfirm-kill');
+  unconfirmKill(agent) {
+    this.wsEmit('unconfirm-kill', agent);
   }
 
-  sendUnmaskRequest(agent, name){
-    this.socket.emit('ask-unmask', {agent: agent, name: name});    
-  }
-  getUnmaskRequest(): Observable<Agent>{
-    return this.genericGet<Agent>('ask-unmask');
+  sendUnmaskRequest(agent, target) {
+    this.wsEmit('ask-unmask', {}, agent.id, target.id);
   }
 
-  //Unmask
-  confirmUnmask(agent){
-    this.socket.emit('confirm-unmask', agent);    
-  }
-  getConfirmUnmask(): Observable<Agent> {
-    return this.genericGet<Agent>('confirm-unmask');
-  }
-  getWrongKiller(): Observable<Agent> {
-    return this.genericGet<Agent>('wrong-killer');
+  confirmUnmask(agent) {
+    this.wsEmit('confirm-unmask', agent);
   }
 
-  unconfirmUnmask(agent){
-    this.socket.emit('unconfirm-unmask', agent);    
-  }
-  getUnconfirmUnmask(): Observable<Agent> {
-    return this.genericGet<Agent>('unconfirm-unmask');
+  unconfirmUnmask(agent) {
+    this.wsEmit('unconfirm-unmask', agent);
   }
 
   //agent
-  askAgentUpdate(agent){
-    this.socket.emit('agent-update', agent);    
-  }
-  getAgentUpdate(): Observable<Agent>{
-    return this.genericGet<Agent>('agent-update');
+  askAgentUpdate(agent) {
+    this.wsEmit('agent-update', agent);
   }
 
   //Change mission
-  sendChangeMissionRequest(agent){
-    this.socket.emit('change-mission', agent);    
+  sendChangeMissionRequest(agent) {
+    this.wsEmit('change-mission', agent);
   }
   //Suicide
-  sendSuicideRequest(agent){
-    this.socket.emit('suicide', agent);    
-  }
-  getSuicide(): Observable<Agent> {
-    return this.genericGet<Agent>('suicide');
-  }
-
-  //Actions
-  getNewAction(): Observable<Action>{
-    return this.genericGet<Action>('new-action');
+  sendSuicideRequest(agent) {
+    this.wsEmit('suicide', agent);
   }
   //Agent
-  newAgent(agent: Agent){
-    this.socket.emit('new-agent', agent);  
-  }
-  getNewAgent(): Observable<Agent>{
-    return this.genericGet<Agent>('new-agent');
+  newAgent(agent: Agent) {
+    this.wsEmit('new-agent', agent, agent.id);
   }
   //game
-  updateGameStatus(game: Game){
-    this.socket.emit('game-status', game);
-  }
-  getGameStatus(): Observable<Game>{
-    return this.genericGet<Game>('game-status');
+  updateGameStatus(game: Game) {
+    this.wsEmit('game-status', game);
   }
 
-  //global
-  getActionError(): Observable<string>{
-    return this.genericGet<string>('action-error');
-  }
-
-  //Tribunal
-  getTribunalStatus(): Observable<Tribunal>{
-    return this.genericGet<Tribunal>('tribunal-status');
-  }
-  genericGet<T>(method): Observable<T>{
-    let observable = new Observable<T>(observer => {
-      this.socket.on(method, (data: T) => {
-        observer.next(data);    
-      });
-      return () => {
-        this.socket.disconnect();
-      };  
-    })     
-    return observable;
+  wsEmit(type, data, em = null, re = null) {
+    let req = new Request();
+    req.type = type;
+    req.data = JSON.stringify(data);
+    req.emitterId = em;
+    req.receiverId = re;
+    this.requestApiService.push(req).subscribe(r => {
+      console.log("emit", req);
+    }, err => {
+      console.log("err", err);
+    });
+    //this.subject.next(req);
   }
 
 }
+
+

@@ -5,6 +5,7 @@ import { Agent } from '../../model/model';
 
 import { MatSnackBar } from '@angular/material';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { ActionsService } from '../../shared/actions.service';
 
 @Component({
   selector: 'app-kill-modal',
@@ -26,16 +27,16 @@ export class KillModalComponent {
     this.socketsService.sendKillRequest(killer);
     this.isWaiting=true;
     
-    this.socketsService.getConfirmKill().subscribe(target => {
-      if(target._id == killer.target._id){
-        this.snackBar.open("Habile ! Mission accomplie", null,{duration: 3000});
-        this.dialogRef.close(true);
-      }
-    });
-    this.socketsService.getUnconfirmKill().subscribe(target => {
-      if(target._id == killer.target._id){
+    this.socketsService.requests.subscribe(request=>{
+      switch(request.type){
+        case ActionsService.REQUEST_TYPE_CONFIRM_KILL:
+          this.snackBar.open("Habile ! Mission accomplie", null,{duration: 3000});
+          this.dialogRef.close(true);
+        break;
+        case ActionsService.REQUEST_TYPE_UNCONFIRM_KILL:
         this.snackBar.open("Visiblement, votre cible n'est pas d'accord", null,{duration: 3000});
-        this.dialogRef.close(true);
+          this.dialogRef.close(true);
+        break;
       }
     });
   }
