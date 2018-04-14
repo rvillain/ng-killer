@@ -21,7 +21,7 @@ export class SocketsService {
     this._hubConnection = new HubConnection(this.url);
     this.requests= new Observable<Request>(observer=> this.observer = observer);
   }
-
+  
   private start(callback: any) {
     this._hubConnection.start()
       .then(() => {

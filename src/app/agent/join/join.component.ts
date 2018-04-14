@@ -30,6 +30,7 @@ export class JoinComponent implements OnInit, OnDestroy {
 
   public photoUrl: string;
 
+  public submitting: boolean = false;
   ngOnInit() {
     this.agent = new Agent();
     this.sub = this.route.params.subscribe(params => {
@@ -86,8 +87,10 @@ export class JoinComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(f: NgForm) {
-    if (f.valid) {
-      this.agent.gameId = this.gameId;
+    if (f.valid && !this.submitting) {
+      this.submitting = true;
+      this.agent.game = new Game();
+      this.agent.game._id = this.game._id;
       this.agent.name = this.agentName;
       if (this.photoUrl) {
         this.agent.photo = this.resizePhoto();
@@ -101,6 +104,7 @@ export class JoinComponent implements OnInit, OnDestroy {
           this.snackBar.open(err, null, {
             duration: 3000,
           });
+          this.submitting = false;
           console.log("err", err);
         });
     }
