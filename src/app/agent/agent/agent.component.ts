@@ -31,6 +31,7 @@ export class AgentComponent implements OnInit, OnDestroy {
   public showConfirmKill: boolean = false;
   public showConfirmUnmask: boolean = false;
   public firstLoad: boolean = true;
+  public treatingRequest: Request = null;
 
   public GameService = GameService;
 
@@ -59,6 +60,8 @@ export class AgentComponent implements OnInit, OnDestroy {
       });
   }
   manageNewRequest(request: Request) {
+    //treat only one request at a time
+    this.treatingRequest = request;
     switch (request.type) {
       case ActionsService.REQUEST_TYPE_ASK_KILL:
         this.showConfirmKill = true;
@@ -67,10 +70,12 @@ export class AgentComponent implements OnInit, OnDestroy {
         this.showConfirmUnmask = true;
         break;
       case ActionsService.REQUEST_TYPE_TRIBUNAL_STATUS:
+        this.treatingRequest = null;
         break;
       case ActionsService.REQUEST_TYPE_ACTION_ERROR:
-      this.waitResponse = false;
-      this.snackBar.open(request.data, null, { duration: 3000 });
+        this.waitResponse = false;
+        this.snackBar.open(request.data, null, { duration: 3000 });
+        this.treatingRequest = null;
         break;
     }
   }
@@ -82,10 +87,10 @@ export class AgentComponent implements OnInit, OnDestroy {
   }
 
   @HostListener('window:focus', ['$event'])
-  onFocus(event: any): void {this.getAgent()}
+  onFocus(event: any): void { this.getAgent() }
 
   @HostListener('window:blur', ['$event'])
-  onBlur(event: any): void {}
+  onBlur(event: any): void { }
 
   getMyActions(): Action[] {
     if (this.agent.game.actions) {
@@ -112,28 +117,29 @@ export class AgentComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        this.treatingRequest = null;
         this.getAgent();
       }
     });
   }
   confirmKill(confirm: boolean) {
     if (confirm) {
-      this.socketsService.confirmKill(this.agent);
+      this.socketsService.confirmKill(this.agent, this.treatingRequest);
       this.agent.status = "dead";
     }
     else {
-      this.socketsService.unconfirmKill(this.agent);
+      this.socketsService.unconfirmKill(this.agent, this.treatingRequest);
     }
     this.showConfirmKill = false;
   }
 
   confirmUnmask(confirm: boolean) {
     if (confirm) {
-      this.socketsService.confirmUnmask(this.agent);
+      this.socketsService.confirmUnmask(this.agent, this.treatingRequest);
       this.agent.status = "dead";
     }
     else {
-      this.socketsService.unconfirmUnmask(this.agent);
+      this.socketsService.unconfirmUnmask(this.agent, this.treatingRequest);
     }
     this.showConfirmUnmask = false;
   }
@@ -144,6 +150,7 @@ export class AgentComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      this.treatingRequest = null;
       this.getAgent();
     });
   }

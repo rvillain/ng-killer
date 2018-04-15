@@ -35,7 +35,7 @@ export class Action {constructor(){}
     killer: Agent;
     target: Agent;
     type: string;
-    Created_date: Date;
+    dateCreation: Date;
 }
 
 export class Tribunal { constructor(){}
@@ -57,10 +57,16 @@ export class Vote { constructor(){}
 export class Rank {constructor(){}
     agent: Agent;
     score: number;
+    kills: number;
+    unmasks: number;
+    bluffs: number;
     place: number;
 }
 
 export class Request {constructor(){}
+    id: number;
+    parentRequestId: number;
+    parentRequest: Request;
     emitter: Agent;
     receiver: Agent;
     emitterId: String;

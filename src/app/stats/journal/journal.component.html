@@ -1,70 +1,39 @@
-<app-header [game]="game?game.name:''">
-</app-header>
-<section *ngIf="game">
+<ng-container *ngIf="game">
   <div *ngIf="gameService.isCreated(game)" class="subscription">
-    <div>
-      <h1>
-        Rejoignez la partie
-      </h1>
-      <a href="{{qrUrl}}" target="_blank" [innerHTML]="qrTag"></a>
+    <app-header [game]="game.name"></app-header>
+    <div class="row">
+      <div class="col text-center">
+        <section>
+          <h1>
+            Rejoignez la partie
+          </h1>
+          <a href="{{qrUrl}}" target="_blank" [innerHTML]="qrTag"></a>
 
-      <div class="agents" *ngIf="game.agents && game.agents.length > 0">
-        <h3>
-          Les joueurs inscrits
-        </h3>
-        <p>
-          <span class="agent-card" *ngFor="let agent of game.agents">{{agent.name}}</span>
-        </p>
+          <div class="agents" *ngIf="game.agents && game.agents.length > 0">
+            <h3>
+              Les joueurs inscrits
+            </h3>
+            <p>
+              <span class="agent-card" *ngFor="let agent of game.agents">{{agent.name}}</span>
+            </p>
+          </div>
+        </section>
       </div>
-    </div>
-    <div class="text-left">
-      <app-rules></app-rules>
+      <div class="col">
+        <app-rules></app-rules>
+      </div>
     </div>
   </div>
   <ng-container *ngIf="!gameService.isCreated(game)">
-    <a href="{{qrUrl}}" target="_blank" [innerHTML]="qrTag" id="qrStarted"></a>
-    <div class="row agents">
+    <div class="row">
       <div class="col">
-        <div class="row">
-          <div class="col">
-            <h3 class="blue">
-              Les vivants ({{getAliveAgents().length}})
-            </h3>
-            <p>
-              <span class="agent-card bg-blue" *ngFor="let agent of getAliveAgents()">{{agent.name}}</span>
-            </p>
-            <h3 class="red">
-              Les morts ({{getDeadAgents().length}})
-            </h3>
-            <p>
-              <span *ngIf="getDeadAgents().length == 0">On se bouge! Tous les agents sont encore en vie</span>
-              <span class="agent-card bg-red" *ngFor="let agent of getDeadAgents()">{{agent.name}}</span>
-            </p>
-          </div>
-          <div class="col">
-            <app-leaderboard *ngIf="getRanking('general').length > 0" 
-              [ranking]="getRanking('general')"
-              title="Classement général">
-            </app-leaderboard>
-            <app-leaderboard *ngIf="getRanking('kills').length > 0" 
-              [ranking]="getRanking('kills')"
-              title="Classement des tueurs">
-            </app-leaderboard>
-            <app-leaderboard *ngIf="getRanking('unmasks').length > 0" 
-              [ranking]="getRanking('unmasks')"
-              title="Classement des enquêteurs">
-            </app-leaderboard>
-            <app-leaderboard *ngIf="getRanking('bluffs').length > 0" 
-              [ranking]="getRanking('bluffs')"
-              title="Classement des bluffeurs">
-            </app-leaderboard>
-          </div>
-        </div>
+        <app-header [game]="game.name"></app-header>
+        <section>
+          <div [innerHTML]="qrTag" id="qrStarted"></div>
+          <app-leaderboard [game]="game" title="Classement"></app-leaderboard>
+        </section>
       </div>
       <div class="col">
-        <h3>
-          La gazette
-        </h3>
         <app-timeline [actions]="game.actions">
 
         </app-timeline>
@@ -72,4 +41,4 @@
     </div>
   </ng-container>
 
-</section>
+</ng-container>

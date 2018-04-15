@@ -33,7 +33,7 @@ export class JournalComponent implements OnInit, OnDestroy {
         this.game = res;
         this.createQr();
         this.game.actions = this.game.actions.sort((a: Action, b: Action) => {
-          return (new Date(b.Created_date)).getTime() - (new Date(a.Created_date)).getTime();
+          return (new Date(b.dateCreation)).getTime() - (new Date(a.dateCreation)).getTime();
         });
       },
       err => {
@@ -56,6 +56,10 @@ export class JournalComponent implements OnInit, OnDestroy {
       // In a real app: dispatch action to load the details here.
     });
 
+    this.socketsService.requests.subscribe(request=>{
+      this.getGame();
+    })
+
   }
 
   createQr() {
@@ -70,47 +74,6 @@ export class JournalComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.sub.unsubscribe();
-  }
-
-  getAliveAgents() {
-    return this.game.agents.filter(a => a.status == 'alive');
-  }
-  getDeadAgents() {
-    return this.game.agents.filter(a => a.status == 'dead');
-  }
-
-
-  getRanking(type) {
-    let ranking: Rank[] = [];
-    for(let i=0; i<this.game.agents.length; i++){
-      let agent = this.game.agents[i];
-      let r = new Rank();
-      r.agent = agent;
-      r.score = 1;
-      switch (type) {
-        case 'general':
-          r.score = this.actionsService.countPointsByAgent(this.game.actions, agent);
-          break;
-        case 'kills':
-          r.score = this.actionsService.countKillsByAgent(this.game.actions, agent);
-          break;
-        case 'unmasks':
-          r.score = this.actionsService.countUnmasksByAgent(this.game.actions, agent);
-          break;
-        case 'bluffs':
-          r.score = this.actionsService.countBluffsByAgent(this.game.actions, agent);
-          break;
-      }
-      ranking.push(r);
-    }
-    //order
-    ranking = ranking.sort((a: Rank, b: Rank) => { return b.score - a.score }).filter(r=>r.score>0);
-    //set places
-    let rankingWithPlaces = ranking.map(r=> { 
-      r.place = ranking.filter(ra=>ra.score>r.score).length + 1;
-      return r
-    });
-    return rankingWithPlaces;
   }
 
 }

@@ -42,7 +42,7 @@ export class JoinComponent implements OnInit, OnDestroy {
           //agents already created 
           let agentId = localStorage.getItem('game-' + this.game.id);
           if (agentId && !this.gameService.isCreated(this.game)) {
-            this.router.navigate(['/agent', agentId]);
+            //this.router.navigate(['/agent', agentId]);
           }
         },
         err => {
@@ -89,9 +89,8 @@ export class JoinComponent implements OnInit, OnDestroy {
   onSubmit(f: NgForm) {
     if (f.valid && !this.submitting) {
       this.submitting = true;
-      this.agent.game = new Game();
-      this.agent.game._id = this.game._id;
       this.agent.name = this.agentName;
+      this.agent.gameId = this.gameId;
       if (this.photoUrl) {
         this.agent.photo = this.resizePhoto();
       }

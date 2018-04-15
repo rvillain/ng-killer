@@ -1,36 +1,113 @@
 <div class="timeline-wrapper">
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display" rel="stylesheet">
   <div class="timeline">
-    <div class="entries">
-      <div class="entry" *ngFor="let action of actions">
-        <div class="title" [ngClass]="{'big': actionsService.isImportant(action)}">
-          <i class="material-icons">{{actionsService.getIcon(action)}}</i>
-          <span class="action-name">{{action.type | actionType}}</span>
-        </div>
-        <div class="body">
-          <p *ngIf="action.type==ActionsService.ACTTION_TYPE_KILL">
-            <span class="agent-card bg-blue">{{action.killer?.name}}</span>
-            a tué
-            <span class="agent-card bg-red">{{action.target?.name}}</span>
-            <span class="mission">{{action.mission?.title}}</span>
-          </p>
-          <p *ngIf="action.type==ActionsService.ACTTION_TYPE_UNMASK">
-            <span class="agent-card bg-blue">{{action.killer?.name}}</span>
-            a identifié son killer
-            <span class="agent-card bg-red">{{action.target?.name}}</span>
-          </p>
-          <p *ngIf="action.type==ActionsService.ACTTION_TYPE_WRONG_KILLER">
-            <span class="agent-card bg-blue">{{action.killer?.name}}</span>
-            a perdu un point de vie en se trompant de killer
-          </p>
-          <p *ngIf="action.type==ActionsService.ACTTION_TYPE_ERROR_DEATH">
-            <span class="agent-card bg-blue">{{action.killer?.name}}</span>
-            est mort en se trompant une fois de trop
-          </p>
-          <p *ngIf="action.type==ActionsService.ACTTION_TYPE_SUICIDE">
-            <span class="agent-card bg-red">{{action.killer?.name}}</span>
-            s'est lâchement suicidé
-          </p>
-          <div class="date">{{action.Created_date | date:"dd/MM/yy HH:mm:ss"}}</div>
+    <div class="head">
+      <header>
+        La gazette
+      </header>
+      <div class="subhead">
+        Journal du {{today | date: 'dd/MM/yyyy'}}
+      </div>
+    </div>
+    <div class="content">
+      <div class="columns">
+        <div class="column" *ngFor="let action of actions">
+          <ng-container *ngIf="action.type==ActionsService.ACTTION_TYPE_GAME_STARTED">
+            <div class="head">
+              <span class="headline hl1">Une tuerie se prépare!</span>
+            </div>
+            <div>
+              Des rummeurs font état d'un conflit d'une ampleur sans précédent qui aurait éclatée entre les agents secrets les plus dangereux
+              de la planète.
+              <figure class="figure">
+                <img src="/assets/images/start.gif">
+                <figcaption class="figcaption">Un agent apeuré à l'idée de mourir.</figcaption>
+              </figure>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="action.type==ActionsService.ACTTION_TYPE_KILL">
+            <div class="head">
+              <span class="headline hl1">Un nouveau meurtre</span>
+              <p>
+                <span class="headline hl2">
+                  <strong>{{action.killer?.name}}</strong>
+                  a tué
+                  <strong>{{action.target?.name}}</strong>
+                </span>
+              </p>
+            </div>
+            <div>
+              {{action.killer?.name}} a mené à bien son projet en tuant {{action.target?.name}}, sa mission était
+              <div class="citation">
+                "{{action.mission.title}}"
+              </div>
+              <figure class="figure">
+                <img src="/assets/images/kill{{getKillIndex(action)}}.gif">
+              </figure>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="action.type==ActionsService.ACTTION_TYPE_UNMASK">
+            <div class="head">
+              <span class="headline hl1">Légitime défense</span>
+              <p>
+                <span class="headline hl2">
+                  <strong>{{action.killer?.name}}</strong>
+                  a identifié
+                  <strong>{{action.target?.name}}</strong>
+                </span>
+              </p>
+            </div>
+            <div>
+              <figure class="figure">
+                <img src="/assets/images/unmask1.gif">
+              </figure>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="action.type==ActionsService.ACTTION_TYPE_WRONG_KILLER">
+            <div class="head">
+              <span class="headline hl1">Balle perdue</span>
+              <p>
+                <span class="headline hl2">
+                  <strong>{{action.killer?.name}}</strong>
+                  ne sait pas viser
+                </span>
+              </p>
+            </div>
+            <div>
+              En visant à côté, {{action.killer?.name}} s'est pris sa propre balle dans la mouille à cause d'un rebond mal venu
+              <figure class="figure">
+                <img src="/assets/images/error.gif">
+              </figure>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="action.type==ActionsService.ACTTION_TYPE_ERROR_DEATH">
+            <div class="head">
+              <span class="headline hl1">Mort accidentelle</span>
+              <p>
+                <span class="headline hl2">
+                  <strong>{{action.killer?.name}}</strong>
+                  meurt bêtement
+                </span>
+              </p>
+            </div>
+            <div>
+              En croyant être sur la bonne piste, {{action.killer?.name}} s'est brulé les ailes. Il s'est trompé une fois de trop.
+              <figure class="figure">
+                <img src="/assets/images/error.gif">
+              </figure>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="action.type==ActionsService.ACTTION_TYPE_SUICIDE">
+            <div class="head">
+              <span class="headline hl1">Suicide</span>
+            </div>
+            <div>
+              {{action.killer?.name}} n'en pouvait plus. 
+              <figure class="figure">
+                <img src="/assets/images/error.gif">
+              </figure>
+            </div>
+          </ng-container>
         </div>
       </div>
     </div>

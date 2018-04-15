@@ -49,27 +49,27 @@ export class SocketsService {
 
   //Kill
   sendKillRequest(agent) {
-    this.wsEmit('ask-kill', agent);
+    this.wsEmit('ask-kill', {}, agent.id, agent.targetId);
   }
 
-  confirmKill(agent) {
-    this.wsEmit('confirm-kill', agent);
+  confirmKill(agent, parentRequest: Request) {
+    this.wsEmit('confirm-kill', {}, agent.id, parentRequest.emitterId, parentRequest.id);
   }
 
-  unconfirmKill(agent) {
-    this.wsEmit('unconfirm-kill', agent);
+  unconfirmKill(agent, parentRequest: Request) {
+    this.wsEmit('unconfirm-kill', {}, agent.id, parentRequest.emitterId, parentRequest.id);
   }
 
   sendUnmaskRequest(agent, target) {
     this.wsEmit('ask-unmask', {}, agent.id, target.id);
   }
 
-  confirmUnmask(agent) {
-    this.wsEmit('confirm-unmask', agent);
+  confirmUnmask(agent, parentRequest: Request) {
+    this.wsEmit('confirm-unmask', {}, agent.id, agent.targetId, parentRequest.id);
   }
 
-  unconfirmUnmask(agent) {
-    this.wsEmit('unconfirm-unmask', agent);
+  unconfirmUnmask(agent, parentRequest: Request) {
+    this.wsEmit('unconfirm-unmask', {}, agent.id, agent.targetId, parentRequest.id);
   }
 
   //agent
@@ -79,11 +79,11 @@ export class SocketsService {
 
   //Change mission
   sendChangeMissionRequest(agent) {
-    this.wsEmit('change-mission', agent);
+    this.wsEmit('change-mission', {}, agent.id);
   }
   //Suicide
   sendSuicideRequest(agent) {
-    this.wsEmit('suicide', agent);
+    this.wsEmit('suicide', {}, agent.id);
   }
   //Agent
   newAgent(agent: Agent) {
@@ -94,12 +94,13 @@ export class SocketsService {
     this.wsEmit('game-status', game);
   }
 
-  wsEmit(type, data, em = null, re = null) {
+  wsEmit(type, data, em = null, re = null, parentId: number = null) {
     let req = new Request();
     req.type = type;
     req.data = JSON.stringify(data);
     req.emitterId = em;
     req.receiverId = re;
+    req.parentRequestId = parentId;
     this.requestApiService.push(req).subscribe(r => {
       console.log("emit", req);
     }, err => {

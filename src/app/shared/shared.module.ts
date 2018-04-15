@@ -29,7 +29,6 @@ import {
 
 import { HeaderComponent } from './header/header.component';
 import { TimelineComponent } from './timeline/timeline.component';
-import { ActionTypePipe } from './action-type.pipe';
 import { SocketsService } from './sockets.service'
 import { MissionsService } from './missions.service';
 import { ActionsService } from './actions.service';
@@ -86,7 +85,7 @@ import { RulesComponent } from './rules/rules.component'
     MatMenuModule
   ],
   providers: [SocketsService, MissionsService, ActionsService, GameService],
-  declarations: [ConfirmDialogComponent, HeaderComponent, TimelineComponent, ActionTypePipe, RulesComponent],
+  declarations: [ConfirmDialogComponent, HeaderComponent, TimelineComponent, RulesComponent],
   entryComponents: [ConfirmDialogComponent]
 })
 export class SharedModule { }

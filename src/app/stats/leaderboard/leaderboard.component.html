@@ -1,11 +1,15 @@
 <table>
-  <tr><th colspan="3" class="text-center">{{title}}</th></tr>
+  <!-- <tr><th colspan="3" class="text-center">{{title}}</th></tr> -->
   <tr>
     <td class="text-center">#</td>
-    <td>Agent</td>
+    <td>Agents ({{countAliveAgents()}}/{{countAgents()}} sont en vie)</td>
     <td class="text-center">pts</td>
+    <td class="text-center"><mat-icon svgIcon="kill"></mat-icon></td>
+    <td class="text-center"><mat-icon svgIcon="target"></mat-icon></td>
+    <td class="text-center"><mat-icon></mat-icon></td>
+    <td class="text-center"><mat-icon>favorite</mat-icon></td>
   </tr>
-  <tr *ngFor="let rank of ranking">
+  <tr *ngFor="let rank of getRanking()">
     <td [class]="'rank bg-'+rank.place">
       <span>
         {{rank.place}}
@@ -13,5 +17,9 @@
     </td>
     <td class="agent">{{rank.agent.name}}</td>
     <td class="score">{{rank.score}}</td>
+    <td class="score">{{rank.kills}}</td>
+    <td class="score">{{rank.unmasks}}</td>
+    <td class="score">{{rank.bluffs}}</td>
+    <td [class]="rank.agent.life>0?'alive':'dead'">{{rank.agent.life}}</td>
   </tr>
 </table>

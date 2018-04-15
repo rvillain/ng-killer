@@ -12,12 +12,12 @@
     <app-timeline [actions]="getMyActions()"></app-timeline>
     <section><button mat-raised-button *ngIf="getMyActions().length == 0" (click)="getAgent()">Voir mon résumé</button></section>
   </section>
-  <section *ngIf="status==GameService.GAME_STATUS_STARTED && agent.status == 'alive' && agent.id == agent.target.id">
+  <section *ngIf="status==GameService.GAME_STATUS_STARTED && agent.status == 'alive' && !agent.target">
     <img src="/assets/images/trophy.svg"> Bravo agent {{agent.name}}. Vous êtes le dernier survivant.
     <app-timeline [actions]="getMyActions()"></app-timeline>
     <section><button mat-raised-button *ngIf="getMyActions().length == 0" (click)="getAgent()">Voir mon résumé</button></section>
   </section>
-  <ng-container *ngIf="status==GameService.GAME_STATUS_STARTED && agent && agent.status == 'alive' && agent.id != agent.target.id">
+  <ng-container *ngIf="status==GameService.GAME_STATUS_STARTED && agent && agent.status == 'alive' && agent.target">
     <section class="life">
       <mat-icon [ngClass]="{'red': agent.life>=1}">favorite</mat-icon>
       <mat-icon [ngClass]="{'red': agent.life>=2}">favorite</mat-icon>
