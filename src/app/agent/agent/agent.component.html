@@ -1,4 +1,4 @@
-<app-header [game]="agent?agent.game.name:''">
+<app-header *ngIf="agent && agent.status == 'alive' && status==GameService.GAME_STATUS_STARTED || status==GameService.GAME_STATUS_CREATED" [game]="agent?agent.game.name:''">
 </app-header>
 <main *ngIf="agent">
   <section *ngIf="status==GameService.GAME_STATUS_CREATED">
@@ -7,17 +7,8 @@
 
     <img class="animated" src="/assets/images/logoOSS.svg">
   </section>
-  <section *ngIf="status==GameService.GAME_STATUS_STARTED && agent.status == 'dead'">
-    Chèr agent {{agent.name}}, vous êtes mort, non sans panache.
-    <app-timeline [actions]="getMyActions()"></app-timeline>
-    <section><button mat-raised-button *ngIf="getMyActions().length == 0" (click)="getAgent()">Voir mon résumé</button></section>
-  </section>
-  <section *ngIf="status==GameService.GAME_STATUS_STARTED && agent.status == 'alive' && !agent.target">
-    <img src="/assets/images/trophy.svg"> Bravo agent {{agent.name}}. Vous êtes le dernier survivant.
-    <app-timeline [actions]="getMyActions()"></app-timeline>
-    <section><button mat-raised-button *ngIf="getMyActions().length == 0" (click)="getAgent()">Voir mon résumé</button></section>
-  </section>
-  <ng-container *ngIf="status==GameService.GAME_STATUS_STARTED && agent && agent.status == 'alive' && agent.target">
+  <app-timeline [agent]="agent" [actions]="agent.actions" *ngIf="status!=GameService.GAME_STATUS_CREATED && agent.status != 'alive' || status == 'finished'"></app-timeline>
+  <ng-container *ngIf="status==GameService.GAME_STATUS_STARTED && agent && agent.status == 'alive'">
     <section class="life">
       <mat-icon [ngClass]="{'red': agent.life>=1}">favorite</mat-icon>
       <mat-icon [ngClass]="{'red': agent.life>=2}">favorite</mat-icon>
@@ -77,10 +68,6 @@
       </div>
     </section>
   </ng-container>
-
-  <section *ngIf="status=='finished'">
-    La partie est terminée. Préparez vous pour une prochaine mission, plutôt que de vouloir ressasser le passé.
-  </section>
 </main>
 
 <div class="wait-overlay" *ngIf="waitResponse">

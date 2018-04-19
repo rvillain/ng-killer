@@ -66,6 +66,7 @@ export class Rank {constructor(){}
 export class Request {constructor(){}
     id: number;
     parentRequestId: number;
+    gameId: number;
     parentRequest: Request;
     emitter: Agent;
     receiver: Agent;

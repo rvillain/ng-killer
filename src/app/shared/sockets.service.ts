@@ -16,6 +16,7 @@ export class SocketsService {
   public requests: Observable<Request>;
 
   private url = (isDevMode() ? "http://localhost:5000/requesthub" : "https://ng-killer-api.azurewebsites.net/");
+  private gameId: number;
 
   constructor(public actionsService: ActionsService, public requestApiService: RequestApiService) {
     this._hubConnection = new HubConnection(this.url);
@@ -32,14 +33,19 @@ export class SocketsService {
       })
       .catch(() => {
         console.log('Error while establishing connection')
-        setTimeout(this.start, 10000);
+        setTimeout(()=>{this.start(callback)}, 1000);
+      });
+      this._hubConnection.onclose(()=>{
+        console.log('reconnecting')
+        this.start(callback);
       });
   }
 
   public connect(gameId: number, agentId: string = null) {
+    this.gameId = gameId;
     this.start(() => {
-      this._hubConnection.send("JoinRoom", gameId.toString())
-      this._hubConnection.on('Request', (request: Request) => {
+      this._hubConnection.send("JoinRoom", this.gameId.toString());
+      this._hubConnection.on('Request', (request: any) => {
         if (!agentId || agentId == request.receiverId) {
           this.observer.next(request);
         }
@@ -101,6 +107,7 @@ export class SocketsService {
     req.emitterId = em;
     req.receiverId = re;
     req.parentRequestId = parentId;
+    req.gameId = this.gameId;
     this.requestApiService.push(req).subscribe(r => {
       console.log("emit", req);
     }, err => {

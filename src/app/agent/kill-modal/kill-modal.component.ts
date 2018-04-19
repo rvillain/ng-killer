@@ -28,6 +28,7 @@ export class KillModalComponent {
     this.isWaiting=true;
     
     this.socketsService.requests.subscribe(request=>{
+      console.log(request);
       switch(request.type){
         case ActionsService.REQUEST_TYPE_CONFIRM_KILL:
           this.snackBar.open("Habile ! Mission accomplie", null,{duration: 3000});

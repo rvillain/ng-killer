@@ -10,6 +10,7 @@ export class ActionsService {
   public static ACTTION_TYPE_ERROR_DEATH='error_death';
   public static ACTTION_TYPE_SUICIDE='suicide';
   public static ACTTION_TYPE_GAME_STARTED='game_started';
+  public static ACTTION_TYPE_END='end';
 
   
   public static REQUEST_TYPE_JOIN_ROOM='join-room';

@@ -27,13 +27,14 @@
   <ng-container *ngIf="!gameService.isCreated(game)">
     <div class="row">
       <div class="col">
-        <app-header [game]="game.name"></app-header>
-        <section>
-          <div [innerHTML]="qrTag" id="qrStarted"></div>
-          <app-leaderboard [game]="game" title="Classement"></app-leaderboard>
-        </section>
+        <header>
+          <div class="logo"></div>
+          {{game.name}}
+        </header>
+        <div [innerHTML]="qrTag" id="qrStarted"></div>
+        <app-leaderboard [game]="game" title="Classement"></app-leaderboard>
       </div>
-      <div class="col">
+      <div class="col col-timeline">
         <app-timeline [actions]="game.actions">
 
         </app-timeline>

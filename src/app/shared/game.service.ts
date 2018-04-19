@@ -6,6 +6,7 @@ export class GameService {
 
   public static GAME_STATUS_CREATED = "created";
   public static GAME_STATUS_STARTED = "started";
+  public static GAME_STATUS_FINISHED = "finished";
 
   constructor() { }
 

@@ -30,16 +30,16 @@
               <span class="headline hl1">Un nouveau meurtre</span>
               <p>
                 <span class="headline hl2">
-                  <strong>{{action.killer?.name}}</strong>
+                  <strong>{{action.killerName}}</strong>
                   a tué
-                  <strong>{{action.target?.name}}</strong>
+                  <strong>{{action.targetName}}</strong>
                 </span>
               </p>
             </div>
             <div>
-              {{action.killer?.name}} a mené à bien son projet en tuant {{action.target?.name}}, sa mission était
+              {{action.killerName}} a mené à bien son projet en tuant {{action.targetName}}, sa mission était
               <div class="citation">
-                "{{action.mission.title}}"
+                "{{action.missionTitle}}"
               </div>
               <figure class="figure">
                 <img src="/assets/images/kill{{getKillIndex(action)}}.gif">
@@ -51,9 +51,9 @@
               <span class="headline hl1">Légitime défense</span>
               <p>
                 <span class="headline hl2">
-                  <strong>{{action.killer?.name}}</strong>
+                  <strong>{{action.killerName}}</strong>
                   a identifié
-                  <strong>{{action.target?.name}}</strong>
+                  <strong>{{action.targetName}}</strong>
                 </span>
               </p>
             </div>
@@ -68,13 +68,13 @@
               <span class="headline hl1">Balle perdue</span>
               <p>
                 <span class="headline hl2">
-                  <strong>{{action.killer?.name}}</strong>
+                  <strong>{{action.killerName}}</strong>
                   ne sait pas viser
                 </span>
               </p>
             </div>
             <div>
-              En visant à côté, {{action.killer?.name}} s'est pris sa propre balle dans la mouille à cause d'un rebond mal venu
+              En visant à côté, {{action.killerName}} s'est pris sa propre balle dans la mouille à cause d'un rebond mal venu
               <figure class="figure">
                 <img src="/assets/images/error.gif">
               </figure>
@@ -85,13 +85,13 @@
               <span class="headline hl1">Mort accidentelle</span>
               <p>
                 <span class="headline hl2">
-                  <strong>{{action.killer?.name}}</strong>
+                  <strong>{{action.killerName}}</strong>
                   meurt bêtement
                 </span>
               </p>
             </div>
             <div>
-              En croyant être sur la bonne piste, {{action.killer?.name}} s'est brulé les ailes. Il s'est trompé une fois de trop.
+              En croyant être sur la bonne piste, {{action.killerName}} s'est brulé les ailes. Il s'est trompé une fois de trop.
               <figure class="figure">
                 <img src="/assets/images/error.gif">
               </figure>
@@ -102,9 +102,20 @@
               <span class="headline hl1">Suicide</span>
             </div>
             <div>
-              {{action.killer?.name}} n'en pouvait plus. 
+              {{action.killerName}} n'en pouvait plus. Il a préféré jeter l'éponge
               <figure class="figure">
                 <img src="/assets/images/error.gif">
+              </figure>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="action.type==ActionsService.ACTTION_TYPE_END">
+            <div class="head">
+              <span class="headline hl1">C'est fini</span>
+            </div>
+            <div>
+              Et le dernier agent survivant est <strong>{{action.killerName}}</strong>. Bravo à lui
+              <figure class="figure">
+                <img [src]="(action.killer?.photo)?action.killer.photo:'/assets/images/end.gif'">
               </figure>
             </div>
           </ng-container>

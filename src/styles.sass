@@ -3,7 +3,7 @@
 @import "./material.sass"
 
 html
-    height: 100vh
+    height: 100%
 body
     margin: 0px
     font-family: 'Josefin Sans', sans-serif
@@ -13,11 +13,13 @@ section
     margin: 15px
 .hidden
     display: none
-.row
-    display: flex
-    >.col
-        flex: 1 1 0
-        width: 0
+
+@media only all and (min-width: 900px) 
+    .row
+        display: flex
+        >.col
+            flex: 1 1 0
+            width: 0
 app-root, app-agent
     display: -webkit-box
     display: -ms-flexbox

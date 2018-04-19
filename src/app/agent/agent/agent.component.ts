@@ -92,13 +92,6 @@ export class AgentComponent implements OnInit, OnDestroy {
   @HostListener('window:blur', ['$event'])
   onBlur(event: any): void { }
 
-  getMyActions(): Action[] {
-    if (this.agent.game.actions) {
-      return this.agent.game.actions.filter(a => a.killer && a.killer.id == this.agent.id || a.target && a.target.id == this.agent.id);
-    }
-    return [];
-  }
-
   ngOnDestroy() {
     this.sub.unsubscribe();
   }

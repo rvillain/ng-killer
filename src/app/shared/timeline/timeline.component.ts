@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Action } from '../../model/model';
+import { Action, Agent } from '../../model/model';
 import { ActionsService } from '../../shared/actions.service';
 
 @Component({
@@ -9,7 +9,10 @@ import { ActionsService } from '../../shared/actions.service';
 })
 export class TimelineComponent implements OnInit {
   @Input()
-  actions:Action[];
+  actions:Action[]; 
+  
+  @Input()
+  agent:Agent;
 
   public today = Date.now();
 
@@ -24,7 +27,7 @@ export class TimelineComponent implements OnInit {
   getKillIndex(action: Action){
     let kills = this.actions.filter(a=>a.type == ActionsService.ACTTION_TYPE_KILL);
     let index = kills.indexOf(action);
-    index = (kills.length - index)%4;
+    index = (kills.length - index)%4+1;
     return index;
   }
 
