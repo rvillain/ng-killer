@@ -32,7 +32,7 @@ export class HomeComponent implements OnInit {
 @Component({
   selector: 'dialog-overview-example-dialog',
   template: '<h2 mat-dialog-title>Création de la partie</h2>\
-  <mat-dialog-content *ngIf="!isSubmiting">\
+  <mat-dialog-content *ngIf="!submiting">\
     <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>\
       <input name="gameName" ngModel class="killer-input" placeholder="Nom de la partie" required>\
       <hr>\

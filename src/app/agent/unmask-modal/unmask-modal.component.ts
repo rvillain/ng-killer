@@ -42,7 +42,7 @@ export class UnmaskModalComponent {
           this.dialogRef.close(true);
           break;
         case ActionsService.REQUEST_TYPE_WRONG_KILLER:
-          this.snackBar.open("Oups, ce n'est pas votre killer", null, { duration: 300000 });
+          this.snackBar.open("Oups, ce n'est pas votre killer", null, { duration: 3000 });
           this.dialogRef.close(true);
           break;
       }

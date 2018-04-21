@@ -33,7 +33,12 @@ export class Mission { constructor(){}
 export class Action {constructor(){}
     id: string;
     killer: Agent;
+    killerId: string;
     target: Agent;
+    targetId: string;
+    mission: Mission;
+    missionTitle: string;
+    missionId: number;
     type: string;
     dateCreation: Date;
 }
