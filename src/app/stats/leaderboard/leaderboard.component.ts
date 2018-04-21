@@ -48,7 +48,7 @@ export class LeaderboardComponent implements OnInit {
       ranking.push(r);
     }
     //order
-    ranking = ranking.sort((a: Rank, b: Rank) => { return b.score - a.score });
+    ranking = ranking.filter(r=>r.score>0).sort((a: Rank, b: Rank) => { return b.score - a.score });
     //set places
     let rankingWithPlaces = ranking.map(r=> { 
       r.place = ranking.filter(ra=>ra.score>r.score).length + 1;

@@ -1,0 +1,15 @@
+<div class="note sticky{{position}}">
+    <div class='pin-wrapper'>
+      <div class='pin'></div>
+    </div>
+    
+    <div class="photo">
+      <img [src]="agent.photo?agent.photo:'/assets/images/logoOSS.svg'">
+    </div>
+    <div class='text'>{{agent.name}}</div>
+
+    <div class="dead" *ngIf="agent.status=='dead'">
+      <div class="cross1"></div>
+      <div class="cross2"></div>
+    </div>
+</div>

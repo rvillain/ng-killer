@@ -84,6 +84,11 @@ export class AgentComponent implements OnInit, OnDestroy {
       this.id = params['id']; // (+) converts string 'id' to a number
       this.getAgent();
     });
+    this.socketsService.requests.subscribe(r=>{
+      if(r.type == ActionsService.REQUEST_TYPE_AGENT_UPDATE){
+        this.getAgent();
+      }
+    })
   }
 
   @HostListener('window:focus', ['$event'])
@@ -118,7 +123,6 @@ export class AgentComponent implements OnInit, OnDestroy {
   confirmKill(confirm: boolean) {
     if (confirm) {
       this.socketsService.confirmKill(this.agent, this.treatingRequest);
-      this.agent.status = "dead";
     }
     else {
       this.socketsService.unconfirmKill(this.agent, this.treatingRequest);
@@ -129,7 +133,6 @@ export class AgentComponent implements OnInit, OnDestroy {
   confirmUnmask(confirm: boolean) {
     if (confirm) {
       this.socketsService.confirmUnmask(this.agent, this.treatingRequest);
-      this.agent.status = "dead";
     }
     else {
       this.socketsService.unconfirmUnmask(this.agent, this.treatingRequest);

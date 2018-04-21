@@ -13,9 +13,7 @@
             <h3>
               Les joueurs inscrits
             </h3>
-            <p>
-              <span class="agent-card" *ngFor="let agent of game.agents">{{agent.name}}</span>
-            </p>
+            <app-agent-card [agent]="agent" *ngFor="let agent of game.agents"></app-agent-card>
           </div>
         </section>
       </div>
@@ -26,12 +24,13 @@
   </div>
   <ng-container *ngIf="!gameService.isCreated(game)">
     <div class="row">
-      <div class="col">
+      <div class="col text-center">
         <header>
           <div class="logo"></div>
           {{game.name}}
         </header>
         <div [innerHTML]="qrTag" id="qrStarted"></div>
+        <app-agent-card [agent]="agent" *ngFor="let agent of game.agents"></app-agent-card>
         <app-leaderboard [game]="game" title="Classement"></app-leaderboard>
       </div>
       <div class="col col-timeline">

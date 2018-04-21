@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, isDevMode } from '@angular/core';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
@@ -42,7 +42,9 @@ export class JoinComponent implements OnInit, OnDestroy {
           //agents already created 
           let agentId = localStorage.getItem('game-' + this.game.id);
           if (agentId && !this.gameService.isCreated(this.game)) {
-            //this.router.navigate(['/agent', agentId]);
+            if(!isDevMode()){
+              this.router.navigate(['/agent', agentId]);
+            }
           }
         },
         err => {

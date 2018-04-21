@@ -30,14 +30,16 @@
         <h3>
           <mat-icon>gps_fixed</mat-icon> Cible
         </h3>
-        {{agent.target.name}}
-        <button type="button" mat-icon-button *ngIf="agent.target.photo" (click)="showPhoto=true">
-          <mat-icon>photo</mat-icon>
+        <button type="button" mat-raised-button (click)="showPhoto=true">
+          &nbsp; {{agent.target.name}}
         </button>
         <div class="wait-overlay" *ngIf="showPhoto">
           <h2>Votre cible</h2>
           <section>
-            <img class="target-photo" [src]="agent.target.photo">
+            <img *ngIf="agent.target.photo" class="target-photo" [src]="agent.target.photo">
+            <p *ngIf="!agent.target.photo">
+             n'a pas souhaité se prendre en photo
+            </p>
           </section>
           <button type="button" mat-icon-button (click)="showPhoto=false">
             <mat-icon>cancel</mat-icon>
