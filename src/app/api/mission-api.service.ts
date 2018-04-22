@@ -9,6 +9,13 @@ import {Mission} from '../model/model';
 @Injectable()
 export class MissionApiService  extends GenericApiService<Mission>{
 
+  import(missions: Array<Mission>): Observable<any> {
+    const endPoint = '/import';
+    return this.http
+        .post(this.apiUrl + this.controllerName + endPoint, missions)
+        .map((res: Response) => this.manageSuccess(res, null, false))
+        .catch((error: any) => this.manageError(error));
+  }
   constructor(http: HttpClient) {
     super(http);
     this.controllerName = 'missions';

@@ -14,9 +14,13 @@ import { GameService } from '../shared/game.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(public dialog: MatDialog) { }
+  public games: Game[];
+  constructor(public dialog: MatDialog, public gameApiService: GameApiService) { }
 
   ngOnInit() {
+    this.gameApiService.get().subscribe(games=>{
+      this.games=games;
+    })
   }
   openGameDialog(){
     let dialogRef = this.dialog.open(NewGameDialog, {

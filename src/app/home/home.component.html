@@ -1,27 +1,43 @@
-<app-header></app-header>
-
+<app-header title="Killer"></app-header>
 <section>
-    <mat-card>
-        <mat-card-title>Le jeu du killer sur mobile</mat-card-title>
-        <mat-card-content>
-            <mat-list>
-                <mat-list-item>
-                    <mat-icon matListIcon>face</mat-icon>
-                    <div matLine>Pas d'inscription</div>
-                </mat-list-item>
-                <mat-list-item>
-                    <mat-icon matListIcon>list</mat-icon>
-                    <div matLine>Quelques règles originales</div>
-                </mat-list-item>
-                <mat-list-item>
-                    <mat-icon matListIcon>smartphone</mat-icon>
-                    <div matLine>Jouable sur smartphone</div>
-                </mat-list-item>
-            </mat-list>
-        </mat-card-content>
-        <mat-card-actions>
-            <button mat-raised-button (click)="openGameDialog()">Créer une nouvelle partie</button>
-        </mat-card-actions>
-    </mat-card>
+    <div class="text-center">
+        <button mat-raised-button (click)="openGameDialog()">Créer une nouvelle partie</button>
+    </div>
+    <div class="row">
+        <div class="col">
+            <section>
+                <mat-card>
+                    <mat-card-title>Jouez sur mobile</mat-card-title>
+                    <mat-card-content>
+                        <mat-list>
+                            <mat-list-item>
+                                <mat-icon matListIcon>face</mat-icon>
+                                <div matLine>Pas d'inscription</div>
+                            </mat-list-item>
+                            <mat-list-item>
+                                <mat-icon matListIcon>list</mat-icon>
+                                <div matLine>Quelques règles originales</div>
+                            </mat-list-item>
+                            <mat-list-item>
+                                <mat-icon matListIcon>smartphone</mat-icon>
+                                <div matLine>Jouable sur smartphone</div>
+                            </mat-list-item>
+                        </mat-list>
+                    </mat-card-content>
+                </mat-card>
+                <mat-card>
+                    <mat-card-title>Journaux des parties</mat-card-title>
+                    <mat-card-content>
+                        <a mat-raised-button *ngFor="let game of games" [routerLink]="['/journal/',game.id]">
+                            {{game.name}}
+                        </a>
+                    </mat-card-content>
+                </mat-card>
+            </section>
+        </div>
+        <div class="col">
+            <app-rules></app-rules>
+        </div>
+    </div>
+
 </section>
-<app-rules></app-rules>

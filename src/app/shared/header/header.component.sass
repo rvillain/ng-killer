@@ -1,9 +1,24 @@
-@import "../../../variables.sass";
-
+@import "../../../variables.sass"
 header
-    text-align: center;
+    text-align: center
+    width: 100%
+    height: 30px
+    padding: 10px 0px 
+    line-height: 30px
+    font-size: 20px
+    .logo 
+        background-color: $text-color
+        -webkit-mask: url(/assets/images/logoOSS.svg) no-repeat center
+        mask: url(/assets/images/logoOSS.svg) no-repeat center
+        background-size: 30px 30px
+        mask-size: 30px 30px
+        width: 30px
+        height: 30px
+        display: inline-block
+        vertical-align: text-bottom    
+        margin-left: -15px
 .mat-toolbar
-    color: $back-color;
-    background: $text-color;
+    color: $back-color
+    background: $text-color
 img
-    width: 3rem;
+    width: 3rem

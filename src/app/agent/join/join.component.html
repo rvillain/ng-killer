@@ -1,4 +1,4 @@
-<app-header [game]="game?game.name:''">
+<app-header [title]="game?game.name:''">
 </app-header>
 
 <section *ngIf="game && gameService.isCreated(game)">

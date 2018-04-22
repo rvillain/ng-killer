@@ -1,6 +1,6 @@
 <ng-container *ngIf="game">
   <div *ngIf="gameService.isCreated(game)" class="subscription">
-    <app-header [game]="game.name"></app-header>
+    <app-header [title]="game.name"></app-header>
     <div class="row">
       <div class="col text-center">
         <section>
@@ -25,10 +25,7 @@
   <ng-container *ngIf="!gameService.isCreated(game)">
     <div class="row">
       <div class="col text-center">
-        <header>
-          <div class="logo"></div>
-          {{game.name}}
-        </header>
+        <app-header [title]="game.name"></app-header>
         <div [innerHTML]="qrTag" id="qrStarted"></div>
         <app-agent-card [agent]="agent" *ngFor="let agent of game.agents"></app-agent-card>
         <app-leaderboard [game]="game" title="Classement"></app-leaderboard>

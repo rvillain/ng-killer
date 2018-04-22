@@ -24,22 +24,26 @@ export class KillModalComponent {
 
   onYesClick(): void {
     let killer = this.data.killer;
-    this.socketsService.sendKillRequest(killer);
     this.isWaiting=true;
-    
-    this.socketsService.requests.subscribe(request=>{
-      console.log(request);
-      switch(request.type){
-        case ActionsService.REQUEST_TYPE_CONFIRM_KILL:
-          this.snackBar.open("Habile ! Mission accomplie", null,{duration: 3000});
-          this.dialogRef.close(true);
-        break;
-        case ActionsService.REQUEST_TYPE_UNCONFIRM_KILL:
-        this.snackBar.open("Visiblement, votre cible n'est pas d'accord", null,{duration: 3000});
-          this.dialogRef.close(true);
-        break;
-      }
+    this.socketsService.sendKillRequest(killer).subscribe(req=>{
+      this.socketsService.requests.subscribe(request=>{
+        switch(request.type){
+          case ActionsService.REQUEST_TYPE_CONFIRM_KILL:
+            this.snackBar.open("Habile ! Mission accomplie", null,{duration: 3000});
+            this.dialogRef.close(true);
+          break;
+          case ActionsService.REQUEST_TYPE_UNCONFIRM_KILL:
+          this.snackBar.open("Visiblement, votre cible n'est pas d'accord", null,{duration: 3000});
+            this.dialogRef.close(true);
+          break;
+        }
+      });
+    }, error => {
+      this.snackBar.open(error, null,{duration: 3000});
+      this.dialogRef.close(true);
     });
+    
+   
   }
   onNoClick(): void {
     this.dialogRef.close();

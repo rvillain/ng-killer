@@ -1,35 +1,33 @@
 <mat-toolbar>ng-killer - Administration</mat-toolbar>
 
 <div class="container">
-  <mat-card>
+  <section>
     <mat-form-field>
-        <input matInput 
-          placeholder="Recherche"
-          [(ngModel)]="searchTxt">
+      <input matInput placeholder="Recherche" [(ngModel)]="searchTxt">
     </mat-form-field>
-  </mat-card>
+  </section>
 
-  <mat-tab-group>
-    <mat-tab label="Parties">
+
+  <div class="row">
+    <div class="col">
       <mat-card>
+        <mat-card-title>Partie</mat-card-title>
         <form class="" (ngSubmit)="onSubmitNewGame()">
-            <mat-form-field>
-                <input matInput name="newName"
-                  placeholder="Nouvelle partie"
-                  [(ngModel)]="newName">
-            </mat-form-field>
-          </form>
+          <mat-form-field>
+            <input matInput name="newName" placeholder="Nouvelle partie" [(ngModel)]="newName">
+          </mat-form-field>
+        </form>
         <mat-expansion-panel *ngFor="let game of filteredGames()">
           <mat-expansion-panel-header>
             <mat-panel-title>
               {{game.name}}
             </mat-panel-title>
             <mat-panel-description>
-              
+
             </mat-panel-description>
           </mat-expansion-panel-header>
-          
-          
+
+
           <a mat-raised-button color="accent" target="_blank" routerLink="/journal/{{game.id}}">
             Journal
           </a>
@@ -41,31 +39,41 @@
           </button>
         </mat-expansion-panel>
       </mat-card>
-    </mat-tab>
-    <mat-tab label="Missions">
-        <mat-card>
-          <form class="" (ngSubmit)="onSubmitNewMission()">
-            <mat-form-field>
-                <input matInput name="newMission"
-                  placeholder="Nouvelle mission"
-                  [(ngModel)]="newMission">
-            </mat-form-field>
-          </form>
-          <mat-list dense>
-            <mat-list-item *ngFor="let mission of filteredMissions()">
-                <input matInput [(ngModel)]="mission.title" (change)="saveMission(mission)">
+    </div>
+    <div class="col">
+      <mat-card>
+        <mat-card-title>Missions</mat-card-title>
+        <div *ngIf="newMissionsSubmitting">
+          Envoi en cours...
+        </div>
+        <form class="" (ngSubmit)="onSubmitNewMission()" *ngIf="!newMissionsSubmitting">
+          <mat-form-field>
+            <textarea matInput name="newMissions" placeholder="Nouvelles missions" [(ngModel)]="newMissions" [ngModelOptions]="{standalone: true}"></textarea>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-select [(ngModel)]="newMissionsDifficulty" placeholder="Difficulté" [ngModelOptions]="{standalone: true}">
+                <mat-option value="action">Action</mat-option>
+                <mat-option value="manipulation">Manipulation</mat-option>
+                <mat-option value="hardcore">Hardcore</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button mat-raised-button>Ajouter</button>
+        </form>
+        <mat-list dense>
+          <mat-list-item *ngFor="let mission of filteredMissions()">
+            <input matInput [(ngModel)]="mission.title" (change)="saveMission(mission)">
 
-                <mat-form-field style="width: 40%!important">
-                  <mat-select [(ngModel)]="mission.difficulty" (change)="saveMission(mission)">
-                    <mat-option value="action">Action</mat-option>
-                    <mat-option value="manipulation">Manipulation</mat-option>
-                    <mat-option value="hardcore">Hardcore</mat-option>
-                  </mat-select>
-                </mat-form-field>
-            </mat-list-item>
-          </mat-list>
-        </mat-card>
-    </mat-tab>
-  </mat-tab-group>
-      
+            <mat-form-field style="width: 40%!important">
+              <mat-select [(ngModel)]="mission.difficulty" (change)="saveMission(mission)">
+                <mat-option value="action">Action</mat-option>
+                <mat-option value="manipulation">Manipulation</mat-option>
+                <mat-option value="hardcore">Hardcore</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </mat-list-item>
+        </mat-list>
+      </mat-card>
+    </div>
+  </div>
+
 </div>

@@ -1,9 +1,11 @@
-<app-header *ngIf="agent && agent.status == 'alive' && status==GameService.GAME_STATUS_STARTED || status==GameService.GAME_STATUS_CREATED" [game]="agent?agent.game.name:''">
+<app-header *ngIf="agent && agent.status == 'alive' && status==GameService.GAME_STATUS_STARTED || status==GameService.GAME_STATUS_CREATED"
+  [title]="agent?agent.game.name:''">
 </app-header>
 <main *ngIf="agent">
   <section *ngIf="status==GameService.GAME_STATUS_CREATED">
-    Bonjour agent {{agent?agent.name:''}},<br><br>
-    La partie n'a pas encore commencée, soyez patient, préparez carnet de note, revolver et autre équipement désuet.
+    Bonjour agent {{agent?agent.name:''}},
+    <br>
+    <br> La partie n'a pas encore commencée, soyez patient, préparez carnet de note, revolver et autre équipement désuet.
 
     <img class="animated" src="/assets/images/logoOSS.svg">
   </section>
@@ -18,57 +20,24 @@
     </section>
     <section>
       <div class="agent-line">
-        <h3>
-          <mat-icon>account_circle</mat-icon> Identité
-        </h3>
-        {{agent.name}}
-        <!-- <button mat-raised-button (click)="showRole()" style="float: right">
-          Mon rôle
-        </button> -->
+        Agent {{agent.name}}, voici votre mission
+        <p class="mission">{{agent.mission.title}}</p>
+        <button mat-raised-button *ngIf="agent.life>1" (click)="changeMission()">
+          Changer de mission
+        </button>
       </div>
       <div class="agent-line">
-        <h3>
-          <mat-icon>gps_fixed</mat-icon> Cible
-        </h3>
-        <button type="button" mat-raised-button (click)="showPhoto=true">
-          {{agent.target.name}}
-        </button>
-        <div class="wait-overlay" *ngIf="showPhoto">
-          <h2>Votre cible</h2>
-          <section>
-            <img *ngIf="agent.target.photo" class="target-photo" [src]="agent.target.photo">
-            <p *ngIf="!agent.target.photo">
-             n'a pas souhaité se prendre en photo
-            </p>
-          </section>
-          <button type="button" mat-icon-button (click)="showPhoto=false">
-            <mat-icon>cancel</mat-icon>
-          </button>
+        Votre Cible
+        <div>
+          <app-agent-card [agent]="agent.target"></app-agent-card>
         </div>
       </div>
-      <div class="agent-line">
-        <h3>
-          <mat-icon>work</mat-icon> Mission
-        </h3>
-        <p>{{agent.mission.title}}</p>
-      </div>
-      <div class="text-center">
-          <button mat-raised-button (click)="kill()">Tuer</button>
-          <button mat-raised-button (click)="unmask()">Démasquer</button>
-          <mat-menu #actionsMenu="matMenu">
-              <button mat-menu-item *ngIf="agent.life>1" (click)="changeMission()">
-                <mat-icon>next_week</mat-icon>
-                Changer de mission
-              </button>
-              <button mat-menu-item (click)="suicide()">
-                Se suicider
-              </button>
-          </mat-menu>
-          <button mat-icon-button [matMenuTriggerFor]="actionsMenu">
-            <mat-icon>more_vert</mat-icon>
-          </button>
-      </div>
     </section>
+    <div class="btns text-center">
+      <button mat-raised-button (click)="kill()">Tuer</button>
+      <button mat-raised-button (click)="unmask()">Démasquer</button>
+      <button mat-raised-button (click)="suicide()"> Se suicider</button>
+    </div>
   </ng-container>
 </main>
 

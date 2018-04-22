@@ -16,22 +16,22 @@ import { Game, Agent, Mission } from '../../model/model';
 })
 export class GameComponent implements OnInit, OnDestroy {
 
-  constructor(private route: ActivatedRoute, private router:Router, 
-    private agentApiService:AgentApiService, 
-    private gameApiService:GameApiService, 
-    private missionApiService:MissionApiService,
+  constructor(private route: ActivatedRoute, private router: Router,
+    private agentApiService: AgentApiService,
+    private gameApiService: GameApiService,
+    private missionApiService: MissionApiService,
     private socketsService: SocketsService,
     public missionsService: MissionsService,
-    public gameService: GameService) { 
+    public gameService: GameService) {
     this.game = new Game();
   }
 
   private gameId: number;
-  public game:Game;
+  public game: Game;
   private sub: any;
   public newMission: string;
 
-  getGame(){
+  getGame() {
     this.gameApiService.getById(this.gameId).subscribe(
       res => {
         this.game = res;
@@ -45,33 +45,33 @@ export class GameComponent implements OnInit, OnDestroy {
     this.sub = this.route.params.subscribe(params => {
       this.gameId = params['id']; // (+) converts string 'id' to a number
       this.socketsService.connect(this.gameId);
-      this.socketsService.requests.subscribe(request=>{this.getGame()})
+      this.socketsService.requests.subscribe(request => { this.getGame() })
       this.getGame();
       // In a real app: dispatch action to load the details here.
     });
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.sub.unsubscribe();
   }
 
-  isStartable(){
+  isStartable() {
     let startable = false;
-    if(this.game.agents && this.game.agents.length >0 
-      && this.game.missions && this.game.missions.length >= this.game.agents.length){
+    if (this.game.agents && this.game.agents.length > 0
+      && this.game.missions && this.game.missions.length >= this.game.agents.length) {
       startable = true;
     }
     return startable;
   }
-  deleteAgent(agent: Agent){
-    if(this.gameService.isCreated(this.game)){
-      this.agentApiService.delete(agent.id).subscribe(a=>{
+  deleteAgent(agent: Agent) {
+    if (this.gameService.isCreated(this.game)) {
+      this.agentApiService.delete(agent.id).subscribe(a => {
         this.game.agents.splice(this.game.agents.indexOf(agent), 1);
       });
     }
   }
-  onSubmitNewMission(){
-    if(this.newMission && this.newMission.length > 5){
+  onSubmitNewMission() {
+    if (this.newMission && this.newMission.length > 5) {
       let newMission = new Mission();
       newMission.title = this.newMission;
       newMission.gameId = this.game.id;
@@ -86,22 +86,20 @@ export class GameComponent implements OnInit, OnDestroy {
     }
 
   }
-  importMissions(level:string){
-    this.missionApiService.getGenerics().subscribe(res=>{
-      this.gameApiService.addMissions(this.game.id, res.filter(m=>m.difficulty == level)).subscribe(updatedGame=>{
-        this.game = updatedGame;
-      })
+  importMissions(level: string) {
+    this.gameApiService.addMissions(this.game.id, level).subscribe(updatedGame => {
+      this.getGame();
     })
   }
 
-  deleteMission(mission: Mission){
-    if(this.gameService.isCreated(this.game)){
-      this.missionApiService.delete(mission.id).subscribe(m=>{
+  deleteMission(mission: Mission) {
+    if (this.gameService.isCreated(this.game)) {
+      this.missionApiService.delete(mission.id).subscribe(m => {
         this.game.missions.splice(this.game.missions.indexOf(mission), 1);
       });
     }
   }
-  start(){
+  start() {
     this.gameApiService.start(this.game.id).subscribe(
       res => {
         this.game.status = GameService.GAME_STATUS_STARTED;
@@ -110,7 +108,7 @@ export class GameComponent implements OnInit, OnDestroy {
         console.log("err", err);
       });
   }
-  reinit(){
+  reinit() {
     this.gameApiService.reinit(this.game.id).subscribe(
       res => {
         this.game.status = GameService.GAME_STATUS_CREATED;

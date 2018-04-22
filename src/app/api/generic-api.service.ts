@@ -95,22 +95,12 @@ export class GenericApiService<T> {
 
   manageError(error: any) {
     this.isLoading = false;
-      // this.sharedService.endLoading();
-      // if (error.json &&  error.json() && error.json().ExceptionMessage) {
-      //     this.sharedService.successToast(error.json().ExceptionMessage);
-      // }
-      // else {
-      //     this.sharedService.errorToast('Erreur Serveur');
-      // }
-      return Observable.throw( (error.json ? error.json().error : error) || 'Server error');
+      console.log(error);
+      let errorMessage = error.error?error.error: (error.json ? error.json().error : error);
+      return Observable.throw( errorMessage || 'Server error');
   }
   manageSuccess(res: Response, toastMsg?: string, splash: boolean = true) {
     this.isLoading = false;
-      // if(splash)
-      //     this.sharedService.endLoading();
-      // if (toastMsg) {
-      //     this.sharedService.successToast(toastMsg);
-      // }
       return res;
   }
 

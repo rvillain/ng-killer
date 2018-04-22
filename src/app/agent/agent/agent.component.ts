@@ -122,22 +122,44 @@ export class AgentComponent implements OnInit, OnDestroy {
   }
   confirmKill(confirm: boolean) {
     if (confirm) {
-      this.socketsService.confirmKill(this.agent, this.treatingRequest);
+      this.socketsService.confirmKill(this.agent, this.treatingRequest).subscribe(r=>{
+        this.showConfirmKill = false;
+        this.getAgent();
+      },error=>{
+        this.showConfirmKill = false;
+        this.snackBar.open(error, null,{duration: 3000});
+      });
     }
     else {
-      this.socketsService.unconfirmKill(this.agent, this.treatingRequest);
+      this.socketsService.unconfirmKill(this.agent, this.treatingRequest).subscribe(r=>{
+        this.showConfirmKill = false;
+      },error=>{
+        this.showConfirmKill = false;
+        this.snackBar.open(error, null,{duration: 3000});
+      });
     }
-    this.showConfirmKill = false;
+    
   }
 
   confirmUnmask(confirm: boolean) {
     if (confirm) {
-      this.socketsService.confirmUnmask(this.agent, this.treatingRequest);
+      this.socketsService.confirmUnmask(this.agent, this.treatingRequest).subscribe(r=>{
+        this.showConfirmUnmask = false;
+        this.getAgent();
+      },error=>{
+        this.showConfirmUnmask = false;
+        this.snackBar.open(error, null,{duration: 3000});
+      });
     }
     else {
-      this.socketsService.unconfirmUnmask(this.agent, this.treatingRequest);
+      this.socketsService.unconfirmUnmask(this.agent, this.treatingRequest).subscribe(r=>{
+        this.showConfirmUnmask = false;
+        this.getAgent();
+      },error=>{
+        this.showConfirmUnmask = false;
+        this.snackBar.open(error, null,{duration: 3000});
+      });
     }
-    this.showConfirmUnmask = false;
   }
 
   unmask() {

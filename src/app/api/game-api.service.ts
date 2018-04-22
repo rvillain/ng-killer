@@ -1,6 +1,6 @@
 // Imports
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 import { GenericApiService } from './generic-api.service';
 
@@ -29,11 +29,12 @@ export class GameApiService  extends GenericApiService<Game>{
         .map((res: Response) => this.manageSuccess(res, null, false))
         .catch((error: any) => this.manageError(error));
   }
-  addMissions(id: any, missions: Mission[]): Observable<Game>{
+  addMissions(id: any, level: string): Observable<any>{
     this.isLoading = true;
-    const endPoint = '/' + id + '/missions';
+    const endPoint = '/' + id + '/importmissions';
+    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
     return this.http
-        .post(this.apiUrl + this.controllerName + endPoint, {missions: missions})
+        .post(this.apiUrl + this.controllerName + endPoint, '"'+level+'"', { headers: headers })
         .map((res: Response) => this.manageSuccess(res, null, false))
         .catch((error: any) => this.manageError(error));
   }

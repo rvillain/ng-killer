@@ -1,6 +1,7 @@
 import { NgModule, isDevMode } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { AgentCardComponent } from './agent-card/agent-card.component';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import {  
@@ -80,12 +81,13 @@ import { RulesComponent } from './rules/rules.component'
     HeaderComponent,
     RulesComponent,
     TimelineComponent,
+    AgentCardComponent,
     MatSnackBarModule,
     MatSelectModule,
     MatMenuModule
   ],
   providers: [SocketsService, MissionsService, ActionsService, GameService],
-  declarations: [ConfirmDialogComponent, HeaderComponent, TimelineComponent, RulesComponent],
+  declarations: [ConfirmDialogComponent, HeaderComponent, TimelineComponent, RulesComponent, AgentCardComponent],
   entryComponents: [ConfirmDialogComponent]
 })
 export class SharedModule { }

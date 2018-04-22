@@ -54,53 +54,40 @@ export class SocketsService {
   }
 
   //Kill
-  sendKillRequest(agent) {
-    this.wsEmit('ask-kill', {}, agent.id, agent.targetId);
+  sendKillRequest(agent): Observable<Request> {
+    return this.pushRequest('ask-kill', {}, agent.id, agent.targetId, null, true);
   }
 
-  confirmKill(agent, parentRequest: Request) {
-    this.wsEmit('confirm-kill', {}, agent.id, parentRequest.emitterId, parentRequest.id);
+  confirmKill(agent, parentRequest: Request): Observable<Request> {
+    return this.pushRequest('confirm-kill', {}, agent.id, parentRequest.emitterId, parentRequest.id, true);
   }
 
-  unconfirmKill(agent, parentRequest: Request) {
-    this.wsEmit('unconfirm-kill', {}, agent.id, parentRequest.emitterId, parentRequest.id);
+  unconfirmKill(agent, parentRequest: Request): Observable<Request> {
+    return this.pushRequest('unconfirm-kill', {}, agent.id, parentRequest.emitterId, parentRequest.id, true);
   }
 
-  sendUnmaskRequest(agent, target) {
-    this.wsEmit('ask-unmask', {}, agent.id, target.id);
+  sendUnmaskRequest(agent, target): Observable<Request> {
+    return this.pushRequest('ask-unmask', {}, agent.id, target.id, null, true);
   }
 
-  confirmUnmask(agent, parentRequest: Request) {
-    this.wsEmit('confirm-unmask', {}, agent.id, agent.targetId, parentRequest.id);
+  confirmUnmask(agent, parentRequest: Request): Observable<Request> {
+    return this.pushRequest('confirm-unmask', {}, agent.id, agent.targetId, parentRequest.id, true);
   }
 
-  unconfirmUnmask(agent, parentRequest: Request) {
-    this.wsEmit('unconfirm-unmask', {}, agent.id, agent.targetId, parentRequest.id);
-  }
-
-  //agent
-  askAgentUpdate(agent) {
-    this.wsEmit('agent-update', agent);
+  unconfirmUnmask(agent, parentRequest: Request): Observable<Request> {
+    return this.pushRequest('unconfirm-unmask', {}, agent.id, agent.targetId, parentRequest.id, true);
   }
 
   //Change mission
-  sendChangeMissionRequest(agent) {
-    this.wsEmit('change-mission', {}, agent.id);
+  sendChangeMissionRequest(agent): Observable<Request> {
+    return this.pushRequest('change-mission', {}, agent.id, null, null, true);
   }
   //Suicide
-  sendSuicideRequest(agent) {
-    this.wsEmit('suicide', {}, agent.id);
-  }
-  //Agent
-  newAgent(agent: Agent) {
-    this.wsEmit('new-agent', agent, agent.id);
-  }
-  //game
-  updateGameStatus(game: Game) {
-    this.wsEmit('game-status', game);
+  sendSuicideRequest(agent): Observable<Request> {
+    return this.pushRequest('suicide', {}, agent.id, null, null, true);
   }
 
-  wsEmit(type, data, em = null, re = null, parentId: number = null) {
+  pushRequest(type, data, em = null, re = null, parentId: number = null, subscribe = false) {
     let req = new Request();
     req.type = type;
     req.data = JSON.stringify(data);
@@ -108,11 +95,16 @@ export class SocketsService {
     req.receiverId = re;
     req.parentRequestId = parentId;
     req.gameId = this.gameId;
-    this.requestApiService.push(req).subscribe(r => {
-      console.log("emit", req);
-    }, err => {
-      console.log("err", err);
-    });
+    if(subscribe){
+      return this.requestApiService.push(req);
+    }
+    else{
+      this.requestApiService.push(req).subscribe(r => {
+          console.log("emit", req);
+        }, err => {
+          console.log("err", err);
+        });
+    }
     //this.subject.next(req);
   }
 
