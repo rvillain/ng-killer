@@ -35,6 +35,7 @@ import { MissionsService } from './missions.service';
 import { ActionsService } from './actions.service';
 import { GameService } from './game.service';
 import { RulesComponent } from './rules/rules.component'
+import { PushNotificationsService } from './push-notifications.service';
 
 @NgModule({
   imports: [
@@ -86,7 +87,7 @@ import { RulesComponent } from './rules/rules.component'
     MatSelectModule,
     MatMenuModule
   ],
-  providers: [SocketsService, MissionsService, ActionsService, GameService],
+  providers: [SocketsService, MissionsService, ActionsService, GameService, PushNotificationsService],
   declarations: [ConfirmDialogComponent, HeaderComponent, TimelineComponent, RulesComponent, AgentCardComponent],
   entryComponents: [ConfirmDialogComponent]
 })

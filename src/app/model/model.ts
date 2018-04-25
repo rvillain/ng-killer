@@ -80,3 +80,11 @@ export class Request {constructor(){}
     type: string;
     data: string;
 }
+
+export class Device {constructor(){}
+    id:number;
+    name: string;
+    pushEndpoint: string;
+    pushP256DH: string;
+    pushAuth: string;
+}

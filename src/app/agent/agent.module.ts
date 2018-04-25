@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 import { SharedModule } from '../shared/shared.module';
 
@@ -16,9 +17,10 @@ import { SuicideComponent } from './suicide/suicide.component';
 @NgModule({
   imports: [
     CommonModule,
-    SharedModule
+    SharedModule,
+    ServiceWorkerModule.register('/sw.js', { enabled: true })
   ],
   declarations: [JoinComponent, AgentComponent, KillModalComponent, UnmaskModalComponent, CodeModalComponent, ChangeMissionComponent, SuicideComponent],
   entryComponents: [KillModalComponent, UnmaskModalComponent, CodeModalComponent, ChangeMissionComponent, SuicideComponent]
 })
-export class AgentModule { }
+export class AgentModule {  }

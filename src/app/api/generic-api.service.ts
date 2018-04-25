@@ -23,7 +23,7 @@ export class GenericApiService<T> {
   // Base URL for Petfinder API
   
 
-  protected apiUrl = (isDevMode() ? "http://localhost:5000/api/" : "http://ng-killer-api.azurewebsites.net/api/");
+  protected apiUrl = (isDevMode() ? "http://localhost:5000/api/" : "http"+(location.protocol != 'https:'?'':'s')+"://ng-killer-api.azurewebsites.net/api/");
   protected controllerName = "";
 
   get(): Observable<T[]> {

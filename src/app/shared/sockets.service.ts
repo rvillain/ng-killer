@@ -15,7 +15,7 @@ export class SocketsService {
   private observer: Subscriber<Request>;
   public requests: Observable<Request>;
 
-  private url = (isDevMode() ? "http://localhost:5000/requesthub" : "https://ng-killer-api.azurewebsites.net/requesthub");
+  private url = (isDevMode() ? "http://localhost:5000/requesthub" : "http"+(location.protocol != 'https:'?'':'s')+"://ng-killer-api.azurewebsites.net/requesthub");
   private gameId: number;
 
   constructor(public actionsService: ActionsService, public requestApiService: RequestApiService) {

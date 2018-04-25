@@ -9,6 +9,7 @@
       "outDir": "dist",
       "assets": [
         "assets",
+        "sw.js",
         "favicon.ico",
         {
           "glob": "index.js",
