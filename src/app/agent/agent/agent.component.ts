@@ -14,7 +14,6 @@ import { ChangeMissionComponent } from '../change-mission/change-mission.compone
 import { SocketsService } from '../../shared/sockets.service';
 import { GameService } from '../../shared/game.service';
 import { ActionsService } from '../../shared/actions.service';
-import { PushNotificationsService } from '../../shared/push-notifications.service';
 import { SwPush } from '@angular/service-worker';
 
 @Component({
@@ -60,7 +59,7 @@ export class AgentComponent implements OnInit, OnDestroy {
 
           //push notification
           this.swPush.requestSubscription({
-            serverPublicKey: (isDevMode()?'BDktgBWNuSgBc0m6H1Z-x09jgQMXdyk0LoYKoVToLQwBB9Ctd4ealBf8eR8Rs18wnjFL2aWaZ24JgTd9keQjXb0':'')
+            serverPublicKey: (isDevMode()?'BDktgBWNuSgBc0m6H1Z-x09jgQMXdyk0LoYKoVToLQwBB9Ctd4ealBf8eR8Rs18wnjFL2aWaZ24JgTd9keQjXb0':'BM8vwMGLMuivO_CSMp4JzoEf7WLlcudPMcsn6VFnBYiNb6tKch4rrGrXyk9wEPXUq5i5cfaJoj6GLBi4ebjgYN4')
           })
             .then(sub => {
               let device = new Device();

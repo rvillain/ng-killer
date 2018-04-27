@@ -13,15 +13,16 @@
     self.agentId = data.agentId;
     var title = data.title;
     var message = data.message;
-    var icon = "assets/images/logoOSS.png";
+    var icon = "/assets/images/logoOSS.png";
 
     event.waitUntil(self.registration.showNotification(title, {
-        body: message
+        body: message,
+        badge: icon,
+        icon: icon
     }));
 });
 
 self.addEventListener('notificationclick', function (event) {
-    console.log(event);
     let url = 'https://ng-killer.azurewebsites.net/agent/'+self.agentId;
     event.notification.close(); // Android needs explicit close.
     event.waitUntil(

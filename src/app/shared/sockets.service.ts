@@ -45,8 +45,8 @@ export class SocketsService {
     this.gameId = gameId;
     this.start(() => {
       this._hubConnection.send("JoinRoom", this.gameId.toString());
-      this._hubConnection.on('Request', (request: any) => {
-        if (!agentId || agentId == request.receiverId) {
+      this._hubConnection.on('Request', (request: Request) => {
+        if (!agentId || agentId == request.receiverId || request.type == ActionsService.REQUEST_TYPE_GAME_STATUS) {
           this.observer.next(request);
         }
       });

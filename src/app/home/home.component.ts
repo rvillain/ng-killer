@@ -6,7 +6,6 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 
 import {Router} from "@angular/router";
 import { GameService } from '../shared/game.service';
-import { PushNotificationsService } from '../shared/push-notifications.service';
 
 @Component({
   selector: 'app-home',
@@ -52,7 +51,6 @@ export class NewGameDialog {
     public dialogRef: MatDialogRef<NewGameDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public gameApiService: GameApiService,
-    public pushNotificationsService:PushNotificationsService,
     public router: Router) { 
     }
 
