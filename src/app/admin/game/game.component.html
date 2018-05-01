@@ -1,7 +1,27 @@
 <app-header [title]="game.name"></app-header>
 
 <section class="row">
-  <mat-card class="col" *ngIf="game">
+  <div class="col" *ngIf="gameService.isCreated(game)">
+    <mat-card class="col">
+      <p>Vous êtes sur la page d'administration de la partie.</p>
+      <p>Afficher
+        <a mat-raised-button target="_blank" [routerLink]="['/journal', game.id]">le journal</a> sur un écran visible par tous les joueurs.</p>
+      <p> Une fois les missions saisies et les joueurs inscrits, lancez la partie</p>
+    </mat-card>
+  </div>
+</section>
+<mat-toolbar>
+  <button mat-raised-button color="accent" (click)="start()" [disabled]="!isStartable()" *ngIf="gameService.isCreated(game)">
+    <mat-icon>done_all</mat-icon> Démarrer
+  </button>
+  <button mat-raised-button color="accent" (click)="reinit()" [disabled]="gameService.isCreated(game)">
+    <mat-icon>undo</mat-icon> Réinitialiser
+  </button>
+  <a mat-raised-button target="_blank" [routerLink]="['/journal', game.id]">Journal</a>
+</mat-toolbar>
+
+<section class="no-padding" *ngIf="game">
+  <mat-card class="no-padding">
     <mat-tab-group>
       <mat-tab label="Agents ({{game.agents?game.agents.length:0}})">
         <section>
@@ -21,6 +41,12 @@
       </mat-tab>
       <mat-tab label="Missions ({{game.missions?game.missions.length:0}})">
         <section *ngIf="gameService.isCreated(game)">
+          <mat-menu #menu="matMenu">
+            <button *ngFor="let l of missionsService.getLevels()" mat-menu-item (click)="importMissions(l)">{{l}}</button>
+          </mat-menu>
+          <button mat-raised-button [matMenuTriggerFor]="menu">
+            <mat-icon>playlist_add</mat-icon> Importer des missions</button>
+
           <form class="" (ngSubmit)="onSubmitNewMission()">
             <mat-form-field class="full-width">
               <input matInput name="newMission" placeholder="Saisissez une nouvelle mission" [(ngModel)]="newMission">
@@ -38,26 +64,12 @@
           </mat-list>
         </section>
       </mat-tab>
+      <mat-tab label="Editeur de cibles" *ngIf="game.agents && game.agents.length > 3">
+        <section>
+          <app-targets-editor [game]="game">
+          </app-targets-editor>
+        </section>
+      </mat-tab>
     </mat-tab-group>
-    <mat-card-actions>
-      <button mat-raised-button color="accent" (click)="start()" [disabled]="!isStartable()" *ngIf="gameService.isCreated(game)">
-        <mat-icon>done_all</mat-icon> Démarrer
-      </button>
-      <button mat-raised-button color="accent" (click)="reinit()" [disabled]="gameService.isCreated(game)">
-        <mat-icon>undo</mat-icon> Réinitialiser
-      </button>
-      <button mat-raised-button [matMenuTriggerFor]="menu">
-        <mat-icon>playlist_add</mat-icon> Importer des missions</button>
-      <mat-menu #menu="matMenu">
-        <button *ngFor="let l of missionsService.getLevels()" mat-menu-item (click)="importMissions(l)">{{l}}</button>
-      </mat-menu>
-      <a mat-raised-button target="_blank" [routerLink]="['/journal', game.id]">Journal</a>
-    </mat-card-actions>
-  </mat-card>
-  <mat-card class="col" *ngIf="gameService.isCreated(game)">
-    <p>Vous êtes sur la page d'administration de la partie.</p>
-    <p>Afficher
-      <a mat-raised-button target="_blank" [routerLink]="['/journal', game.id]">le journal</a> sur un écran visible par tous les joueurs.</p>
-    <p> Une fois les missions saisies et les joueurs inscrits, lancez la partie</p>
   </mat-card>
 </section>

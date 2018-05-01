@@ -1,0 +1,25 @@
+
+
+<div *ngIf="game" class="zone" 
+    [style.width]="zoneSize+'px'" 
+    [style.height]="zoneSize+'px'">
+  <div *ngFor="let position of positions; let i=index" 
+    class="position" 
+    [ngClass]="{'selected': position.isSelected}"
+    (click)="switchPosition(position)"
+    [style.left]="getX(position.position)" 
+    [style.bottom]="getY(position.position)"
+    [attr.position]='position.position'>
+    <app-agent-card [agent]="position.agent"></app-agent-card>
+  </div>
+
+  <div *ngFor="let position of positions; let i=index" 
+    class="arrow" 
+    [style.left]="getX(i+0.5)" 
+    [style.bottom]="getY(i+0.5)"
+    [style.transform]="'rotate(' + getArrowRotation(i) + 'deg)'">
+    <mat-icon>arrow_forward</mat-icon>
+  </div>
+</div>
+
+

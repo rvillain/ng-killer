@@ -11,12 +11,13 @@ import { RouterModule } from '@angular/router';
 
 import {
 } from '@angular/material';
+import { TargetsEditorComponent } from './targets-editor/targets-editor.component';
 
 @NgModule({
   imports: [
     CommonModule,
-    SharedModule
+    SharedModule,
   ],
-  declarations: [GameComponent, MissionsComponent, AdminHomeComponent]
+  declarations: [GameComponent, MissionsComponent, AdminHomeComponent, TargetsEditorComponent]
 })
 export class AdminModule { }
