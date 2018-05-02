@@ -15,6 +15,7 @@
 
   <div *ngFor="let position of positions; let i=index" 
     class="arrow" 
+    (click)="insertAfter(i)"
     [style.left]="getX(i+0.5)" 
     [style.bottom]="getY(i+0.5)"
     [style.transform]="'rotate(' + getArrowRotation(i) + 'deg)'">

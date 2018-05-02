@@ -42,13 +42,32 @@ export class TargetsEditorComponent implements OnInit {
       position.isSelected = true;
     }
   }
+  insertAfter(index: number){
+    let source = this.positions.find(p=>p.isSelected);
+    let targetPos = (index + 1) % (this.positions.length+1);
+    console.log(source, index);
+    if(source && source.position != targetPos){
+      if(targetPos<source.position){
+        for(let i=source.position - 1; i>=targetPos; i--){
+          this.positions.find(p=>p.position == i).position++;
+        }
+        source.position = targetPos;
+      }
+      else{
+        for(let i=source.position + 1; i<targetPos; i++){
+          this.positions.find(p=>p.position == i).position--;
+        }
+        source.position = targetPos-1;
+      }
+    }
+  }
 
   getR() {
     return Math.floor(this.zoneSize / 2) - 100;
   }
   positionsToAngle(position: number): number {
     let length = this.positions.length;
-    let angle = (position / length) * (2 * Math.PI)
+    let angle = -(position / length) * (2 * Math.PI)
     return angle;
   }
   calculateX(position): Number {
@@ -67,7 +86,7 @@ export class TargetsEditorComponent implements OnInit {
   }
 
   getArrowRotation(index){
-    return Math.floor(90-(index/this.positions.length)*360);
+    return Math.floor(90+(index/this.positions.length)*360);
   }
 
   ngDoCheck() {
